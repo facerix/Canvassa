@@ -4,13 +4,12 @@
   <head>
     <title>Canvassa Bestiary</title>
     <link rel="icon" type="image/vnd.microsoft.icon" href="http://www.buyog.com/code/loc/favicon.ico"/>
-    <script type="text/javascript" src="../dojo.js" djConfig="isDebug:false"></script>
+
+    <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.3/dojo/dojo.js" djConfig="isDebug:false"></script>
 <!--[if IE]>
-    <script type="text/javascript" src="../excanvas/excanvas-compressed.js"></script>
-    <script type='text/javascript' src='../firebug-lite-compressed.js'></script>
+    <script type="text/javascript" src="http://pipes.yahoo.com/js/excanvas.js"></script>
+    <script type='text/javascript' src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
 <![endif]-->
-    <!--script type='text/javascript'
-        src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script-->
     <style media="screen" type="text/css">
       canvas {
          border: 6px double black;
@@ -33,7 +32,7 @@
         dojo.addOnLoad(function init_loader(){
             window.canvas = dojo.byId('sprites');
             if (canvas.getContext){
-                dojo.registerModulePath("loc","part5");
+                dojo.registerModulePath("loc","Canvassa");
                 dojo.require("loc.Preloader");
                 dojo.addOnLoad(preload);
             } else {

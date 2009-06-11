@@ -1,0 +1,18 @@
+/***************************/
+//@Author: Ryan Corradini
+//@website: http://www.buyog.com/code/loc
+//@email: ryancorradini@yahoo.com
+//@license: Free to use & modify, but please keep this credits message
+/***************************/
+
+The Legend of Canvassa
+An open-source, Javascript+Dojo clone of the original "Legend of Zelda" game for the NES
+Uses HTML5 Canvas (and ExplorerCanvas in Internet Explorer)
+
+This is a preliminary sandboxed checkin, primarily repackaged for sharing on Github.
+It is not at all complete, but as of this checkin, the basic preloading and sprite engines are in place.
+There are currently two entry points:
+index.html -- the main game will be invoked from here; right now it's just the player on an empty screen.
+bestiary.html -- test harness that allows you to spawn the various enemy types into a canvas to observe their AIs.
+
+Note also that sprite collision isn't yet enabled.
