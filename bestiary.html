@@ -1,0 +1,253 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Canvassa Bestiary</title>
+    <link rel="icon" type="image/vnd.microsoft.icon" href="http://www.buyog.com/code/loc/favicon.ico"/>
+    <script type="text/javascript" src="../dojo.js" djConfig="isDebug:false"></script>
+<!--[if IE]>
+    <script type="text/javascript" src="../excanvas/excanvas-compressed.js"></script>
+    <script type='text/javascript' src='../firebug-lite-compressed.js'></script>
+<![endif]-->
+    <!--script type='text/javascript'
+        src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script-->
+    <style media="screen" type="text/css">
+      canvas {
+         border: 6px double black;
+      }
+      .controls {
+         position: absolute;
+         top: 50px;
+         left: 300px;
+      }
+      td>button { width:100% }
+      #throbber {
+          position: absolute;
+          left: 40px;
+          top: 120px;
+          text-align: center;
+      }
+    </style>
+    <script type="text/javascript">
+        // before ANYTHING else, see if we can get a canvas context
+        dojo.addOnLoad(function init_loader(){
+            window.canvas = dojo.byId('sprites');
+            if (canvas.getContext){
+                dojo.registerModulePath("loc","part5");
+                dojo.require("loc.Preloader");
+                dojo.addOnLoad(preload);
+            } else {
+                dojo.style("throbber","width","220px")
+                dojo.byId("throbber").innerHTML = "No canvas found, or canvas 2d context cannot be retrieved.";
+            }
+        }); // end of init_loader()
+
+        function preload() {
+            window.loader = new loc.Preloader({
+              images: {
+                link: "../res/link.png",
+                items: "../res/items.png",
+                monsters: "../res/monsters.png"
+              },
+              modules: ["loc.Bestiary"]
+            })
+
+            if (loader.ready()) {
+                init_game();
+                delete window.loader;
+            } else {
+                // show "please wait" throbber
+                dojo.style("throbber","display","none");
+
+                var listener = dojo.subscribe("loc.Preloader.onReady", function() {
+                    dojo.unsubscribe(listener);
+                    init_game();
+                    delete window.loader;
+                });
+            }
+        } // end of preload()
+
+        function init_game() {
+            var scale = 1;
+            window.game = new loc.Bestiary({context: canvas.getContext('2d'), scale: scale,
+                screenBounds: {top: 0, left: 0, bottom: 240, right: 256} });
+
+            // hide the "please wait" throbber
+            dojo.style("throbber","display","none")
+
+            // start the game loop
+            game.start();
+
+            // map enemy types to names
+            enemyTypes = {
+                'armos': loc.Armos, 'ghini': loc.Ghini, 'leever': loc.Leever,
+                'boulder': loc.Boulder, 'lynel': loc.Lynel, 'moblin': loc.Moblin,
+                'octoroc': loc.Octoroc, 'peahat': loc.Peahat, 'tectite': loc.Tectite, 'zola': loc.Zola,
+
+                'bubble': loc.Bubble, 'darknut': loc.Darknut, 'gel': loc.Gel,
+                'gibdo': loc.Gibdo, 'goriya': loc.Goriya, 'keese': loc.Keese,
+                'likelike': loc.LikeLike, 'polsvoice': loc.PolsVoice, 'rope': loc.Rope,
+                'stalfos': loc.Stalfos, 'vire': loc.Vire, 'wallmaster': loc.WallMaster,
+                'wizzrobe': loc.Wizzrobe, 'zol': loc.Zol
+            };
+
+            // hook up the keyboard event handlers for player input
+            dojo.connect(window, "onkeydown", handle_keydown);
+            dojo.connect(window, "onkeyup", handle_keyup);
+        } // end of init_game()
+
+        /* handle user input/controls */
+        var isIE = navigator.appName.toLowerCase().indexOf("explorer") > -1;
+        handle_keydown = function(e){
+            var ev = isIE?event:e;
+            game.keyDown(ev.keyCode);
+        }
+        handle_keyup = function(e){
+            var ev = isIE?event:e;
+            game.keyUp(ev.keyCode);
+        }
+
+        function setScale(size) {
+            if (size > 0 && size < 5) {
+                //dojo.style(window.canvas, "width", 256*size + "px");
+                game.setScale(size);
+                game.setScreenBounds( {top: 0, left: 0, bottom: 240/size, right: 256/size} );
+            }
+        }
+
+        sEnemyNames = ['armos','ghini','leever','lynel','moblin','octoroc','peahat','tectite','zola'];
+        sEnemyNames2 = ['bubble','darknut','gel','gibdo','goriya','keese','likelike','polsvoice','rope',
+        'stalfos','statue','trap','vire','wallmaster','wizzrobe','zol'];
+        enemyTypes = {};
+        function insertEnemy(sName,nColor) {
+            var newMonster = null;
+            var pos = {x: (Math.floor(Math.random()*15/game.scale)*16)+8,
+                       y: (Math.floor(Math.random()*14/game.scale)*16)+8};
+            var args = {pos:pos, scale:game.scale, size:{w:16,h:16}, color: nColor};
+            if (sName == 'random') {
+                if (nColor == 0) {
+                    // random overworld enemy
+                    nIndex = Math.floor(Math.random()*9);
+                    sName = sEnemyNames[nIndex];
+                } else {
+                    // random dungeon enemy
+                    nIndex = Math.floor(Math.random()*16);
+                    sName = sEnemyNames2[nIndex];
+                }
+                args.nColor = Math.floor(Math.random()*2);
+            }
+            if (sName == 'boulder') { args.pos.y = 0 };  // override Y position (all boulders spawn @ screen top)
+            newMonster = new enemyTypes[sName](args);
+
+            if (newMonster) {
+                newMonster.index = game.monsters.length;
+                game.monsters.push(newMonster);
+            }
+        }
+
+        function killAll() {
+            for (var i=0; i < game.monsters.length; i++) {
+                if (game.monsters[i] && 'die' in game.monsters[i]) { game.monsters[i].die(); }
+            }
+        }
+    </script>
+  </head>
+  <body>
+    <h2 id="header">Canvassa Bestiary</h2>
+    <canvas id="sprites" width="256" height="240"></canvas>
+    <div id="throbber" style="display: none;"><img src="../res/wait.gif" /><br/>Loading resources...</div>
+    <div class="controls">
+      <p><strong>Controls:</strong> <em>Arrow keys</em> move the Player sprite around the canvas</p>
+      <p><strong>Game scale:</strong>
+        <input id="scale1" type="radio" name="scale" checked="true" onClick="setScale(1);"/>
+          <label for="scale1">1</label>
+        <input id="scale2" type="radio" name="scale" onClick="setScale(2);"/>
+          <label for="scale2">2</label>
+        <input id="scale3" type="radio" name="scale" onClick="setScale(3);"/>
+          <label for="scale3">3</label>
+        <input id="scale4" type="radio" name="scale" onClick="setScale(4);"/>
+          <label for="scale4">4</label>
+      </p>
+      <p><strong>Player options:</strong>
+        <input id="shield1" type="radio" name="shield" checked="true" onClick="game.player._shield = 0;"/>
+          <label for="shield1">Small shield</label>
+        <input id="shield2" type="radio" name="shield" onClick="game.player._shield = 1;"/>
+          <label for="shield2">Large shield</label>
+        <input id="ring0" type="radio" name="ring" checked="true" onClick="game.player._tunic = 0;"/>
+          <label for="ring0">No ring</label>
+        <input id="ring1" type="radio" name="ring" onClick="game.player._tunic = 1;"/>
+          <label for="ring1">Blue ring</label>
+        <input id="ring2" type="radio" name="ring" onClick="game.player._tunic = 2;"/>
+          <label for="ring2">Red ring</label>
+      </p>
+      <p><strong>Change Player animation:</strong><br/>
+        <button onClick="game.player.changeState(2);">Attack</button>
+        <button onClick="game.player.changeState(3);">Get Small Item</button>
+        <button onClick="game.player.changeState(4);">Get Big Item</button>
+        <button onClick="game.player.changeState(1);">Die</button>
+      </p>
+
+      <strong>Insert overworld enemy:</strong>
+      <table border='0' cellspacing='0' cellpadding='2'>
+        <tr>
+          <td><button onClick="insertEnemy('armos',0);">Armos 1</button></td>
+          <td><button onClick="insertEnemy('leever',0);">Leever 1</button></td>
+          <td><button onClick="insertEnemy('lynel',0);">Lynel 1</button></td>
+          <td><button onClick="insertEnemy('moblin',0);">Moblin 1</button></td>
+          <td><button onClick="insertEnemy('octoroc',0);">Octoroc 1</button></td>
+          <td><button onClick="insertEnemy('tectite',0);">Tectite 1</button></td>
+        </tr>
+        <tr>
+          <td><button onClick="insertEnemy('armos',1);">Armos 2</button></td>
+          <td><button onClick="insertEnemy('leever',1);">Leever 2</button></td>
+          <td><button onClick="insertEnemy('lynel',1);">Lynel 2</button></td>
+          <td><button onClick="insertEnemy('moblin',1);">Moblin 2</button></td>
+          <td><button onClick="insertEnemy('octoroc',1);">Octoroc 2</button></td>
+          <td><button onClick="insertEnemy('tectite',1);">Tectite 2</button></td>
+        </tr>
+        <tr>
+          <td><button onClick="insertEnemy('armos',2);">Armos 3</button></td>
+          <td><button onClick="insertEnemy('boulder');">Boulder</button></td>
+          <td><button onClick="insertEnemy('ghini');">Ghini</button></td>
+          <td><button onClick="insertEnemy('peahat');">Peahat</button></td>
+          <td><button onClick="insertEnemy('zola');">Zola</button></td>
+          <td><button onClick="insertEnemy('random',0);">(Random)</button></td>
+        </tr>
+      </table>
+
+      <br/><strong>Insert dungeon enemy:</strong>
+      <table border='0' cellspacing='0' cellpadding='2'>
+        <tr>
+          <td><button onClick="insertEnemy('darknut',0);">Darknut 1</button></td>
+          <td><button onClick="insertEnemy('goriya',0);">Goriya 1</button></td>
+          <td><button onClick="insertEnemy('keese',0);">Keese 1</button></td>
+          <td><button onClick="insertEnemy('wizzrobe',0);">Wizzrobe 1</button></td>
+          <td><button onClick="insertEnemy('bubble');">Bubble</button></td>
+          <td><button onClick="insertEnemy('gel');">Gel</button></td>
+          <td><button onClick="insertEnemy('gibdo');">Gibdo</button></td>
+        </tr>
+        <tr>
+          <td><button onClick="insertEnemy('darknut',1);">Darknut 2</button></td>
+          <td><button onClick="insertEnemy('goriya',1);">Goriya 2</button></td>
+          <td><button onClick="insertEnemy('keese',1);">Keese 2</button></td>
+          <td><button onClick="insertEnemy('wizzrobe',1);">Wizzrobe 2</button></td>
+          <td><button onClick="insertEnemy('likelike');">Like-like</button></td>
+          <td><button onClick="insertEnemy('polsvoice');">Pols Voice</button></td>
+          <td><button onClick="insertEnemy('rope');">Rope</button></td>
+        </tr>
+        <tr>
+          <td><button onClick="insertEnemy('stalfos',1);">Stalfos</button></td>
+          <td><button disabled="true" onClick="insertEnemy('statue',1);">Stone statue</button></td>
+          <td><button disabled="true" onClick="insertEnemy('trap',1);">Trap</button></td>
+          <td><button onClick="insertEnemy('vire');">Vire</button></td>
+          <td><button onClick="insertEnemy('wallmaster');">Wall Master</button></td>
+          <td><button onClick="insertEnemy('zol');">Zol</button></td>
+          <td><button onClick="insertEnemy('random',1);">(Random)</button></td>
+        </tr>
+        <tr>
+          <td><button onClick="killAll();">(Kill all)</button></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

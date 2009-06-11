@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Asychronous (AJAX-ified) Download Test</title>
+    <script type="text/javascript" src="../dojo.xd.js" djConfig="isDebug:false"></script>
+<!--[if IE]>
+    <script type="text/javascript" src="excanvas.js"></script>
+<![endif]-->
+    <style media="screen" type="text/css">
+      body {
+         background:#CE8B43 url(../../images/bg_body.gif) repeat-x scroll left top;
+         color:#634320;
+         font-family:helvetica,arial,verdana,"trebuchet ms",sans-serif;
+         margin: 0;
+         min-width:760px;
+      }
+      #content {
+         padding: 0 10px;
+      }
+      canvas { 
+         border: 6px double black;
+      }
+      #footer {
+         -moz-border-radius:10px;
+         background:#493015 url(../../images/bg_footer.gif) repeat-x scroll left top;
+         padding-right:15px;
+         padding-top:15px;
+         text-align:right;
+         position: absolute;
+         bottom:0; left:0; right:0;
+      }
+      #footer p {
+         background:transparent url(../../images/icon_footer.gif) no-repeat scroll 16px 0;
+         color:#FEF6EE;
+         font-size:10px;
+         line-height:14px;
+         margin:0;
+         padding:0 0 15px 55px;
+      }
+    </style>
+    <script type="text/javascript">
+        dojo.registerModulePath("loc","part5");
+        dojo.require("loc.Preloader");
+
+        var _frames = 0;
+        var _startTime = 0;
+        var _time = 0;
+        var _img = new Image();
+        _img.onLoad = function() { console.log("image loaded."); }
+        _img.src = "../res/wait.gif";
+        var ctx = null;
+        var _timerid = -1;
+        function test_draw() {
+            _frames++;
+            _time = (new Date).getTime()-_startTime;
+            //ctx.strokeRect(10,10,236*_time/5000,20);
+            ctx.drawImage(_img,10,10,236*_time/5000,20);
+            if (_time >= 5000) {
+                clearInterval(_timerid);
+                var txtLog = document.getElementById("log");
+                if (txtLog) {
+                    var results = "Finished FPS test.<br/>Frames rendered in 5 seconds: " + _frames + "<br/>FPS: " + (_frames/5);
+                    txtLog.innerHTML = results;
+                }
+            }
+        }
+        function test_fps() {
+            window.canvas = document.getElementById('sprites');
+            
+            if (canvas.getContext){
+                ctx = canvas.getContext("2d");
+                ctx.fillRect(0,0,256,40);
+                ctx.strokeStyle = "#fc0";
+                _startTime = (new Date).getTime();
+                _timerid = setInterval("test_draw()", 10);
+            } else {
+                alert("No canvas found, or canvas 2d context cannot be retrieved.");
+            }
+        };
+
+        dojo.addOnLoad(function() {
+            //
+        });
+
+        function loadData(datafile) {
+            dojo.style("wait", "display", "block");
+            dojo.require("loc."+datafile);
+            dojo.addOnLoad(function loadData_callback() {
+                dojo.style("wait", "display", "none");
+                dojo.byId('log').innerHTML = "<p>"+datafile+" loaded.</p>";
+            });
+        }
+    </script>
+  </head>
+  <body>
+    <div id="content">
+      <h2>Asynchronous Download Test</h2>
+      <select id="filename"><option value="_quest1">Quest 1</option></select>
+      <input type="button" onclick="javascript:loadData(dojo.byId('filename').value);" value="Load" /><br/>
+      <img id="wait" src="../res/wait.gif" style="display:none;"/><br/>
+      <br/>
+      <div id="log"></div>
+    </div>
+    <div id="footer"><p>All media content and properties are &copy; their original holders. Unique content and source code &copy; 2009,
+    <a ref="me mail" href="mailto:ryancorradini@yahoo.com">Ryan Corradini</a></p></div>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+body {
+    background-color:#dd6;
+}
+canvas {
+    border: 6px double black;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+div.controls {
+    display: table-row;
+    position: absolute;
+    text-align: center;
+}
+div.debugControls {
+    display: table-row;
+    position: absolute;
+    text-align: center;
+}
+div.controlGroup {
+    display: table-cell;
+    padding-right: 10px;
+}
+div#bossBanner {
+    display: table-cell;
+    display: none;
+    background-color:red;
+    color:white;
+}
+#sm2-container {
+    top: 0;
+}

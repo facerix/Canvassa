@@ -1,0 +1,278 @@
+/***************************/
+//@Author: Ryan Corradini
+//@website: www.buyog.com
+//@email: ryancorradini@yahoo.com
+//@license: Free to use & modify, but please keep this credits message
+/***************************/
+
+dojo.require("loc.Sprite");
+dojo.provide("loc.Player");
+
+dojo.declare("loc.Player", loc.Sprite, {
+    _rupees: 0,
+    _keys: 0,
+    _bombs: 0,
+    _maxBombs: 8,
+    _HP: 6,     /* what's my starting HP? (each heart is actually 2 HP, each half-heart is one... this way we avoid floats) */
+    _maxHP: 6,  /* how many pieces of heart do I have? (3 hearts * 2 halves each: 6) */
+    _shield: 0, /* default shield=0, large shield=1, mirror shield=2 */
+    _tunic: 0,  /* 0: green, 1: blue, 2: red */
+    _item: 0,   /* currently-held item (i.e. position within the this.inventory array) */
+    _sword: -1, /* start without a sword */
+    _arrow: -1, /* start without any arrows */
+    _newItem: {}, /* keeps track of any item I'm holding up */
+    inventory: {  /* smaller inventory items */
+        0: null,  /* boomerang       */
+        1: null,  /* bombs           */
+        2: null,  /* bow             */
+        3: null,  /* candle          */
+        4: null,  /* whistle         */
+        5: null,  /* bait            */
+        6: null,  /* letter/medicine */
+        7: null,  /* wand            */
+    },
+    tools: {  /* larger inventory items, cannot be equipped and used directly */
+        0: null,  /* raft            */
+        1: null,  /* magic book      */
+        2: null,  /* ladder          */
+        3: null,  /* power bracelet  */
+    },
+    triforces: {  /* retrieved triforce shards */
+        0: null, 1: null, 2: null, 3: null, 4: null, 5: null, 6: null, 7: null
+    },
+
+    constructor: function sprite_constructor(args){
+        this._speed = 3;
+        if (!(window.imageCache.hasImage("link"))) { window.imageCache.addImage("link", "../res/link.png"); };
+        this.spriteSrc = "link"
+
+        //dojo.mixin(this,args);
+        this._stateDefs = [
+                { name: 'stand/walk', faceted:true, nextState: 0, canMove: true, anim: [
+                  [ {x:0,y:0,t:5},{x:0,y:16,t:5} ],   /* facing==0 (left)  */
+                  [ {x:16,y:0,t:5},{x:16,y:16,t:5} ], /* facing==1 (up)    */
+                  [ {x:32,y:0,t:5},{x:32,y:16,t:5} ], /* facing==2 (right) */
+                  [ {x:48,y:0,t:5},{x:48,y:16,t:5} ]  /* facing==3 (down)  */
+                ]},
+                { name: 'die', faceted: false, nextState: -1, canMove: false, anim: [
+                  [ {x:0,y:0,t:2},{x:16,y:0,t:2},{x:32,y:0,t:2},{x:48,y:0,t:2},
+                    {x:0,y:0,t:2},{x:16,y:0,t:2},{x:32,y:0,t:2},{x:48,y:0,t:2},
+                    {x:0,y:0,t:2},{x:16,y:0,t:2},{x:32,y:0,t:2},{x:48,y:0,t:2},
+                    {x:0,y:0,t:2},{x:16,y:0,t:2},{x:32,y:0,t:2},{x:48,y:0,t:2},
+                    {x:0,y:0,t:2},{x:16,y:0,t:2},{x:32,y:0,t:2},{x:48,y:0,t:2},
+                    {x:0,y:0,t:2},{x:16,y:0,t:2},{x:32,y:0,t:2},{x:48,y:0,t:2},
+                    {x:0,y:0,t:2},{x:16,y:0,t:2},{x:32,y:0,t:2},{x:48,y:0,t:2},
+                    {x:0,y:0,t:2},{x:16,y:0,t:2},{x:32,y:0,t:2},{x:48,y:0,t:20},
+                    {x:160,y:16,t:6},{x:176,y:16,t:3},{x:192,y:16,t:35} ]
+                ]},
+                { name: 'attack', faceted:true, nextState: 0, canMove: false, anim: [
+                  [ {x:128,y:0,t:6} ],   /* facing==0 (left)  */
+                  [ {x:144,y:0,t:6} ], /* facing==1 (up)    */
+                  [ {x:160,y:0,t:6} ], /* facing==2 (right) */
+                  [ {x:176,y:0,t:6} ]  /* facing==3 (down)  */
+                ]},
+                { name: 'smallItem', faceted:false, nextState: 0, canMove: false, anim: [
+                  [ {x:128,y:16,t:30} ]
+                ]},
+                { name: 'bigItem', faceted:false, nextState: 0, canMove: false, anim: [
+                  [ {x:144,y:16,t:30} ]
+                ]},
+                { name: 'catch', faceted:true, nextState: 0, canMove: false, anim: [
+                  [ {x:128,y:0,t:6} ],
+                  [ {x:144,y:0,t:6} ],
+                  [ {x:160,y:0,t:6} ],
+                  [ {x:176,y:0,t:6} ]
+                ]},
+            ];
+
+        this._shield = 0;      // default shield=0; large shield=1; mirror shield=2
+        this._tunic = 0;       // 0 = green; 1 = blue; 2 = red
+    },
+    _animTick: function _animTick() {
+        // apply anim frame offsets if applicable
+        var dx = dy = 0;
+        switch (this._state) {
+            case 6:
+                // hurt: ignore tunic coloring, but allow shield offset
+                if (this._shield>0) { dx = 64; }
+                break;
+
+            case 0:
+                // default stand/walk: offset X position for shield, then flow into default for tunic coloring
+                if (this._shield>0) { dx = 64; }
+
+            default:
+                // offset for the ring you're wearing, if any
+                if (this._tunic > 0) {
+                    dy += 32*this._tunic;
+                }
+                break;
+        }
+        var retVal = this.inherited(arguments);
+        return {x: retVal.x+dx, y: retVal.y+dy};
+    },
+    drawInventory: function(ctx,mode){
+        // set up some constants
+        var itemWidth = halfHeight = 8 * this.scale;
+        var itemHeight = 16 * this.scale;
+        var yoffset = 0;
+        
+
+        // if we're viewing the inventory screen, draw what we've got
+        if (mode==1) {
+            // offset the HUD portion of inventory
+            yoffset = 175*this.scale;
+
+            // first row
+            for (var itemIndex=0; itemIndex < 4; itemIndex++) {
+                if (this.inventory[itemIndex]) {
+                    this.inventory[itemIndex].drawIcon(ctx, (132+24*itemIndex)*this.scale, 55*this.scale, 1);
+                }
+            }
+
+            // second row
+            for (itemIndex; itemIndex < 8; itemIndex++) {
+                if (this.inventory[itemIndex]) {
+                    this.inventory[itemIndex].drawIcon(ctx, (36+24*itemIndex)*this.scale, 71*this.scale, 1);
+                }
+            }
+            
+            // selector
+            //ctx.strokeStyle = "rgb(68,0,189)";
+            ctx.strokeStyle = "rgb(189,68,0)";
+            var selx = sely = 0;
+            if (this._item < 4) {
+                selx = 128+24*this._item;
+                sely = 55;
+            } else {
+                selx = 32+24*this._item;
+                sely = 71;
+            }
+            ctx.beginPath();
+            ctx.moveTo(selx*this.scale,sely*this.scale);
+            ctx.lineTo((selx+2)*this.scale,sely*this.scale);
+            ctx.moveTo((selx+14)*this.scale,sely*this.scale);
+            ctx.lineTo((selx+16)*this.scale,sely*this.scale);
+            ctx.lineTo((selx+16)*this.scale,(sely+2)*this.scale);
+            ctx.moveTo((selx+16)*this.scale,(sely+14)*this.scale);
+            ctx.lineTo((selx+16)*this.scale,(sely+16)*this.scale);
+            ctx.lineTo((selx+14)*this.scale,(sely+16)*this.scale);
+            ctx.moveTo((selx+2)*this.scale,(sely+16)*this.scale);
+            ctx.lineTo(selx*this.scale,(sely+16)*this.scale);
+            ctx.lineTo(selx*this.scale,(sely+14)*this.scale);
+            ctx.moveTo(selx*this.scale,(sely+2)*this.scale);
+            ctx.lineTo(selx*this.scale,sely*this.scale);
+            ctx.closePath()
+            ctx.stroke();
+        }
+
+        // -- HUD portion of inventory (available in both modes) --
+
+        // draw my position on the overworld map (map starts at x:16,y:24, and is w:64,h:32; dot is 3x3 on a 4x4 matrix of mapscreens)
+        var currMapScreen = {x:1,y:1}; //game.map.currentScreen();
+        var xpos = (currMapScreen.x * 4 + 16) * this.scale;
+        var ypos = (currMapScreen.y * 4 + 24) * this.scale;
+        var dotSize = 3 * this.scale;
+        switch (this._tunic) {
+          case 0:
+            ctx.fillStyle = "rgb(144,213,0)";
+            break;
+          case 1:
+            ctx.fillStyle = "rgb(184,184,248)";
+            break;
+          case 2:
+            ctx.fillStyle = "rgb(248,56,0)";
+            break;
+        }
+        ctx.fillRect(xpos,ypos+yoffset,dotSize,dotSize);
+        
+        // draw counts for my rupees, keys, and bombs
+        game.font.drawText(ctx, this._rupees+"", (this._rupees < 100)?104:96,23+yoffset, this.scale);
+        game.font.drawText(ctx, this._keys+"", 104,39+yoffset, this.scale);
+        game.font.drawText(ctx, this._bombs+"", 104,47+yoffset, this.scale);
+        
+        // draw my currently-equipped item
+    },
+    die: function die() {
+        dojo.publish("player.onDie", []);
+        this.inherited(arguments);
+    },
+    reset: function reset(){
+        this.inherited(arguments);
+        this._HP = 6;this._maxHP = 6;
+        this._shield = 0; this._tunic = 0; this._sword = -1;
+        this._item = 0; this._newItem = {}; this._arrow = -1;
+        this._rupees = 0; this._keys = 0;
+        this._bombs = 0; this._maxBombs = 8;
+        //this.inventory = this._getInventory();
+        //this.tools = this._getTools();
+        //this.triforces = this._getTriforceShards();
+    },
+    attack: function player_attack() {
+        if (!this._proj) {
+            this.changeState(2);
+
+            var args = {
+                vector: this._getAttackVector(),
+                pos: dojo.clone(this.pos),
+                scale: this.scale,
+                spriteSrc: "items",
+                index: game.items.length,
+                owner: this
+            }
+            args.width = (args.vector.x != 0) ? 16 : 7;
+            args.height = (args.vector.y != 0) ? 16 : 7;
+            args.size = {w: args.width, h: args.height};
+
+            this._proj = new loc.SwordProj(args);
+            game.items.push(this._proj);
+        }
+    },
+    _getAttackVector: function player_attackVector() {
+        var v = this.vector;
+        if (v.x == 0 && v.y == 0) {
+            switch (this._facing) {
+                case game.constants.direction.left:
+                    v = {x: -1, y: 0};
+                    break;
+                case game.constants.direction.up:
+                    v = {x: 0, y: -1};
+                    break;
+                case game.constants.direction.right:
+                    v = {x: 1, y: 0};
+                    break;
+                case game.constants.direction.down:
+                    v = {x: 0, y: 1};
+                    break;
+            }
+        }
+        return v;
+    },
+    useItem: function player_useItem() {
+        if (!this._proj) {
+            this.changeState(2);
+
+            var args = {
+                vector: this._getAttackVector(),
+                pos: dojo.clone(this.pos),
+                size: {w:8, h:8},
+                scale: this.scale,
+                color: 0,
+                spriteSrc: "items",
+                index: game.items.length,
+                owner: this
+            }
+            this._proj = new loc.BoomProj(args);
+            game.items.push(this._proj);
+        }
+    },
+    catchItem: function player_catchItem(){
+        this.changeState(5);
+    },
+    killProjectile: function player_killProj() {
+        if (this._proj) {
+            if ('index' in this._proj) { delete game.items[this._proj.index]; }
+            this._proj = null;
+        }
+    }
+});

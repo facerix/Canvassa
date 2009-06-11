@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>The Legend of Canvassa, Part 5: Rewrite and Move Forward</title>
+    <link rel="icon" type="image/vnd.microsoft.icon" href="http://www.buyog.com/code/loc/favicon.ico"/>
+    <script type="text/javascript" src="../dojo.js" djConfig="isDebug:false"></script>
+<!--[if IE]>
+    <script type="text/javascript" src="../excanvas/excanvas-compressed.js"></script>
+    <script type='text/javascript' src='../firebug-lite-compressed.js'></script>
+<![endif]-->
+    <!--script type='text/javascript'
+        src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script-->
+    <link rel='stylesheet' href='../loc.css'/>
+    <style type="text/css">
+      div.controls {
+         top: 20px;
+         left: 300px;
+      }
+      div.debugControls {
+         top: 100px;
+         left: 300px;
+      }
+      #throbber {
+          position: absolute;
+          left: 40px;
+          top: 120px;
+          text-align: center;
+      }
+      img#pad {
+         border-style: none;
+      }
+    </style>
+    <script type="text/javascript">
+        // before ANYTHING else, see if we can get a canvas context
+        dojo.addOnLoad(function init_loader(){
+            window.map_canvas = dojo.byId('map');
+            window.sprite_canvas = dojo.byId('sprites');
+            if (map_canvas.getContext){
+                dojo.registerModulePath("loc","Canvassa");
+                dojo.require("loc.Preloader");
+                dojo.addOnLoad(preload);
+            } else {
+                dojo.style("throbber", "width", "220px")
+                dojo.byId("throbber").innerHTML = "No canvas found, or canvas 2d context cannot be retrieved.";
+            }
+        }); // end of init_loader()
+
+        function preload() {
+            window.loader = new loc.Preloader({
+              images: {
+                HUD: "../res/hud.png",
+                link: "../res/link.png",
+                items: "../res/items.png",
+                monsters: "../res/monsters.png"
+              },
+              modules: ["loc._quest1", "loc.Game"]
+            })
+
+            if (loader.ready()) {
+                init_game();
+                delete window.loader;
+            } else {
+                // show "please wait" throbber
+                dojo.style("throbber","display","none");
+
+                var listener = dojo.subscribe("loc.Preloader.onReady", function() {
+                    dojo.unsubscribe(listener);
+                    init_game();
+                    delete window.loader;
+                });
+            }
+        } // end of preload()
+
+        function init_game() {
+            var scale = 1;
+            window.game = new loc.Game({map_context: map_canvas.getContext('2d'),
+                sprite_context: sprite_canvas.getContext('2d'), scale: scale,
+                screenBounds: {top: -8, left: -8, bottom: 184, right: 264} });
+
+            // hide the "please wait" throbber
+            dojo.style("throbber","display","none")
+
+            // start the game loop
+            game.start();
+
+            // hook up the keyboard event handlers for player input
+            dojo.connect(window, "onkeydown", handle_keydown);
+            dojo.connect(window, "onkeyup", handle_keyup);
+        } // end of init_game()
+
+        /* handle user input/controls */
+        var isIE = navigator.appName.toLowerCase().indexOf("explorer") > -1;
+        handle_keydown = function(e){
+            var ev = isIE?event:e;
+            game.keyDown(ev.keyCode);
+        }
+        handle_keyup = function(e){
+            var ev = isIE?event:e;
+            game.keyUp(ev.keyCode);
+        }
+    </script>
+  </head>
+  <body class="origSize">
+    <canvas id="map" width="256" height="240"></canvas>
+    <canvas id="sprites" width="256" height="240"></canvas>
+    <div id="throbber" style="display: none;"><img src="../res/wait.gif" /><br/>Loading resources...</div>
+    <div class="controls">
+        <img id="pad" src="../res/nespad.png" alt="" usemap="#padmap" />
+        <map name="padmap">
+            <!-- up -->
+            <area shape="rect" coords="34,43,59,65" onmousedown="game.keyDown(38);" onmouseup="game.keyUp(38);"/>
+
+            <!-- left -->
+            <area shape="rect" coords="20,60,41,83" onmousedown="game.keyDown(37);" onmouseup="game.keyUp(37);" onmouseout="game.keyUp(37);" />
+
+            <!-- right -->
+            <area shape="rect" coords="55,60,76,83" onmousedown="game.keyDown(39);" onmouseup="game.keyUp(39);" onmouseout="game.keyUp(39);" />
+
+            <!-- down -->
+            <area shape="rect" coords="34,81,59,103" onmousedown="game.keyDown(40);" onmouseup="game.keyUp(40);" onmouseout="game.keyUp(40);" />
+
+            <!-- select -->
+            <area shape="rect" coords="100,81,124,92" onmousedown="game.keyDown(219);" onmouseup="game.keyUp(219);" />
+
+            <!-- start -->
+            <area shape="rect" coords="137,81,161,92" onmousedown="game.keyDown(221);" onmouseup="game.keyUp(221);" />
+
+            <!-- B button -->
+            <area shape="circle" coords="199,85,14" onmousedown="game.keyDown(90);" onmouseup="game.keyUp(90);" onmouseout="game.keyUp(90);" />
+
+            <!-- A button -->
+            <area shape="circle" coords="237,85,14" onmousedown="game.keyDown(88);" onmouseup="game.keyUp(88);" onmouseout="game.keyUp(88);" />
+        </map>
+
+        <br/>
+        <!--a href="index.html">1x size</a> | <a href="index2x.html">2x size</a> | <a href="index3x.html">3x size</a-->
+    </div>
+    <!--div class="debugControls">
+        <div class="controlGroup">
+            <button onclick="game.reset();">RESET</button>
+            <button onclick="game._cheats.allItems();">ALL ITEMS</button>
+        </div>
+        <div class="controlGroup">
+            <div id="debugTray">Debug message</div><br/>
+            <div id="bossBanner">BOSS MODE</div>
+        </div>
+    </div-->
+  </body>
+</html>
