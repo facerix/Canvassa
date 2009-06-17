@@ -82,7 +82,7 @@ dojo.declare("loc.Player", loc.Sprite, {
                   [ {x:144,y:0,t:6} ],
                   [ {x:160,y:0,t:6} ],
                   [ {x:176,y:0,t:6} ]
-                ]},
+                ]}
             ];
 
         this._shield = 0;      // default shield=0; large shield=1; mirror shield=2
@@ -192,6 +192,42 @@ dojo.declare("loc.Player", loc.Sprite, {
         game.font.drawText(ctx, this._bombs+"", 104,47+yoffset, this.scale);
         
         // draw my currently-equipped item
+        if (this.inventory[this._item]) {
+            // draw it in the B[] box in the HUD
+            this.inventory[this._item].drawIcon(ctx, 128*game.scale, 32*game.scale+yoffset);
+
+            // if on the inventory screen, draw it in the "use B for this" box
+            if (mode==1) {
+                this.inventory[this._item].drawIcon(ctx, 68*game.scale, 56*game.scale);
+            }
+        }
+        
+        // draw my current sword (image x/y cut: this._sword*8,8)
+        if (this._sword>=0) {
+            ctx.drawImage(window.imageCache.getImage('items'), this._sword*8,8,8,16, 152*game.scale, 32*game.scale+yoffset, itemWidth, itemHeight);
+        }
+        
+        // draw hearts for my current HP/MaxHP (first row of hearts starts at x:176,y:48)
+        xpos = 176 * game.scale; dx=0;
+        ypos =  48 * game.scale; dy=0;
+        for (var x=2; x <= this._maxHP; x+=2) {
+            if (x > 16) { dx = -64*game.scale; dy = -8*game.scale; }
+            
+            // draw the next heart
+            var diff = x - Math.ceil(this._HP);
+            var offset = 0;
+            if (diff > 1) {
+                // draw an empty heart
+                offset = 16;
+            } else if (diff == 1) {
+                // draw a half-full heart
+                offset = 8;
+            }
+            ctx.drawImage(window.imageCache.getImage('items'), offset,0,8,8, xpos+dx, ypos+dy+yoffset, itemWidth, halfHeight);
+            
+            // shift drawing position to next heart
+            xpos += itemWidth;
+        }
     },
     die: function die() {
         dojo.publish("player.onDie", []);
@@ -217,7 +253,7 @@ dojo.declare("loc.Player", loc.Sprite, {
                 pos: dojo.clone(this.pos),
                 scale: this.scale,
                 spriteSrc: "items",
-                index: game.items.length,
+                index: game.projectiles.length,
                 owner: this
             }
             args.width = (args.vector.x != 0) ? 16 : 7;
@@ -225,7 +261,7 @@ dojo.declare("loc.Player", loc.Sprite, {
             args.size = {w: args.width, h: args.height};
 
             this._proj = new loc.SwordProj(args);
-            game.items.push(this._proj);
+            game.projectiles.push(this._proj);
         }
     },
     _getAttackVector: function player_attackVector() {
@@ -259,19 +295,48 @@ dojo.declare("loc.Player", loc.Sprite, {
                 scale: this.scale,
                 color: 0,
                 spriteSrc: "items",
-                index: game.items.length,
+                index: game.projectiles.length,
                 owner: this
             }
             this._proj = new loc.BoomProj(args);
-            game.items.push(this._proj);
+            game.projectiles.push(this._proj);
         }
     },
     catchItem: function player_catchItem(){
         this.changeState(5);
     },
+    getItem: function player_getItem(item){
+        if (this._state == 0) {
+            switch (item.declaredClass) {
+                case "loc.Heart":
+                    //soundManager.play('heart');
+                    this._HP = Math.min(this._HP+2, this._maxHP);
+                    break;
+                case "loc.Rupee":
+                    //soundManager.play('rupee');
+                    this._rupees = Math.min(this._rupees+item.amount,255);
+                    break;
+
+                case "loc.Bomb":
+                    //soundManager.play('special');
+                    if (!this.inventory[1]) {
+                        this.inventory[1] = item;
+                    }
+                    this._bombs = Math.min(this._bombs+4,this._maxBombs);
+                    break;
+
+                default:
+                    console.log("getting item: %o", item);
+                    //soundManager.pauseAll();
+                    //soundManager.play('item');
+                    this._newItem = item;
+                    this.changeState(3);    // or 4 if it's a large item
+            }
+        }
+    },
     killProjectile: function player_killProj() {
         if (this._proj) {
-            if ('index' in this._proj) { delete game.items[this._proj.index]; }
+            if ('index' in this._proj) { delete game.projectiles[this._proj.index]; }
             this._proj = null;
         }
     }

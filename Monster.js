@@ -76,11 +76,12 @@ dojo.declare("loc.Shooter", null, {
             size: {w:8, h:8},
             scale: 1,
             color: 0,
-            spriteSrc: "../res/items.png"
+            spriteSrc: "items"
         };
         return args;
     },
     getProjectile: function() {
+        console.log(this.declaredClass,'[',this.index,"].getProjectile()");
         if (!this.proj) {
             this.proj = new loc.Projectile(this._getProjectileArgs());
         }

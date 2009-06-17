@@ -20,8 +20,57 @@ dojo.declare("loc.Item", loc.Sprite, {
         }
         dojo.mixin(this, args);
         this._stateDefs = [ { name: 'default', faceted:false, nextState: 0, canMove: false, anim: [ [{x:0,y:0,t:5}] ] }];
+    },
+    toString: function item_str(){
+        return this.declaredClass + " [Color: " + this.color + "; Position: " + this.pos.x + "," + this.pos.y + "]";
+    },
+});
+
+dojo.declare("loc.InventoryItem", null, {
+    constructor: function invitem_constructor(args){
+        dojo.mixin(this, args);
+    },
+    drawIcon: function(ctx, xpos, ypos){
+        var w = this.width*game.scale;
+        var h = this.height*game.scale;
+        var cut = this._frames[0];
+        var img = window.imageCache.getImage(this.spriteSrc);
+        if (img) {
+            this._stateDefs = [ { name: 'default', faceted:false, nextState: 0, canMove: false, anim: [ [{x:0,y:0,t:5}] ] }];
+            ctx.drawImage(img, cut.x,cut.y,this.width,this.height, xpos,ypos, w,h);
+        }
     }
 });
+
+dojo.declare("loc.Sword", [loc.Item, loc.InventoryItem], {
+    color: 0,
+    constructor: function sword_constructor(args){
+        dojo.mixin(this, args);
+        this.width = 8; this.height = 16; this.size = {w:8, h: 16};
+        /* (size is determined for me by my thrower, because it depends on the direction
+            he's facing; it's provided as part of the args mixin) */
+
+        this.vel = {x: this.vector.x * 5, y: this.vector.y * 5};
+
+        this._stateDefs = [ { name: 'default', faceted:true, nextState: 0, canMove: true, anim: [
+            [{x:80,y:0,t:1},{x:96,y:0,t:1},{x:112,y:0,t:1}],
+            [{x:0,y:8,t:1},{x:8,y:8,t:1},{x:48,y:8,t:1}],
+            [{x:32,y:0,t:1},{x:48,y:0,t:1},{x:64,y:0,t:1}],
+            [{x:24,y:8,t:1},{x:32,y:8,t:1},{x:40,y:8,t:1}],
+        ] }];
+    },
+    drawIcon: function(ctx, xpos, ypos){
+        var w = this.width*game.scale;
+        var h = this.height*game.scale;
+        var cut = {x: this.color*8, y:8};
+        var img = window.imageCache.getImage(this.spriteSrc);
+        if (img) {
+            ctx.drawImage(img, cut.x,cut.y, this.width,this.height, xpos,ypos, w,h);
+        }
+    }
+});
+
+
 
 dojo.declare("loc.SelectIcon", loc.Item, {
     constructor: function sprite_constructor(args){
@@ -31,12 +80,34 @@ dojo.declare("loc.SelectIcon", loc.Item, {
 
 dojo.declare("loc.Heart", loc.Item, {
     constructor: function(args){
-        this.width = 7; this.height = 8;
-        this.size = {w:7,h:8};
+        this.width = 7; this.height = 8; this.size = {w:7,h:8};
         this._stateDefs = [ { name: 'default', faceted:false, nextState: 0, canMove: false,
-            anim: [ [{x:0,y:0,t:4},{x:24,y:0,t:4}] ] }];
+            anim: [ [{x:0,y:0,t:10},{x:24,y:0,t:10}] ] }];
+    },
+    _animateCurrent: function heart_animateCurrent() {
+        return true;
     }
 });
+
+dojo.declare("loc.Rupee", loc.Item, {
+    amount: 1,
+    constructor: function(args){
+        this.width = 8; this.height = 16; this.size = {w: 8, h: 16};
+        var anim = [];
+        if (this.amount == 1) {
+            anim = [{x:112,y:24,t:6},{x:120,y:24,t:6},{x:128,y:24,t:2}];
+        } else if (this.amount == 5) {
+            anim = [{x:120,y:24,t:6},{x:128,y:24,t:2}];
+        } else {
+            anim = [{x:112,y:24,t:100}];
+        }
+        this._stateDefs[0].anim[0] = anim;
+    },
+    _animateCurrent: function heart_animateCurrent() {
+        return true;
+    }
+});
+
 
 dojo.declare("loc.Projectile", loc.Item, {
     owner: null,
@@ -80,10 +151,9 @@ dojo.declare("loc.Projectile", loc.Item, {
     },
     terminate: function(){
         if (this.owner) {
-            if (this.owner)
             this.owner.killProjectile();
         } else if ('index' in this) {
-            delete game.items[this.index];
+            delete game.projectiles[this.index];
         }
     }
 });

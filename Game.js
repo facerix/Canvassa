@@ -9,7 +9,7 @@ dojo.provide("loc.Game");
 dojo.require("loc.Player");
 dojo.require("loc.Monster");
 dojo.require("loc.Font");
-//dojo.require("loc.Map");
+dojo.require("loc.Map");
 
 dojo.declare("loc.Game", null, {
     constructor: function game_constructor(args){
@@ -34,6 +34,7 @@ dojo.declare("loc.Game", null, {
         });
         this.monsters = [];
         this.items = [];
+        this.projectiles = [];
         this.font = new loc.Font();
         this.spriteListener = dojo.subscribe("sprite.onTerminate", function(spriteClass, index) {
             //console.log("caught sprite.onTerminate(",spriteClass, index, ")");
@@ -51,24 +52,26 @@ dojo.declare("loc.Game", null, {
                 var newProj = game.monsters[index].getProjectile();
                 if (newProj) {
                     //console.log("got projectile:", newProj);
-                    newProj.index = game.items.length;
-                    game.items.push(newProj);
+                    newProj.index = game.projectiles.length;
+                    game.projectiles.push(newProj);
                 }
             }
         });
         this._playerListener = dojo.subscribe("player.onDie", function() { game.changeState( game.constants.states.dying ); });
 
         // build the misc GUI sprites
-        //window.imageCache.addImage( "HUD", "../res/hud.png" );
         this._selectIcon = new loc.SelectIcon({scale:this.scale, size:{w:8,h:8}, pos:{x:64, y:80}});
 
         // load map data
-        //this.map = new loc.Map(loc.gameData, this.map_ctx);
+        this.map = new loc.Map({data: loc.gameData, ctx: this.map_ctx, 
+            tileImg: window.imageCache.getImage("tiles"), scale: this.scale});
+
+        // draw initial screen
+        this.refresh();
     },
     main: function game_main() {
         // draw everything
         try {
-            this.drawBG();
             this.drawSprites();
         } catch(e) {
             console.log("error drawing sprites:",e);
@@ -76,20 +79,125 @@ dojo.declare("loc.Game", null, {
         }
 
         // update player, monster, and projectile positions if on the overworld/dungeon screens
-        //if (this.currentState == 0 || this.currentState == 2) {
+        if (this.currentState == this.constants.states.overworld || this.currentState == this.constants.states.dungeon) {
             // handle enemy AI
             for (var i in this.monsters) {
                 this.monsters[i].think();
             }
 
             // move all active projectiles
-            for (var j in this.items) {
-                if ("updatePosition" in this.items[j]) { this.items[j].updatePosition(); }
+            for (var j in this.projectiles) {
+                if ("updatePosition" in this.projectiles[j]) { this.projectiles[j].updatePosition(); }
             }
 
             // do sprite collision tests
-            //this.doHitTests();
-        //}
+            this.doHitTests();
+
+            // check if the player is walking onto an adjacent screen
+            this.checkBoundaries();
+        }
+    },
+    checkBoundaries: function game_checkBoundaries() {
+        // moving north / south?
+        if (this.player.vector.y < 0 && (Math.abs(this.player.pos.y - this.constants.screenBound.top) <= 12) && (this.map.north())) {
+            this.refresh();
+            this.player.pos.y = this.constants.screenBound.bottom;
+        } else if (this.player.vector.y > 0 && (Math.abs(this.player.pos.y - this.constants.screenBound.bottom) <= 12) && (this.map.south())) {
+            this.refresh();
+            this.player.pos.y = this.constants.screenBound.top;
+        }
+
+        // moving east / west?
+        if (this.player.vector.x < 0 && (Math.abs(this.player.pos.x - this.constants.screenBound.left) <= 12) && (this.map.west())) {
+            this.refresh();
+            this.player.pos.x = this.constants.screenBound.right - this.player._halfw;
+        } else if (this.player.vector.x > 0 && (Math.abs(this.player.pos.x - this.constants.screenBound.right) <= 12) && (this.map.east())) {
+            this.refresh();
+            this.player.pos.x = this.constants.screenBound.left + this.player._halfw;
+        }
+
+        
+    },
+
+    doHitTests: function game_doHitTests() {
+        // we only care about collision detection if in overworld or dungeon modes
+        if (this.currentState == 0 || this.currentState == 2) {
+            // do sprite collision tests for Link
+            var hits = this.hitTest(this.player.pos.x-8, this.player.pos.y-8, 16,16);
+
+            // check to see if any monsters are touching the player; if so, he's hurt to the tune of their relative strength
+            var i = 0; // loop counter
+            for (i in hits[0]) {
+                var attacker = hits[0][i];
+                if (attacker.canAttack()) {
+                    player.getHit(attacker.strength);
+                    break;
+                } else if (attacker.declaredClass == "Armos" && attacker._animState == 8) {
+                    attacker.wake();
+                }
+            }
+
+            // see if there is anything to pick up
+            for each (var item in hits[1]) {
+                this.player.getItem(item);
+                delete game.items[item._index];
+            }
+
+            // if there are any projectiles in play, see if they hit anything, too
+            for each (var proj in this.projectiles) {
+                // player-owned projectiles can only damage enemies, and vice-versa, so check projectile type against hit target type
+                if (proj.owner == this.player) {
+                    hits = this.hitTest(proj.pos.x, proj.pos.y, proj.width, proj.height);
+
+                    for (var e in hits[0]) {
+                        proj.hit(hits[0][e]);
+                    }
+
+                    if (proj.declaredClass == 'loc.BoomProj' || proj.declaredClass == 'loc.ArrowProj') {
+                        // boomerangs and arrows can also retrieve small items (hearts, rupees)
+                        for each (var item in hits[1]) {
+                            if (item.size == 0) {
+                                player.getItem(item);
+                                delete game.items[item._index];
+                            }
+                        }
+                    } 
+                }
+            }
+
+            // note: player class handles attack collision detection internally by making a call to game.hitTest(x,y,w,h)
+        }
+    },
+
+    hitTest: function game_hitTest(x,y,w,h) {
+        // check all active monsters to see if they are within the specified area; return a list of any that are
+        //this.ctx.fillStyle = "rgba(255,64,0,.40)";
+        //this.ctx.fillRect(x*game.scale,(y+64)*game.scale,w*game.scale,h*game.scale);
+        //console.log("game.hitTest(%d,%d,%d,%d)", x, y, w, h);
+
+        var enemies = []; items = [];
+        for (var e in this.enemies) {
+            var enemy = this.enemies[e];
+            var dx = Math.abs(x-enemy.pos.x);
+            var dy = Math.abs(y-enemy.pos.y);
+            //console.log("test: [%o] -> [%d,%d] ? (dx: %d, dy: %d)",enemy.pos,x,y, dx,dy);
+            if (dx <= w && dy <= h) {
+                enemies.push(enemy);
+            }
+        }
+
+        for (var i in this.items) {
+            var item = this.items[i];
+            item._index = i;
+            var dx = Math.abs(x-item.pos.x);
+            var dy = Math.abs(y-item.pos.y);
+            //console.log("test: [%o] -> [%d,%d] ? (dx: %d, dy: %d)",item.pos,x,y, dx,dy);
+            if (dx <= w && dy <= h) {
+                items.push(item);
+            }
+        }
+
+        return [enemies,items];
     },
     drawBG: function game_drawBG() {
         switch (this.currentState) {
@@ -112,14 +220,38 @@ dojo.declare("loc.Game", null, {
 
                 break;
 
+            case this.constants.states.inventory:
+            case this.constants.states.map:
+                // draw HUD in full-screen
+                var img = window.imageCache.getImage("HUD");
+                this.map_ctx.drawImage(img, 0,0,256,240, 0,0,256*this.scale,240*this.scale);
+                break;
+
+            case this.constants.states.overworld:
+            case this.constants.states.dungeon:
             default:
-                if (this.map) {
-                    this.map.draw(this.map_ctx);
-                } else {
-                    this.map_ctx.fillStyle = "#FCD8A8";
-                    this.map_ctx.fillRect(0,64,256*this.scale,176*this.scale);
-                }
+                // draw HUD (status bar)
+                var img = window.imageCache.getImage("HUD");
+                this.map_ctx.drawImage(img, 0,175,256,64, 0,0,256*this.scale,64*this.scale);
                 
+                this.map_ctx.save();
+                this.map_ctx.translate(0,64*this.scale);
+
+                try {
+                    if (this.map) {
+                        this.map.draw(this.map_ctx);
+                    } else {
+                        this.map_ctx.fillStyle = "#FCD8A8";
+                        this.map_ctx.fillRect(0,64,256*this.scale,176*this.scale);
+                    }
+                } catch(e) {
+                    console.log("error drawing sprites:",e);
+                    this.stop();
+                    
+                } finally {
+                    this.map_ctx.restore();
+                }
+
         } // end switch
     },
     drawSprites: function game_drawSprites() {
@@ -140,12 +272,16 @@ dojo.declare("loc.Game", null, {
 
                 break;
 
+            case this.constants.states.inventory:
+            case this.constants.states.map:
+                // draw HUD elements: location dot, equipped item, sword, and hearts
+                this.player.drawInventory(this.ctx, 1);
+                break;
+
+            case this.constants.states.overworld:
+            case this.constants.states.dungeon:
             default:
-                // draw HUD (status bar)
-                var img = window.imageCache.getImage("HUD");
-                this.ctx.drawImage(img, 0,175,256,64, 0,0,256*this.scale,64*this.scale);
-                
-                // draw location dot, equipped item, sword, and hearts
+                // draw HUD elements: location dot, equipped item, sword, and hearts
                 this.player.drawInventory(this.ctx, 0);
 
                 this.ctx.save();
@@ -160,6 +296,9 @@ dojo.declare("loc.Game", null, {
                     // draw items and projectiles
                     for (var j in this.items) {
                         this.items[j].draw(this.ctx);
+                    }
+                    for (var k in this.projectiles) {
+                        this.projectiles[k].draw(this.ctx);
                     }
 
                     // draw player
@@ -180,12 +319,139 @@ dojo.declare("loc.Game", null, {
     changeState: function game_changeState(newState) {
         if (newState in this.constants.states.enum) {
             this.currentState = newState;
+            this.drawBG();
         } else {
             console.log("Game.changeState() -- invalid state:", newState);
         }
     },
     setScreenBounds: function setScreenBounds(new_sb) {
         this.constants.screenBound = new_sb;
+    },
+    populateScreen: function game_populate() {
+        // force garbage collection on last screen's items
+        for (var i in this.items) {
+            delete this.items[i];
+        }
+
+        // get any items defined by this screen's definition
+        var itemDefs = this.map.currentScreen().items;
+        for (var i in itemDefs) {
+            var item = null;
+            var args = {pos: itemDefs[i].position, color: itemDefs[i].color};
+            switch (itemDefs[i].type.toLowerCase()) {
+                case 'sword':
+                    item = new loc.Sword(args);
+                    break;
+                case 'shield':
+                    item = new loc.Shield(args);
+                    break;
+                case 'ring':
+                    item = new loc.Ring(args);
+                    break;
+                case 'boomerang':
+                    item = new loc.Boomerang(args);
+                    break;
+                case 'bomb':
+                    item = new loc.Bomb(args);
+                    break;
+                case 'bow':
+                    item = new loc.Bow(args);
+                    break;
+                case 'arrow':
+                    item = new loc.Arrow(args);
+                    break;
+                case 'candle':
+                    item = new loc.Candle(args);
+                    break;
+                case 'whistle':
+                    item = new loc.Whistle(args);
+                    break;
+                case 'bait':
+                    item = new loc.Bait(args);
+                    break;
+                case 'letter':
+                    item = new loc.Letter(args);
+                    break;
+                case 'medicine':
+                    item = new loc.Medicine(args);
+                    break;
+                case 'wand':
+                    item = new loc.Wand(args);
+                    break;
+                case 'bigheart':
+                    item = new loc.BigHeart(args);
+                    break;
+                case 'heart':
+                    item = new loc.Heart(args);
+                    break;
+                case 'rupee':
+                    args.amount = itemDefs[i].amount;
+                    item = new loc.Rupee(args);
+                    break;
+                default:
+                    break;
+            }
+            if (item) {
+                item._index = i;
+                this.items[i] = item;
+            }
+        }
+
+        // force garbage collection on last screen's projectiles
+        for (var i in this.projectiles) {
+            delete this.projectiles[i];
+        }
+
+        // force garbage collection on last screen's enemies
+        for (var e in this.monsters) {
+            delete this.monsters[e];
+        }
+        
+        // spawn new monsters for this screen
+        var enemyDefs = dojo.clone(this.map.currentScreen().enemies);
+        for (var e in enemyDefs) {
+            var creature = null;
+            var args = { pos:enemyDefs[e]['position'], scale: game.scale, size: {w:16,h:16}, color: enemyDefs[e]['color'], index: this.monsters.length };
+
+            switch (enemyDefs[e]['type']) {
+                case 'armos':
+                    creature = new loc.Armos(args);
+                    break;
+                case 'ghini':
+                    creature = new loc.Ghini(args);
+                    break;
+                case 'leever':
+                    creature = new loc.Leever(args);
+                    break;
+                case 'lynel':
+                    creature = new loc.Lynel(args);
+                    break;
+                case 'moblin':
+                    creature = new loc.Moblin(args);
+                    break;
+                case 'octoroc':
+                    creature = new loc.Octoroc(args);
+                    break;
+                case 'peahat':
+                    creature = new loc.Peahat(args);
+                    break;
+                case 'rock':
+                    creature = new loc.Boulder(args);
+                    break;
+                case 'tectite':
+                    creature = new loc.Tectite(args);
+                    break;
+                case 'zola':
+                    creature = new loc.Zola(enemyDefs[e]['position']);
+                    break;
+                default:
+                    break;
+            }
+            if (creature) {
+                creature._index = e;
+                this.monsters[e] = creature;
+            }
+        }
     },
     start: function game_start(interval_override) {
         if (interval_override) { this.interval = interval_override; }
@@ -289,21 +555,44 @@ dojo.declare("loc.Game", null, {
     over: function game_over() {
         this.changeState( this.constants.states.gameover );
     },
+    refresh: function game_refresh() {
+        this.drawBG();
+        this.populateScreen();
+    },
     reset: function game_reset() {
-        console.log("todo: reset the game back to its initial state");
+        this.map.reset();
+        this.player.reset();
+        this.refresh();
     },
     _handleStartButton: function game_handleStart() {
         if (this._timerid) {
             switch (this.currentState) {
                 case this.constants.states.gameover:
+                    // restart the game (TODO: at some point we'll have to detect CONTINUE/SAVE/RETRY state)
                     this.reset();
                     break;
+
+                case this.constants.states.overworld:
+                    this.changeState(this.constants.states.inventory);
+                    break;
+
+                case this.constants.states.inventory:
+                    this.changeState(this.constants.states.overworld);
+                    break;
+
+                case this.constants.states.dungeon:
+                    this.changeState(this.constants.states.map);
+                    break;
+
+                case this.constants.states.map:
+                    this.changeState(this.constants.states.dungeon);
+                    break;
+
                 case this.constants.states.dying:
-                    // pass
-                    break;
                 default:
-                    console.log("todo: switch from overworld/dungeon to map/inventory");
+                    // do nothing
                     break;
+
             } // end switch
         } // end if
     },

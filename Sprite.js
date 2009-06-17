@@ -122,19 +122,23 @@ dojo.declare("loc.Sprite", null, {
         if (vector.x > 0) {
             // check for rightward movement
             can_move &= (dx+this._halfw < game.constants.screenBound.right);
+            can_move &= (game.map.canWalk(dx+this._halfw, dy));
             if (!can_move) { this.moveability += 'x' }
         } else if (vector.x < 0) {
             // check for leftward movement
             can_move &= (dx-this._halfw > game.constants.screenBound.left);
+            can_move &= (game.map.canWalk(dx-this._halfw, dy));
             if (!can_move) { this.moveability += 'x' }
         }
         if (vector.y > 0) {
             // check for downward movement
             can_move &= (dy+this._halfh < game.constants.screenBound.bottom);
+            can_move &= (game.map.canWalk(dx,dy+this._halfh));
             if (!can_move) { this.moveability += 'y' }
         } else if (vector.y < 0) {
             // check for upward movement
             can_move &= (dy-this._halfh > game.constants.screenBound.top);
+            can_move &= (game.map.canWalk(dx,dy));
             if (!can_move) { this.moveability += 'y' }
         }
         return can_move;

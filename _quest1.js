@@ -1646,7 +1646,7 @@ loc.gameData = {
         ]},
         {// starting location: screen 7,7
         items: [
-            {type:"sword",color:0,position:{x:68,y:24}}
+            {type:"sword",color:0,position:{x:72,y:28}}
         ],
         tiles: [
             [12,12,12,12,12,00,22,12,12,12,12],
