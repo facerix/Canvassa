@@ -6,6 +6,7 @@
 /***************************/
 
 dojo.require("loc.Sprite");
+dojo.require("loc.Item");
 dojo.provide("loc.Player");
 
 dojo.declare("loc.Player", loc.Sprite, {
@@ -13,23 +14,25 @@ dojo.declare("loc.Player", loc.Sprite, {
     _keys: 0,
     _bombs: 0,
     _maxBombs: 8,
-    _HP: 6,     /* what's my starting HP? (each heart is actually 2 HP, each half-heart is one... this way we avoid floats) */
-    _maxHP: 6,  /* how many pieces of heart do I have? (3 hearts * 2 halves each: 6) */
     _shield: 0, /* default shield=0, large shield=1, mirror shield=2 */
     _tunic: 0,  /* 0: green, 1: blue, 2: red */
     _item: 0,   /* currently-held item (i.e. position within the this.inventory array) */
     _sword: -1, /* start without a sword */
     _arrow: -1, /* start without any arrows */
     _newItem: {}, /* keeps track of any item I'm holding up */
+    _hurtTimer: 0,
+    HP: 6,     /* what's my starting HP? (each heart is actually 2 HP, each half-heart is one... this way we avoid floats) */
+    maxHP: 6,  /* how many pieces of heart do I have? (3 hearts * 2 halves each: 6) */
+    startingPosition: {x: 128, y:88},
     inventory: {  /* smaller inventory items */
-        0: null,  /* boomerang       */
-        1: null,  /* bombs           */
-        2: null,  /* bow             */
-        3: null,  /* candle          */
-        4: null,  /* whistle         */
-        5: null,  /* bait            */
-        6: null,  /* letter/medicine */
-        7: null,  /* wand            */
+        0: null, /*new loc.Boomerang({pos:{x:0,y:0},color:1}),*/
+        1: null, /*new loc.Bomb({pos:{x:0,y:0}}),*/
+        2: null, /*new loc.Bow({pos:{x:0,y:0},arrowColor:0}),*/
+        3: null, /*new loc.Candle({pos:{x:0,y:0},color:0}),*/
+        4: null, /*new loc.Whistle({pos:{x:0,y:0}}),*/
+        5: null, /*new loc.Bait({pos:{x:0,y:0}}),*/
+        6: null, /*new loc.Letter({pos:{x:0,y:0}}),*/
+        7: null, /*new loc.Wand({pos:{x:0,y:0}})*/
     },
     tools: {  /* larger inventory items, cannot be equipped and used directly */
         0: null,  /* raft            */
@@ -45,8 +48,9 @@ dojo.declare("loc.Player", loc.Sprite, {
         this._speed = 3;
         if (!(window.imageCache.hasImage("link"))) { window.imageCache.addImage("link", "../res/link.png"); };
         this.spriteSrc = "link"
+        this.pos = dojo.clone(this.startingPosition);
 
-        //dojo.mixin(this,args);
+        dojo.mixin(this,args);
         this._stateDefs = [
                 { name: 'stand/walk', faceted:true, nextState: 0, canMove: true, anim: [
                   [ {x:0,y:0,t:5},{x:0,y:16,t:5} ],   /* facing==0 (left)  */
@@ -89,14 +93,12 @@ dojo.declare("loc.Player", loc.Sprite, {
         this._tunic = 0;       // 0 = green; 1 = blue; 2 = red
     },
     _animTick: function _animTick() {
+        // decrement the "hurt" counter, if active
+        if (this._hurtTimer) { this._hurtTimer--; }
+
         // apply anim frame offsets if applicable
         var dx = dy = 0;
         switch (this._state) {
-            case 6:
-                // hurt: ignore tunic coloring, but allow shield offset
-                if (this._shield>0) { dx = 64; }
-                break;
-
             case 0:
                 // default stand/walk: offset X position for shield, then flow into default for tunic coloring
                 if (this._shield>0) { dx = 64; }
@@ -169,7 +171,7 @@ dojo.declare("loc.Player", loc.Sprite, {
         // -- HUD portion of inventory (available in both modes) --
 
         // draw my position on the overworld map (map starts at x:16,y:24, and is w:64,h:32; dot is 3x3 on a 4x4 matrix of mapscreens)
-        var currMapScreen = {x:1,y:1}; //game.map.currentScreen();
+        var currMapScreen = (game.map && 'currentScreen' in game.map) ? game.map.currentScreen() : {x:1,y:1};
         var xpos = (currMapScreen.x * 4 + 16) * this.scale;
         var ypos = (currMapScreen.y * 4 + 24) * this.scale;
         var dotSize = 3 * this.scale;
@@ -210,11 +212,11 @@ dojo.declare("loc.Player", loc.Sprite, {
         // draw hearts for my current HP/MaxHP (first row of hearts starts at x:176,y:48)
         xpos = 176 * game.scale; dx=0;
         ypos =  48 * game.scale; dy=0;
-        for (var x=2; x <= this._maxHP; x+=2) {
+        for (var x=2; x <= this.maxHP; x+=2) {
             if (x > 16) { dx = -64*game.scale; dy = -8*game.scale; }
             
             // draw the next heart
-            var diff = x - Math.ceil(this._HP);
+            var diff = x - Math.ceil(this.HP);
             var offset = 0;
             if (diff > 1) {
                 // draw an empty heart
@@ -235,11 +237,12 @@ dojo.declare("loc.Player", loc.Sprite, {
     },
     reset: function reset(){
         this.inherited(arguments);
-        this._HP = 6;this._maxHP = 6;
+        this.HP = 6; this.maxHP = 6;
         this._shield = 0; this._tunic = 0; this._sword = -1;
         this._item = 0; this._newItem = {}; this._arrow = -1;
         this._rupees = 0; this._keys = 0;
         this._bombs = 0; this._maxBombs = 8;
+        this.pos = dojo.clone(this.startingPosition);
         //this.inventory = this._getInventory();
         //this.tools = this._getTools();
         //this.triforces = this._getTriforceShards();
@@ -285,32 +288,76 @@ dojo.declare("loc.Player", loc.Sprite, {
         return v;
     },
     useItem: function player_useItem() {
-        if (!this._proj) {
-            this.changeState(2);
+        var itm = this.inventory[this._item];
+        if (itm) {  // only if we actually HAVE a current item
+            if ('use' in itm) {
+                //this.changeState(2);
+                itm.use();
+            } else if ('getProjectile' in itm) {
+                if (this._proj == null) {
+                    // check any 'cost' associated with this projectile type
+                    var canUse = true;
+                    switch (itm.declaredClass) {
+                        case 'loc.Bow':
+                            if (this._rupees) {
+                                canUse = true;
+                                this._rupees--;
+                            } else {
+                                canUse = false;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
 
-            var args = {
-                vector: this._getAttackVector(),
-                pos: dojo.clone(this.pos),
-                size: {w:8, h:8},
-                scale: this.scale,
-                color: 0,
-                spriteSrc: "items",
-                index: game.projectiles.length,
-                owner: this
+                    if (canUse) {
+                        this.changeState(2);
+                        var vec = this._getAttackVector();
+                        var args = {
+                            vector: vec,
+                            pos: dojo.clone(this.pos),
+                            scale: this.scale,
+                            color: itm.color,
+                            spriteSrc: "items",
+                            index: game.projectiles.length,
+                            owner: this
+                        }
+                        var newProj = itm.getProjectile(args);
+                        if (newProj) {
+                            this._proj = newProj;
+                            game.projectiles.push(newProj);
+                        }
+                    }
+                }
+            } else {
+                console.log("I don't know how to use this item:",itm);
             }
-            this._proj = new loc.BoomProj(args);
-            game.projectiles.push(this._proj);
         }
     },
     catchItem: function player_catchItem(){
         this.changeState(5);
+    },
+    changeItem: function(offset){
+        var newIndex = this._item+8;
+        //soundManager.play('rupee');
+
+        do {
+            newIndex += offset; // try the next position
+            if (this.inventory[(newIndex % 8)]) {
+                // special case: the Arrow item isn't selectable without the Bow
+                if (this.inventory[(newIndex % 8)].declaredClass != 'Arrow') {
+                    this._item = (newIndex % 8);
+                    return;
+                }
+            }
+        } while ((newIndex % 8) != this._item)
     },
     getItem: function player_getItem(item){
         if (this._state == 0) {
             switch (item.declaredClass) {
                 case "loc.Heart":
                     //soundManager.play('heart');
-                    this._HP = Math.min(this._HP+2, this._maxHP);
+                    this.HP = Math.min(this.HP+2, this.maxHP);
                     break;
                 case "loc.Rupee":
                     //soundManager.play('rupee');
@@ -331,6 +378,15 @@ dojo.declare("loc.Player", loc.Sprite, {
                     //soundManager.play('item');
                     this._newItem = item;
                     this.changeState(3);    // or 4 if it's a large item
+            }
+        }
+    },
+    getHit: function player_getHit(damage) {
+        if (!this._hurtTimer) {
+            this.HP -= damage;
+            this._hurtTimer = 50;
+            if (this.HP <= 0) {
+                this.die();
             }
         }
     },

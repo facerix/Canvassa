@@ -46,7 +46,7 @@ dojo.declare("loc.Shooter", null, {
         this._proj = null; // my current projectile, if any
     },
     canAttack: function() {
-        return (this.isMobile() && (this._state != this.attackState) && (this._proj == null));
+        return this.inherited(arguments) && (this._proj == null);
     },
     changeState: function() {
         this.inherited(arguments);
@@ -94,7 +94,7 @@ dojo.declare("loc.Shooter", null, {
         }
     },
     isActive: function isActive() {
-        return (this._state != this.attackState);
+        return this.inherited(arguments) && (this._state != this.attackState);
     },
     think: function() {
         this.inherited(arguments);
@@ -105,16 +105,17 @@ dojo.declare("loc.Shooter", null, {
 });
 
 dojo.declare("loc.Monster", loc.Sprite, {
+    _speed: 1,
+    _state: 2,  /* start in "spawning" state */
+    _hurtTimer: 0,
+    _stunTimer: 0,
+    color: 0,
+    spriteSrc: "monsters",
+    strength: 1,
+    HP: 1,
     constructor: function sprite_constructor(args){
         window.imageCache.addImage("monsters", "../res/monsters.png");
-        this.spriteSrc = "monsters";
-        this._speed = 1;
-
-        if ('color' in args) {
-            this._color = args['color'];
-        } else {
-            this._color = 0;
-        }
+        dojo.mixin(this, args);
         var spawnTime = 10 + Math.random() * 30;
         this._stateDefs = [{}, /* default will be different for each derived class */
             { name: 'die', faceted:false, nextState: -1, canMove: false, anim: [
@@ -124,8 +125,13 @@ dojo.declare("loc.Monster", loc.Sprite, {
               [ {x:64,y:0,t:spawnTime},{x:80,y:0,t:3} ]
             ]}
         ];
-
-        this._state = 2;        // start in "spawning" state
+    },
+    _animTick: function monster_animTick() {
+        if (this._stunTimer > 0) { this._stunTimer--; }
+        return this.inherited(arguments);
+    },
+    _animateCurrent: function _animateCurrent() {
+        return this.inherited(arguments) && (this._stunTimer % 3 == 0);
     },
     think: function(){
         // determine if I'm going to move, attack, or stand still; this is the AI
@@ -151,20 +157,87 @@ dojo.declare("loc.Monster", loc.Sprite, {
             }
         }
     },
-    die: function() {
+    changeState: function monster_changeState(state) {
+        this._stunTimer = 0;
+        this.inherited(arguments);
+    },
+    die: function monster_die() {
         //soundManager.play('kill');
         this.changeState(1); // dying
     },
-    draw: function(ctx){
-        this.inherited(arguments);
+    getHit: function monster_getHit(damage) {
+        if (!this._hurtTimer) {
+            this.HP -= damage;
+            //this._hurtTimer = 10;
+            if (this.HP <= 0) {
+                this.die();
+            }
+        }
     },
-    reset: function reset(){
+    canAttack: function() {
+        return this.isMobile() && this.isActive();
+    },
+    isMobile: function monster_isMobile(){
+        return this.inherited(arguments) && (this._stunTimer == 0);
+    },
+    isActive: function monster_isActive(){
+        return this.inherited(arguments) && (this._stunTimer == 0);
+    },
+    reset: function monster_reset(){
         this.inherited(arguments);
         this._defaultState = 2;
         this._state = 2;
         this._lastAction = -1;  // no previous action
+    },
+    stun: function monster_stun(duration){
+        this.stop();
+        this._stunTimer = duration;
     }
 });
+
+
+loc.Monster.getNamedSubtype = function(typename, args) {
+    var monster = null;
+
+    switch (typename.toLowerCase()) {
+        case 'armos':
+            monster = new loc.Armos(args);
+            break;
+        case 'ghini':
+            monster = new loc.Ghini(args);
+            break;
+        case 'leever':
+            monster = new loc.Leever(args);
+            break;
+        case 'lynel':
+            monster = new loc.Lynel(args);
+            break;
+        case 'moblin':
+            monster = new loc.Moblin(args);
+            break;
+        case 'octoroc':
+            monster = new loc.Octoroc(args);
+            break;
+        case 'peahat':
+            monster = new loc.Peahat(args);
+            break;
+        case 'rock':
+            monster = new loc.Boulder(args);
+            break;
+        case 'tectite':
+            monster = new loc.Tectite(args);
+            break;
+        case 'zola':
+            monster = new loc.Zola(args);
+            break;
+        default:
+            break;
+    }
+
+    return monster;
+}
+
+
 
 // -------- overworld enemies --------
 
@@ -198,12 +271,12 @@ dojo.declare("loc.Armos", loc.Monster, {
         var base = this.inherited(arguments);
         // recolor all sprites except the die and spawn ones
         if (this._state == 3 || this._state == 4) {
-            base.y += this._color * 16;
+            base.y += this.color * 16;
         }
         return base;
     },
     isActive: function isActive() {
-        return (this._state != 3 && this._state != 4);
+        return this.inherited(arguments) && (this._state != 3 && this._state != 4);
     },
     wake: function wake() {
         this.changeState(4);
@@ -265,7 +338,7 @@ dojo.declare("loc.Leever", loc.Monster, {
         var base = this.inherited(arguments);
         // recolor all sprites except the die and spawn ones
         if (this._state == 0 || this._state > 2) {
-            base.y += this._color * 16;
+            base.y += this.color * 16;
         }
         return base;
     },
@@ -284,7 +357,7 @@ dojo.declare("loc.Leever", loc.Monster, {
                 this._surfaceTimer = 0;
                 this.changeState(3);
             }
-        } else if (this._state == 4 && this._color == 1) {
+        } else if (this._state == 4 && this.color == 1) {
             // red leevers can move while tunneling; blue ones don't
             this.vector = {x:0, y:0};
         }
@@ -313,7 +386,7 @@ dojo.declare("loc.Lynel", [loc.Monster, loc.Shooter], {
         var base = this.inherited(arguments);
         // recolor all sprites except the die and spawn ones
         if (this._state == 0 || this._state > 2) {
-            base.y += this._color * 32;
+            base.y += this.color * 32;
         }
         return base;
     },
@@ -347,7 +420,7 @@ dojo.declare("loc.Moblin", [loc.Monster, loc.Shooter], {
         var base = this.inherited(arguments);
         // recolor all sprites except the die and spawn ones
         if (this._state == 0 || this._state > 2) {
-            base.y += this._color * 32;
+            base.y += this.color * 32;
         }
         return base;
     },
@@ -381,7 +454,7 @@ dojo.declare("loc.Octoroc", [loc.Monster, loc.Shooter], {
         var base = this.inherited(arguments);
         // recolor all sprites except the die and spawn ones
         if (this._state == 0 || this._state > 2) {
-            base.y += this._color * 32;
+            base.y += this.color * 32;
         }
         return base;
     },
@@ -431,7 +504,7 @@ dojo.declare("loc.Peahat", loc.Monster, {
         ]};
     },
     isActive: function isActive() {
-        return (this._state != 4);
+        return this.inherited(arguments) && (this._state != 4);
     },
     changeState: function changeState(index) {
         this.inherited(arguments);
@@ -511,7 +584,7 @@ dojo.declare("loc.Tectite", loc.Monster, {
         var base = this.inherited(arguments);
         // recolor all sprites except the die and spawn ones
         if (this._state == 0 || this._state > 2) {
-            base.x += this._color * 32;
+            base.x += this.color * 32;
         }
         return base;
     },
@@ -623,7 +696,7 @@ dojo.declare("loc.Darknut", loc.Monster, {
         var base = this.inherited(arguments);
         // recolor all sprites except the die and spawn ones
         if (this._state == 0 || this._state > 2) {
-            base.y += this._color * 32;
+            base.y += this.color * 32;
         }
         return base;
     }
@@ -693,7 +766,7 @@ dojo.declare("loc.Goriya", [loc.Monster, loc.Shooter], {
         var base = this.inherited(arguments);
         // recolor all sprites except the die and spawn ones
         if (this._state == 0 || this._state > 2) {
-            base.y += this._color * 32;
+            base.y += this.color * 32;
         }
         return base;
     },
@@ -720,7 +793,7 @@ dojo.declare("loc.Keese", loc.Monster, {
         var base = this.inherited(arguments);
         // recolor all sprites except the die and spawn ones
         if (this._state == 0 || this._state > 2) {
-            base.x += this._color * 32;
+            base.x += this.color * 32;
         }
         return base;
     },
@@ -816,7 +889,7 @@ dojo.declare("loc.Wizzrobe", [loc.Monster, loc.Shooter], {
         var base = this.inherited(arguments);
         // recolor all sprites except the die and spawn ones
         if (this._state == 0 || this._state > 2) {
-            base.y += this._color * 32;
+            base.y += this.color * 32;
         }
         return base;
     },

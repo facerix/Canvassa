@@ -83,26 +83,30 @@ dojo.declare("loc.Sprite", null, {
     },
     _animTick: function _animTick() {
         var currentAnim = this._currentAnim();
+        var currentElem = null;
+        var returnVal = {x:0,y:0,t:1};
+        var nextState = (this._state in this._stateDefs && 'nextState' in this._stateDefs[this._state]) ? this._stateDefs[this._state].nextState : -1;
         if (!currentAnim) {
+            console.warn("Couldn't get current animation details for this sprite:",this);
+            this.changeState( nextState );
             return {x:999, y:999};
         } else {
-            var returnVal = {x: currentAnim[this._animElem].x, y: currentAnim[this._animElem].y};
+            if (this._animElem in currentAnim) {
+                currentElem = currentAnim[this._animElem];
+                returnVal = {x: currentElem.x, y: currentElem.y};
+            } else {
+                console.warn("Couldn't get current animation element for this sprite:",this);
+                this.changeState( nextState );
+            }
         }
 
         // if moving or non-default anim, increment anim timer and determine next frame
-        if (this._animateCurrent()) {
+        if (currentAnim && currentElem && this._animateCurrent()) {
             this._animTime++;
-            if (this._animTime >= currentAnim[this._animElem].t) {
+            if (this._animTime >= currentElem.t) {
                 this._animElem++;
                 if (this._animElem >= currentAnim.length) {
-                    var nextState = this._stateDefs[this._state].nextState;
-                    if (nextState == -1) {
-                        // dead; alert parent to act accordingly
-                        dojo.publish("sprite.onTerminate", [this.declaredClass, this.index]);
-                        //console.log("onTerminate:",this._state);
-                    } else {
-                        this.changeState( nextState );
-                    }
+                    this.changeState( nextState );
                 } else {
                     this._animTime = 0;
                 }
@@ -122,23 +126,23 @@ dojo.declare("loc.Sprite", null, {
         if (vector.x > 0) {
             // check for rightward movement
             can_move &= (dx+this._halfw < game.constants.screenBound.right);
-            can_move &= (game.map.canWalk(dx+this._halfw, dy));
+            can_move &= (game.map) ? (game.map.canWalk(dx+this._halfw, dy)) : true;
             if (!can_move) { this.moveability += 'x' }
         } else if (vector.x < 0) {
             // check for leftward movement
             can_move &= (dx-this._halfw > game.constants.screenBound.left);
-            can_move &= (game.map.canWalk(dx-this._halfw, dy));
+            can_move &= (game.map) ? (game.map.canWalk(dx-this._halfw, dy)) : true;
             if (!can_move) { this.moveability += 'x' }
         }
         if (vector.y > 0) {
             // check for downward movement
             can_move &= (dy+this._halfh < game.constants.screenBound.bottom);
-            can_move &= (game.map.canWalk(dx,dy+this._halfh));
+            can_move &= (game.map) ? (game.map.canWalk(dx,dy+this._halfh)) : true;
             if (!can_move) { this.moveability += 'y' }
         } else if (vector.y < 0) {
             // check for upward movement
             can_move &= (dy-this._halfh > game.constants.screenBound.top);
-            can_move &= (game.map.canWalk(dx,dy));
+            can_move &= (game.map) ? (game.map.canWalk(dx,dy)) : true;
             if (!can_move) { this.moveability += 'y' }
         }
         return can_move;

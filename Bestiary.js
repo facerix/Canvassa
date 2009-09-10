@@ -10,28 +10,30 @@ dojo.require("loc.Player");
 dojo.require("loc.Monster");
 
 dojo.declare("loc.Bestiary", null, {
+    currDirKey: 0,
+    allowTurbo: false,
+    aButton: false,
+    bButton: false,
+    interval: 30,
+    scale: 1,
+    map: null,
+    currentMode: 0,
+    monsters: [],
+    items: [],
+    projectiles: [],
     constructor: function game_constructor(args){
         this.ctx = args['context'];
         this.ctx.fillStyle = "#FCD8A8";
         this.scale = args['scale'];
-        this.currDirKey = 0;
-        this.allowTurbo = false;
-        this.aButton = false;
-        this.bButton = false;
-        this.interval = 30;
 
         this.constants = {
             direction: { left: 0, up: 1, right: 2, down: 3 },
             screenBound: args['screenBounds']
         }
-        this.map = null;
         this.modes = {0: 'overworld', 1: 'inventory', 2: 'dungeon', 3: 'map', 4: 'dying', 5: 'continue', 99: 'cheat'};
-        this.currentMode = 0;
         this.player = new loc.Player({
             pos:{x:64,y:64}, scale:this.scale, size:{w:16,h:16}, _facing:2
         });
-        this.monsters = [];
-        this.items = [];
         this.spriteListener = dojo.subscribe("sprite.onTerminate", function(spriteClass, index) {
             //console.log("caught sprite.onTerminate(",spriteClass, index, ")");
             if (spriteClass == "loc.Player") {
@@ -48,8 +50,8 @@ dojo.declare("loc.Bestiary", null, {
                 var newProj = game.monsters[index].getProjectile();
                 if (newProj) {
                     //console.log("got projectile:", newProj);
-                    newProj.index = game.items.length;
-                    game.items.push(newProj);
+                    newProj.index = game.projectiles.length;
+                    game.projectiles.push(newProj);
                 }
             }
         });
@@ -60,7 +62,7 @@ dojo.declare("loc.Bestiary", null, {
             this.drawMap();
             this.drawSprites();
         } catch(e) {
-            console.log("error drawing sprites:",e);
+            console.error("error drawing sprites:",e,"[in game_main()]");
             this.stop();
         }
 
@@ -70,8 +72,8 @@ dojo.declare("loc.Bestiary", null, {
         }
 
         // move all active projectiles
-        for (var j in this.items) {
-            if ("updatePosition" in this.items[j]) { this.items[j].updatePosition(); }
+        for (var j in this.projectiles) {
+            if ("updatePosition" in this.projectiles[j]) { this.projectiles[j].updatePosition(); }
         }
 
         // do sprite collision tests
@@ -96,13 +98,16 @@ dojo.declare("loc.Bestiary", null, {
             for (var j in this.items) {
                 this.items[j].draw(this.ctx);
             }
+            for (var k in this.projectiles) {
+                this.projectiles[k].draw(this.ctx);
+            }
 
             // draw player
             if (this.player) {
                 this.player.draw(this.ctx);
             }
         } catch(e) {
-            console.log("error drawing sprites:",e);
+            console.error("error drawing sprites:",e,"[in game_drawSprites()]");
             this.stop();
         }
     },
