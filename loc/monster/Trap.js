@@ -1,0 +1,1 @@
+dojo.provide("loc.monster.Trap");

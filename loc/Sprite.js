@@ -4,13 +4,12 @@
 //@email: ryancorradini@yahoo.com
 //@license: Free to use & modify, but please keep this credits message
 /***************************/
+dojo.provide("loc.Sprite");
 
 dojo.require("loc.ImageCache");
 dojo.addOnLoad(function() {
     if (!window.imageCache) { window.imageCache = new loc.ImageCache(); }
 });
-
-dojo.provide("loc.Sprite");
 
 dojo.declare("loc.Sprite", null, {
     pos: {x:0, y:0},
@@ -198,7 +197,6 @@ dojo.declare("loc.Sprite", null, {
     }
 });
 
-dojo.provide("loc.Pacman");
 dojo.declare("loc.Pacman", loc.Sprite, {
     constructor: function sprite_constructor(args){
         window.imageCache.addImage("pacman", "../res/pac.png");

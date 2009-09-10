@@ -4,18 +4,22 @@
   <head>
     <title>LoC Mapper Tool 2.0</title>
     <link rel="icon" type="image/vnd.microsoft.icon" href="http://www.buyog.com/code/loc/favicon.ico"/>
-    <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.3/dojo/dojo.js" djConfig="isDebug:false"></script>
-<!--[if IE]>
-    <script type="text/javascript" src="http://pipes.yahoo.com/js/excanvas.js"></script>
-    <script type='text/javascript' src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
-<![endif]-->
-    <link rel='stylesheet' href='../loc.css'/>
+    <link rel='stylesheet' href='loc.css'/>
+
+    <script>
+        var basePath = window.location.href.match(/(.*)\//)[0] + "loc";
+        var djConfig = { isDebug:false, modulePaths:{ "loc": basePath } };
+    </script>
+    <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.3/dojo/dojo.js"></script>
+    <!--[if IE]>
+        <script type="text/javascript" src="http://pipes.yahoo.com/js/excanvas.js"></script>
+    <![endif]-->
+
     <script type="text/javascript">
         // before ANYTHING else, see if we can get a canvas context
         dojo.addOnLoad(function init_loader(){
             var big_canvas = dojo.byId('mapCanvas');
             if (big_canvas.getContext){
-                dojo.registerModulePath("loc","http://www.buyog.com/code/loc/Canvassa");
                 dojo.require("loc.Preloader");
                 dojo.addOnLoad(preload);
             } else {
@@ -145,7 +149,7 @@
   <body>
     <div class="map">
         <canvas id="mapCanvas" width="1024" height="352"></canvas>
-        <div id="throbber"><img src="../res/wait.gif" /><br/>Loading resources...</div>
+        <div id="throbber"><img src="loc/res/wait.gif" /><br/>Loading resources...</div>
     </div>
     <div class="workspace">
         <canvas id="screenCanvas" width="512" height="352"></canvas>

@@ -4,12 +4,18 @@
   <head>
     <title>The Legend of Canvassa [v0.5]</title>
     <link rel="icon" type="image/vnd.microsoft.icon" href="http://www.buyog.com/code/loc/favicon.ico"/>
-    <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.3/dojo/dojo.js" djConfig="isDebug:false"></script>
-<!--[if IE]>
-    <script type="text/javascript" src="http://pipes.yahoo.com/js/excanvas.js"></script>
-    <script type='text/javascript' src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
-<![endif]-->
-    <link rel='stylesheet' href='../loc.css'/>
+    <link rel='stylesheet' href='loc.css'/>
+
+    <script>
+        var basePath = window.location.href.match(/(.*)\//)[0] + "loc";
+        var djConfig = { isDebug:false, modulePaths:{ "loc": basePath } };
+    </script>
+    <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.3/dojo/dojo.js"></script>
+
+    <!--[if IE]>
+        <script type="text/javascript" src="http://pipes.yahoo.com/js/excanvas.js"></script>
+    <![endif]-->
+
     <style type="text/css">
       div.controls {
          top: 20px;
@@ -47,7 +53,6 @@
             window.map_canvas = dojo.byId('map');
             window.sprite_canvas = dojo.byId('sprites');
             if (map_canvas.getContext){
-                dojo.registerModulePath("loc","http://www.buyog.com/code/loc/Canvassa");
                 dojo.require("loc.Preloader");
                 dojo.addOnLoad(preload);
             } else {
@@ -59,11 +64,11 @@
         function preload() {
             window.loader = new loc.Preloader({
               images: {
-                HUD: "../res/hud.png",
-                tiles: "../res/overworld_tiles.png",
-                link: "../res/link.png",
-                items: "../res/items.png",
-                monsters: "../res/monsters.png"
+                HUD: "loc/res/hud.png",
+                tiles: "loc/res/overworld_tiles.png",
+                link: "loc/res/link.png",
+                items: "loc/res/items.png",
+                monsters: "loc/res/monsters.png"
               },
               modules: ["loc._quest1", "loc.Game"]
             })
@@ -115,7 +120,7 @@
   <body class="origSize">
     <canvas id="map" width="256" height="240"></canvas>
     <canvas id="sprites" width="256" height="240"></canvas>
-    <div id="throbber" style="display: none;"><img src="../res/wait.gif" /><br/>Loading resources...</div>
+    <div id="throbber" style="display: none;"><img src="loc/res/wait.gif" /><br/>Loading resources...</div>
     <div class="controls">
         <img id="pad" src="../res/nespad.png" alt="" usemap="#padmap" />
         <map name="padmap">

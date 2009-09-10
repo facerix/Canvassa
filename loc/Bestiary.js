@@ -6,6 +6,7 @@
 /***************************/
 
 dojo.provide("loc.Bestiary");
+
 dojo.require("loc.Player");
 dojo.require("loc.Monster");
 

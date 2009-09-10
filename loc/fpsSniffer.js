@@ -12,7 +12,7 @@ dojo.declare("loc.fpsSniffer", null, {
     constructor: function fpsSniffer_constructor(args){
         if (!window.spriteCache) { window.spriteCache = new loc.SpriteCache(); }
         if (!window.spriteCache.hasImage('progressBar')) {
-            window.spriteCache.addImage( 'progressBar', 'res/bar.png' );
+            window.spriteCache.addImage( 'progressBar', 'loc/res/bar.png' );
         }
         this._frames = 0;
         this._startTime = 0;

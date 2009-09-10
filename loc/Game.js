@@ -40,7 +40,7 @@ dojo.declare("loc.Game", null, {
                 clearTimeout(game._konami.clear)
             }
             clearTimeout(game._konami.clear)
-            game._konami.clear = setTimeout("game._konami.clear_input()",2000)
+            game._konami.clear = setTimeout(game._konami.clear_input,2000)
         },
         code: function() {
             var msg = dojo.byId("user_msg");
