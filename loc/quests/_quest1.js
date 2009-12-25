@@ -9,9 +9,7 @@
 // MapScreens are 256x176 pixels, or 16x11 cells of 16x16 size each
 //  (MapScreens can thus be reduced to a 16x11 matrix of cells indexing into a map tile image)
 
-dojo.provide("loc._quest1");
-
-loc.gameData = {
+{
     startScreen: {x:7,y:7},
     startPosition: {x:128,y:88},
     screenDefs: [
@@ -3300,4 +3298,4 @@ loc.gameData = {
             [57,57,57,57,57,57,57,57,57,57,57]
         ]}
     ]
-]};
+]}

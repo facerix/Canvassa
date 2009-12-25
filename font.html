@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>The Legend of Canvassa, Part 4: Combat</title>
+    <link rel="icon" type="image/vnd.microsoft.icon" href="http://www.buyog.com/code/loc/favicon.ico"/>
+    <link rel='stylesheet' href='loc.css'/>
+
+    <script>
+        var basePath = window.location.href.match(/(.*)\//)[0] + "loc";
+        var djConfig = { isDebug:false, modulePaths:{ "loc": basePath } };
+    </script>
+    <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.3/dojo/dojo.js"></script>
+
+    <!--[if IE]>
+        <script type="text/javascript" src="http://pipes.yahoo.com/js/excanvas.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+      div.controls {
+        top: 280px;
+        left: 10px;
+      }
+    </style>
+    <script type="text/javascript">
+        // before ANYTHING else, see if we can get a canvas context
+        dojo.addOnLoad(function init_loader(){
+            window.map_canvas = dojo.byId('map');
+            if ('getContext' in map_canvas && map_canvas.getContext){
+                dojo.require("loc.Preloader");
+                dojo.addOnLoad(preload);
+            } else {
+                dojo.style("throbber", "width", "220px")
+                dojo.byId("throbber").innerHTML = "No canvas found, or canvas 2d context cannot be retrieved.";
+            }
+        }); // end of init_loader()
+
+        function preload() {
+            window.loader = new loc.Preloader({
+              images: {
+                font: "loc/res/font.png"
+              },
+              modules: ["loc.Font"]
+            })
+
+            if (loader.ready()) {
+                init_test();
+                delete window.loader;
+            } else {
+                var listener = dojo.subscribe("loc.Preloader.onReady", function() {
+                    dojo.unsubscribe(listener);
+                    init_test();
+                    delete window.loader;
+                });
+            }
+        } // end of preload()
+
+
+        function init_test() {
+            var canvas = document.getElementById('map');
+            if (canvas.getContext){
+                mapCanvas = canvas.getContext('2d');
+                mapCanvas.fillStyle = "rgb(0,0,0)";
+                mapCanvas.fillRect(0,0, 256, 240);
+
+                window.font = new loc.Font();
+                this.initialized = true;
+                dojo.byId("btnDraw").disabled = false;
+            } else {
+                alert("Can't get a 2d drawing context for this canvas.");
+            }
+        }
+        function draw() {
+            if (window.font) {
+                mapCanvas.fillRect(0,0, 256, 240);
+                var text = dojo.byId('txtInput').value;
+                window.font.drawText(mapCanvas, text, 8,8);
+            }
+        }
+    </script>
+  </head>
+  <body>
+    <canvas id="map" width="256" height="240"></canvas>
+    <div class="controls">
+        <div class="controlGroup">
+            <textarea id="txtInput" rows="4" cols="40">Continue,
+
+Save,
+
+or Retry?</textarea>
+            <button id="btnDraw" disabled="true" onclick="draw();">Draw text</button>
+        </div>
+    </div>
+
+    <!-- now attach the event handlers -->
+    <script type="text/javascript">
+        window._scale = 1;
+    </script>
+
+  </body>
+</html>

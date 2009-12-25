@@ -14,13 +14,14 @@ dojo.declare("loc.Font", null, {
     teletype: false,
     constructor: function font_constructor(args){
         dojo.mixin(this, args);
-        this.fontImg = new Image();
-        this.fontImg.src = '../res/font.png';
+        /*this.fontImg = new Image();
+        this.fontImg.src = 'res/font.png';
         this.fontImg.onload = function(){
             this.initialized = true;
-        }
-        //if (!(window.imageCache.hasImage("font"))) { window.imageCache.addImage("font", "../res/font.png"); };
-        //this.imgSrc = "font"
+        }*/
+        if (!(window.imageCache.hasImage("font"))) { window.imageCache.addImage("font", "loc/res/font.png"); };
+        this.imgSrc = "font";
+        this.initialized = true;
     },
 
     drawText: function font_drawText(ctx, text, x, y, scale, wrap) {
@@ -38,9 +39,8 @@ dojo.declare("loc.Font", null, {
                 default:
                     cut = this._getCharOffset(text[i].toLowerCase());
                     if (cut.x >= 0 && cut.y >= 0) {
-                        //var img = window.imageCache.getImage(this.imgSrc);
-                        //ctx.drawImage(img, cut.x,cut.y,8,8, (x+dx)*scale,(y+dy)*scale, 8*scale, 8*scale);
-                        ctx.drawImage(this.fontImg, cut.x,cut.y,8,8, (x+dx)*scale,(y+dy)*scale, 8*scale, 8*scale);
+                        var img = window.imageCache.getImage(this.imgSrc);
+                        ctx.drawImage(img, cut.x,cut.y,8,8, (x+dx)*scale,(y+dy)*scale, 8*scale, 8*scale);
                     }
                     dx += 8;
                     break;

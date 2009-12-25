@@ -10,9 +10,55 @@ An open-source, Javascript+Dojo clone of the original "Legend of Zelda" game for
 Uses HTML5 Canvas (and ExplorerCanvas in Internet Explorer)
 
 This is a preliminary sandboxed checkin, primarily repackaged for sharing on Github.
-It is not at all complete, but as of this checkin, the basic preloading and sprite engines are in place.
+It is not at all complete, but as of the first checkin, the basic preloading and sprite engines are in place.
 There are currently two entry points:
 index.html -- the main game will be invoked from here; right now it's just the player on an empty screen.
 bestiary.html -- test harness that allows you to spawn the various enemy types into a canvas to observe their AIs.
 
-Note also that sprite collision isn't yet enabled.
+Note also that sprite collision isn't yet enabled in the initial checkin. However, it has been added in subsequent checkins; see Git checkin logs for details.
+
+
+Latest update: 0.5.x tasks still to do, as of 12/25/2009:
+
+Monsters:
+X leevers not killable underground
+X zolas not killable underwater
+- zolas can't go on land
+- zolas shoot fireballs
+- peahat AI is seriously gwoked
+X peahats only killable when at rest
+X boulders are unhittable
+- armos should wake up on touch
+- correct the # of hits needed to kill everything
+
+Items:
+- add loc.Helper base item for sword and wand
+- Fix projectile management (I'm not keeping track of them correctly, especially the sword)
+  - ideally, instead of player.projectile = {}, we should have this:
+  - player.swordProj = {}; player.itemProjs = []; loc.InventoryItem.maxProj = 1; player.getProjsOfType()
+      loc.InventoryItem.getProj() = { if(len(player.getProjsOfType(this.declaredClass)) < this.maxProj) { // get proj } else { return Null; }
+- Limit the blue candle to a single use per screen
+- Split Items.js file into multiple subfiles, parallel to what Peter Higgins did to Monsters.js
+
+Map:
+- bug: need to permanently remove predefined items from the map when picked up (e.g. the wooden sword on the start screen -- grab it, leave the screen, then come back: it's there again!)
+- add Z-index to allow for multiple maps in a single world
+- Provide an opt-out for sound/music
+
+Game:
+- improvement: Make Link & the monsters get knocked back when hit
+- improvement: block octoroc rocks if facing them and in state 0
+- improvement: Disable AllItems button after first use
+
+Misc. improvements:
+- add BigHearts and Silver/Master Swords to overworld map
+- Provide an opt-out for sound/music
+
+
+Recent updates:
+- Add text to the page describing the game controls
+- (re)implement sounds
+- Make killed monsters leave behind hearts and rupees (fairies and clocks come later)
+- Add the sword projectile "flash" effect when it hits something
+- bug: Reset button is broken
+- bug: erase "PAUSED" from notification area when unpausing

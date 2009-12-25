@@ -10,7 +10,9 @@ dojo.require("loc.Sprite");
 
 
 dojo.declare("loc.Item", loc.Sprite, {
+    baseClass: "loc.Item",
     color: 0,
+    weight: 1,
     constructor: function sprite_constructor(args){
         if (!("spriteSrc" in args)) {
             args['spriteSrc'] = "items";
@@ -197,11 +199,12 @@ dojo.declare("loc.Bomb", [loc.Item, loc.InventoryItem], {
         }
     },
     getProjectile: function(args) {
+        soundManager.play('bombDrop');
         var newPos = args.pos;
         if (args.vector.x < 0) { newPos.x -= 16; } else if (args.vector.x > 0) { newPos.x += 16; }
         if (args.vector.y < 0) { newPos.y -= 16; } else if (args.vector.y > 0) { newPos.y += 16; }
         dojo.mixin(args, {pos:newPos,vector:{x:0,y:0}});
-        return new loc.BombProj(args);
+        return new loc.BombDrop(args);
     }
 });
 
@@ -223,7 +226,7 @@ dojo.declare("loc.Bow", [loc.Item, loc.InventoryItem], {
             var img = window.imageCache.getImage(this.spriteSrc);
             if (drawMode == 1) {
                 // only draw the bow if we actually HAVE it. If we have arrows but no bow yet, draw it that way
-            
+
                 cut = this._frames[0];
                 ctx.drawImage(img, cut.x,cut.y,this.size.w,this.size.h, xpos+4*game.scale,ypos, w,h);
             } else {
@@ -242,6 +245,7 @@ dojo.declare("loc.Bow", [loc.Item, loc.InventoryItem], {
     },
     getProjectile: function(args) {
         if (this.arrowColor > -1) {
+            soundManager.play('arrow');
             dojo.mixin(args, {
                 width: (args.vector.x != 0) ? 16 : 7,
                 height: (args.vector.y != 0) ? 16 : 7,
@@ -285,6 +289,9 @@ dojo.declare("loc.Candle", [loc.Item, loc.InventoryItem], {
         }
     },
     getProjectile: function(args) {
+        // TODO: if we're color=0 (blue), check to see if we've been used already on this screen
+
+        soundManager.play('candle');
         return new loc.FlameProj(args);
     }
 });
@@ -311,7 +318,7 @@ dojo.declare("loc.Whistle", [loc.Item, loc.InventoryItem], {
         }
     },
     use: function(){
-        //soundManager.play('whistle');
+        soundManager.play('whistle');
         console.log("TBD: spawn warping whirlwind");
     }
 });
@@ -337,8 +344,12 @@ dojo.declare("loc.Bait", [loc.Item,loc.InventoryItem], {
             game.stop();
         }
     },
-    getProjectileNot: function(args) {
-        return new loc.FlameProj(args);
+    getProjectile: function(args) {
+        var newPos = args.pos;
+        if (args.vector.x < 0) { newPos.x -= 16; } else if (args.vector.x > 0) { newPos.x += 16; }
+        if (args.vector.y < 0) { newPos.y -= 16; } else if (args.vector.y > 0) { newPos.y += 16; }
+        dojo.mixin(args, {pos:newPos,vector:{x:0,y:0}});
+        return new loc.BaitDrop(args);
     }
 });
 
@@ -440,9 +451,10 @@ dojo.declare("loc.Wand", [loc.Item, loc.InventoryItem], {
         }
     },
     getProjectile: function(args) {
-        args.width = 16;
-        args.height = 16;
-        args.size = {w: args.width, h: args.height};
+        dojo.mixin(args, {
+            'width': 16, 'height': 16, 'size': {w: 16, h: 16}
+        });
+        soundManager.play('wand');
         return new loc.MagicProj(args);
     }
 });
@@ -457,7 +469,9 @@ dojo.declare("loc.SelectIcon", loc.Item, {
 
 dojo.declare("loc.Heart", loc.Item, {
     constructor: function(args){
-        this.width = 7; this.height = 8; this.size = {w:7,h:8};
+        dojo.mixin(this, {
+            'width': 7, 'height': 8, 'size': {w:7,h:8}, 'weight': 0
+        });
         this._stateDefs = [ { name: 'default', faceted:false, nextState: 0, canMove: false,
             anim: [ [{x:0,y:0,t:10},{x:24,y:0,t:10}] ] }];
     },
@@ -469,7 +483,10 @@ dojo.declare("loc.Heart", loc.Item, {
 dojo.declare("loc.Rupee", loc.Item, {
     amount: 1,
     constructor: function(args){
-        this.width = 8; this.height = 16; this.size = {w: 8, h: 16};
+        dojo.mixin(this, {
+            'width': 8, 'height': 16, 'size': {w: 8, h: 16}, 'weight': 0
+        });
+
         var anim = [];
         if (this.amount == 1) {
             anim = [{x:112,y:24,t:6},{x:120,y:24,t:6},{x:128,y:24,t:2}];
@@ -480,13 +497,65 @@ dojo.declare("loc.Rupee", loc.Item, {
         }
         this._stateDefs[0].anim[0] = anim;
     },
+    _animateCurrent: function rupee_animateCurrent() {
+        return true;
+    }
+});
+
+dojo.declare("loc.Fairy", loc.Item, {
+    constructor: function(args){
+        dojo.mixin(this, {
+            'width': 8, 'height': 16, 'size': {w: 8, h: 16}, 'weight': 0, '_speed': 1, 'vector':{x:1,y:-1}
+        });
+
+        this._stateDefs = [ { name: 'default', faceted:false, nextState: 0, canMove: true,
+            anim: [ [{x:72,y:8,t:3},{x:80,y:8,t:3}] ] }];
+    },
+    _animateCurrent: function fairy_animateCurrent() {
+        return true;
+    },
+    draw: function fairy_draw(ctx) {
+        // move -- no think() or updatePosition() for items, so do it here
+        this._move();
+
+        this.inherited(arguments);
+    },
+    _move: function fairy_move() {
+        this.pos.x += this.vector.x * this._speed;
+        this.pos.y += this.vector.y * this._speed;
+
+        var willToMove = Math.random();
+        if (willToMove < 0.1) { /* 90% bias against changing direction */
+            switch (Math.floor(Math.random() * 2)) {
+                case 0: // change X vector
+                    this.vector.x = Math.floor(Math.random() * 3) - 1;
+                    break;
+                case 1: // change Y vector
+                    this.vector.y = Math.floor(Math.random() * 3) - 1;
+                    break;
+            }
+        }
+
+        // if completely stopped, force to start moving again
+        if (this.vector.x == this.vector.y == 0) {
+            this.vector.x = 1; this.vector.y = 1;
+        }
+    }
+});
+
+dojo.declare("loc.BigHeart", loc.Item, {
+    constructor: function(args){
+        this.width = 16; this.height = 16; this.size = {w:16,h:16}; this.weight = 2;
+        this._stateDefs = [ { name: 'default', faceted:false, nextState: 0, canMove: false,
+            anim: [ [{x:56,y:8,t:1}] ] }];
+    },
     _animateCurrent: function heart_animateCurrent() {
         return true;
     }
 });
 
-
 dojo.declare("loc.Projectile", loc.Item, {
+    baseClass: "loc.Projectile",
     owner: null,
     vel: {x:0,y:0},
     power: 1,
@@ -503,22 +572,22 @@ dojo.declare("loc.Projectile", loc.Item, {
         this.pos.y += this.vel.y;
 
         // check to see if I've gone off the edge of the screen
-        var offscreen = true;
+        var offscreen = false;
         if (this.vel.x < 0) {
             // moving left
-            offscreen &= (this.pos.x < game.constants.screenBound.left);
+            offscreen |= (this.pos.x < game.constants.screenBound.left);
         }
         if (this.vel.x > 0) {
             // moving right
-            offscreen &= (this.pos.x > game.constants.screenBound.right);
+            offscreen |= (this.pos.x > game.constants.screenBound.right);
         }
         if (this.vel.y < 0) {
             // moving up
-            offscreen &= (this.pos.y < game.constants.screenBound.top);
+            offscreen |= (this.pos.y < game.constants.screenBound.top);
         }
         if (this.vel.y > 0) {
             // moving down
-            offscreen &= (this.pos.y > game.constants.screenBound.bottom);
+            offscreen |= (this.pos.y > game.constants.screenBound.bottom);
         }
 
         if (offscreen) {
@@ -531,7 +600,7 @@ dojo.declare("loc.Projectile", loc.Item, {
     },
     terminate: function(){
         if (this.owner) {
-            this.owner.killProjectile();
+            this.owner.killProjectile(this);
         } else if ('index' in this) {
             delete game.projectiles[this.index];
         }
@@ -577,6 +646,73 @@ dojo.declare("loc.SwordProj", loc.Projectile, {
             [{x:32,y:0,t:1},{x:48,y:0,t:1},{x:64,y:0,t:1}],
             [{x:24,y:8,t:1},{x:32,y:8,t:1},{x:40,y:8,t:1}],
         ] }];
+    },
+    terminate: function swordProj_terminate() {
+        game.insertProjectile(new loc.SwordFlashNW({'pos':this.getPos(),'owner':this.owner}));
+        game.insertProjectile(new loc.SwordFlashSW({'pos':this.getPos(),'owner':this.owner}));
+        game.insertProjectile(new loc.SwordFlashNE({'pos':this.getPos(),'owner':this.owner}));
+        game.insertProjectile(new loc.SwordFlashSE({'pos':this.getPos(),'owner':this.owner}));
+
+        this.inherited(arguments);
+    }
+});
+
+dojo.declare("loc.Explod", loc.Projectile, {
+    timeout: -1,
+    constructor: function(args){
+        dojo.mixin(this, args);
+    },
+    hit: function explor_hit() {
+        // do nothing
+    },
+    updatePosition: function() {
+        if (this.timeout-- == 0) {
+            this.terminate();
+        }
+        this.inherited(arguments);
+    },
+    _animateCurrent: function heart_animateCurrent() {
+        return true;
+    }
+});
+
+dojo.declare("loc.SwordFlashNW", loc.Explod, {
+    constructor: function(args){
+        dojo.mixin(this, args);
+        this.width = 8; this.height = 10;
+        this.vel = {x: -3, y: -3}; this.timeout = 10;
+        this._stateDefs = [ { faceted:false, nextState: 0, canMove: true,
+            anim: [ [{x:152,y:11,t:1},{x:160,y:11,t:1}] ] }];
+    }
+});
+
+dojo.declare("loc.SwordFlashSW", loc.Explod, {
+    constructor: function(args){
+        dojo.mixin(this, args);
+        this.width = 8; this.height = 10;
+        this.vel = {x: -3, y: 3}; this.timeout = 10;
+        this._stateDefs = [ { faceted:false, nextState: 0, canMove: true,
+            anim: [ [{x:152,y:22,t:1},{x:160,y:22,t:1}] ] }];
+    }
+});
+
+dojo.declare("loc.SwordFlashNE", loc.Explod, {
+    constructor: function(args){
+        dojo.mixin(this, args);
+        this.width = 8; this.height = 10;
+        this.vel = {x: 3, y: -3}; this.timeout = 10;
+        this._stateDefs = [ { faceted:false, nextState: 0, canMove: true,
+            anim: [ [{x:152,y:33,t:1},{x:160,y:33,t:1}] ] }];
+    }
+});
+
+dojo.declare("loc.SwordFlashSE", loc.Explod, {
+    constructor: function(args){
+        dojo.mixin(this, args);
+        this.width = 8; this.height = 10;
+        this.vel = {x: 3, y: 3}; this.timeout = 10;
+        this._stateDefs = [ { faceted:false, nextState: 0, canMove: true,
+            anim: [ [{x:152,y:44,t:1},{x:160,y:44,t:1}] ] }];
     }
 });
 
@@ -614,9 +750,9 @@ dojo.declare("loc.BoomProj", loc.Projectile, {
         ] }];
     },
     updatePosition: function boomProj_updatePosition() {
-        //if (soundManager.sounds.boomerang.playState==0) {
-        //    soundManager.play('boomerang');
-        //}
+        if (soundManager.sounds.boomerang.playState==0) {
+            soundManager.play('boomerang');
+        }
 
         // move me to the next point on my current trajectory
         this.pos.x += this.vel.x;
@@ -649,7 +785,8 @@ dojo.declare("loc.BoomProj", loc.Projectile, {
             // if we're already returning, check to see if we're close enough to our owner to be caught
             if (distance <= 8) {
                 this.owner.catchItem();
-                this.terminate();
+                delete game.projectiles[this.index];
+                //this.terminate();
             }
         } else if (offscreen || distance >= this.apogee) {
             this._returning = true;
@@ -710,6 +847,7 @@ dojo.declare("loc.BoomProj", loc.Projectile, {
 });
 
 dojo.declare("loc.FlameProj", loc.Projectile, {
+    _timer: 50,
     constructor: function(args){
         dojo.mixin(this, args);
         this.vel = {x: this.vector.x * 0.2, y: this.vector.y * 0.2};
@@ -718,21 +856,109 @@ dojo.declare("loc.FlameProj", loc.Projectile, {
         this.size = {w:16,h:16};
 
         this._stateDefs = [ { name: 'default', faceted: false, nextState: 0, canMove: true, anim: [
-            [ {x:104,y:40,t:12},{x:120,y:40,t:12} ]
+            [ {x:104,y:40,t:6},{x:120,y:40,t:6} ]
         ] }];
+    },
+    updatePosition: function flameProj_updatePosition() {
+        if (this._timer-- == 42) {
+            // stop moving (arrest my velocity)
+            this.vel = {x:0,y:0};
+            this.vector = {x:0,y:0};
+        }
+        if (this._timer <= 0) {
+            // timeout and remove
+            delete game.projectiles[this.index];
+        }
+        this.inherited(arguments);
+    },
+    _animateCurrent: function _animateCurrent() {
+        return true;
     }
 });
 
-dojo.declare("loc.BombProj", loc.Projectile, {
+dojo.declare("loc.BombDrop", loc.Projectile, {
+    _timer: 30,
     constructor: function(args){
         dojo.mixin(this, args);
         this.vel = {x:0, y:0};
-        this.power = 8;
+        this.power = 0;
         this.width = 8; this.height = 16;
         this.size = {w:8,h:16};
 
         this._stateDefs = [ { name: 'default', faceted: false, nextState: 0, canMove: false, anim: [
-            [ {x:64,y:24,t:18} ]  // need to add "explosive" state
+            [ {x:64,y:24,t:18} ]
         ] }];
+    },
+    updatePosition: function bombDrop_updatePosition() {
+        // check timeout and explode (spawn several ExplodProj objects) if expired
+        if (this._timer-- <= 0) {
+            soundManager.play('bombBoom');
+            var x1 = this.pos.x - 20;
+            var x2 = this.pos.x - 4;
+            var x3 = this.pos.x + 12;
+
+            // explosions #1&2: left 16px from the bomb, 8px up and 8px down
+            var ex = new loc.ExplodProj({pos:{x:x1,y:this.pos.y-8}, owner:this.owner, index: game.projectiles.length});
+            game.projectiles.push(ex);
+            ex = new loc.ExplodProj({pos:{x:x1,y:this.pos.y+8}, owner:this.owner, index: game.projectiles.length});
+            game.projectiles.push(ex);
+
+            // explosions #3-5: same x-pos as the bomb, 16px up, center, and 16px down
+            ex = new loc.ExplodProj({pos:{x:x2,y:this.pos.y-16}, owner:this.owner, index: game.projectiles.length});
+            game.projectiles.push(ex);
+            ex = new loc.ExplodProj({pos:{x:x2,y:this.pos.y}, owner:this.owner, index: game.projectiles.length});
+            game.projectiles.push(ex);
+            ex = new loc.ExplodProj({pos:{x:x2,y:this.pos.y+16}, owner:this.owner, index: game.projectiles.length});
+            game.projectiles.push(ex);
+
+            // explosions #6&7: right 16px from the bomb, 8px up and 8px down
+            ex = new loc.ExplodProj({pos:{x:x3,y:this.pos.y-8}, owner:this.owner, index: game.projectiles.length});
+            game.projectiles.push(ex);
+            ex = new loc.ExplodProj({pos:{x:x3,y:this.pos.y+8}, owner:this.owner, index: game.projectiles.length});
+            game.projectiles.push(ex);
+
+            // remove the bomb
+            delete game.projectiles[this.index];
+        } else {
+            this.inherited(arguments);
+        }
+    }
+});
+
+dojo.declare("loc.ExplodProj", loc.Projectile, {
+    spriteSrc: "monsters",
+    constructor: function(args){
+        dojo.mixin(this, args);
+        this.vel = {x:0, y:0};
+        this.power = 8;
+        this.width = 16; this.height = 16;
+        this.size = {w:16,h:16};
+        this.spriteSrc = "monsters";
+
+        this._stateDefs = [ { name: 'default', faceted: false, nextState: -1, canMove: false, anim: [
+            [ {x:64,y:0,t:3},{x:80,y:0,t:3} ]
+        ] }];
+    },
+    _animateCurrent: function explodProj_animateCurrent() {
+        return true;
+    }
+});
+
+dojo.declare("loc.BaitDrop", loc.Projectile, {
+    constructor: function(args){
+        dojo.mixin(this, args);
+        dojo.mixin(this, {
+          vel: {x:0, y:0},
+          power: 0,
+          width: 8, height: 16,
+          size: {w:8, h:16}
+        });
+
+        this._stateDefs = [ { name: 'default', faceted: false, nextState: 0, canMove: false, anim: [
+            [{x:72,y:40,t:1}]
+        ] }];
+    },
+    updatePosition: function baitDrop_updatePosition() {
+        // TBD: check timeout and fade away if expired (or does it not expire?)
     }
 });

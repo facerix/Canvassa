@@ -4,13 +4,12 @@
 //@email: ryancorradini@yahoo.com
 //@license: Free to use & modify, but please keep this credits message
 /***************************/
+dojo.provide("loc.Sprite");
 
 dojo.require("loc.ImageCache");
 dojo.addOnLoad(function() {
     if (!window.imageCache) { window.imageCache = new loc.ImageCache(); }
 });
-
-dojo.provide("loc.Sprite");
 
 dojo.declare("loc.Sprite", null, {
     pos: {x:0, y:0},
@@ -24,6 +23,7 @@ dojo.declare("loc.Sprite", null, {
     _animTime: 0,
     _stateDefs: [ { name: 'default', faceted:false, nextState: 0, canMove: true, anim: [ [{x:0,y:0,t:5}] ] }],
     vector: {x:0,y:0},
+    baseClass: "loc.Sprite",
 
     constructor: function sprite_constructor(args){
         if ('spriteSrc' in args) {
@@ -53,6 +53,9 @@ dojo.declare("loc.Sprite", null, {
         var img = window.imageCache.getImage(this.spriteSrc);
         ctx.drawImage(img, cut.x,cut.y,this.size.w,this.size.h, xscaled,yscaled, width, height);
 
+        // draw any additional sprite elements I currently "own" (e.g. a swinging sword, etc)
+        this.drawChildren(ctx);
+
         /* debug:
         ctx.strokeStyle = "red";
         ctx.beginPath();
@@ -61,6 +64,7 @@ dojo.declare("loc.Sprite", null, {
         ctx.strokeRect(xscaled,yscaled,width,height);
         */
     },
+    drawChildren: function sprite_drawChildren(ctx) { /* (implement in subclasses) */ },
     isActive: function isActive() {
         return true;
     },
@@ -127,25 +131,25 @@ dojo.declare("loc.Sprite", null, {
             // check for rightward movement
             can_move &= (dx+this._halfw < game.constants.screenBound.right);
             can_move &= (game.map) ? (game.map.canWalk(dx+this._halfw, dy)) : true;
-            if (!can_move) { this.moveability += 'x' }
+            if (can_move) { this.moveability += 'x' }
         } else if (vector.x < 0) {
             // check for leftward movement
             can_move &= (dx-this._halfw > game.constants.screenBound.left);
             can_move &= (game.map) ? (game.map.canWalk(dx-this._halfw, dy)) : true;
-            if (!can_move) { this.moveability += 'x' }
+            if (can_move) { this.moveability += 'x' }
         }
         if (vector.y > 0) {
             // check for downward movement
             can_move &= (dy+this._halfh < game.constants.screenBound.bottom);
             can_move &= (game.map) ? (game.map.canWalk(dx,dy+this._halfh)) : true;
-            if (!can_move) { this.moveability += 'y' }
+            if (can_move) { this.moveability += 'y' }
         } else if (vector.y < 0) {
             // check for upward movement
             can_move &= (dy-this._halfh > game.constants.screenBound.top);
             can_move &= (game.map) ? (game.map.canWalk(dx,dy)) : true;
-            if (!can_move) { this.moveability += 'y' }
+            if (can_move) { this.moveability += 'y' }
         }
-        return can_move;
+        return this.moveability;    //can_move;
     },
     moveVector: function(vec){
         this.vector = vec;
@@ -184,10 +188,10 @@ dojo.declare("loc.Sprite", null, {
         this._animElem = this._animTime = 0;
     },
     changeState: function changeState(index) {
-        //console.log("changeState(",index,")");
+        //console.log(this.declaredClass,".changeState(",index,")");
         if (index == -1) {
             // this is a signal that the sprite is ready to be destroyed
-            dojo.publish("sprite.onTerminate", [this.declaredClass, this.index]);
+            dojo.publish("sprite.onTerminate", [this.declaredClass, this.baseClass, this.index]);
         } else if (index < this._stateDefs.length) {
             this._state = index;
             this._animElem = 0;
@@ -195,10 +199,12 @@ dojo.declare("loc.Sprite", null, {
         } else {
             console.log("Invalid state number:",index);
         }
+    },
+    getPos: function sprite_pos() {
+        return dojo.clone(this.pos);
     }
 });
 
-dojo.provide("loc.Pacman");
 dojo.declare("loc.Pacman", loc.Sprite, {
     constructor: function sprite_constructor(args){
         window.imageCache.addImage("pacman", "../res/pac.png");

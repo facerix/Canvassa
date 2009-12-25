@@ -11,11 +11,15 @@ div.controls {
     display: table-row;
     position: absolute;
     text-align: center;
+    top: 20px;
+    left: 300px;
 }
 div.debugControls {
     display: table-row;
     position: absolute;
     text-align: center;
+    top: 100px;
+    left: 300px;
 }
 div.controlGroup {
     display: table-cell;
@@ -24,9 +28,34 @@ div.controlGroup {
 div#bossBanner {
     display: table-cell;
     display: none;
-    background-color:red;
+    background-color: red;
     color:white;
 }
 #sm2-container {
     top: 0;
+}
+
+#throbber {
+    position: absolute;
+    left: 40px;
+    top: 120px;
+    text-align: center;
+}
+area {
+    cursor: pointer;
+}
+img#pad {
+    border-style: none;
+    box-shadow: 3px 3px 6px rgba(0,0,0, 0.4);
+    -webkit-box-shadow: 3px 3px 6px rgba(0,0,0, 0.4);
+    -moz-box-shadow: 3px 3px 6px rgba(0,0,0, 0.4);
+}
+.nesButton {
+    background-color: #BBB;
+    border: 2px outset black;
+    color: #900;
+    cursor: pointer;
+    float: right;
+    font: normal small-caps normal 12px 'Arial Black', Gadget, sans-serif;
+    padding: 6px 3px 0 18px;
 }

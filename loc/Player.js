@@ -10,6 +10,7 @@ dojo.require("loc.Item");
 dojo.provide("loc.Player");
 
 dojo.declare("loc.Player", loc.Sprite, {
+    baseClass: "loc.Player",
     _rupees: 0,
     _keys: 0,
     _bombs: 0,
@@ -19,36 +20,18 @@ dojo.declare("loc.Player", loc.Sprite, {
     _item: 0,   /* currently-held item (i.e. position within the this.inventory array) */
     _sword: -1, /* start without a sword */
     _arrow: -1, /* start without any arrows */
-    _newItem: {}, /* keeps track of any item I'm holding up */
     _hurtTimer: 0,
+    _heldItem: null,
     HP: 6,     /* what's my starting HP? (each heart is actually 2 HP, each half-heart is one... this way we avoid floats) */
     maxHP: 6,  /* how many pieces of heart do I have? (3 hearts * 2 halves each: 6) */
-    startingPosition: {x: 128, y:88},
-    inventory: {  /* smaller inventory items */
-        0: null, /*new loc.Boomerang({pos:{x:0,y:0},color:1}),*/
-        1: null, /*new loc.Bomb({pos:{x:0,y:0}}),*/
-        2: null, /*new loc.Bow({pos:{x:0,y:0},arrowColor:0}),*/
-        3: null, /*new loc.Candle({pos:{x:0,y:0},color:0}),*/
-        4: null, /*new loc.Whistle({pos:{x:0,y:0}}),*/
-        5: null, /*new loc.Bait({pos:{x:0,y:0}}),*/
-        6: null, /*new loc.Letter({pos:{x:0,y:0}}),*/
-        7: null, /*new loc.Wand({pos:{x:0,y:0}})*/
-    },
-    tools: {  /* larger inventory items, cannot be equipped and used directly */
-        0: null,  /* raft            */
-        1: null,  /* magic book      */
-        2: null,  /* ladder          */
-        3: null,  /* power bracelet  */
-    },
-    triforces: {  /* retrieved triforce shards */
-        0: null, 1: null, 2: null, 3: null, 4: null, 5: null, 6: null, 7: null
-    },
+    inventory: {},
+    tools: {},
+    triforces: {},
 
     constructor: function sprite_constructor(args){
         this._speed = 3;
         if (!(window.imageCache.hasImage("link"))) { window.imageCache.addImage("link", "../res/link.png"); };
         this.spriteSrc = "link"
-        this.pos = dojo.clone(this.startingPosition);
 
         dojo.mixin(this,args);
         this._stateDefs = [
@@ -89,8 +72,34 @@ dojo.declare("loc.Player", loc.Sprite, {
                 ]}
             ];
 
-        this._shield = 0;      // default shield=0; large shield=1; mirror shield=2
-        this._tunic = 0;       // 0 = green; 1 = blue; 2 = red
+        this._resetInventory();
+        this._resetTools();
+        this._resetTriforceShards();
+    },
+    _resetInventory: function player_resetInventory() {
+        this.inventory = { /* smaller inventory items */
+            0: null, /*new loc.Boomerang({pos:{x:0,y:0},color:1}),*/
+            1: null, /*new loc.Bomb({pos:{x:0,y:0}}),*/
+            2: null, /*new loc.Bow({pos:{x:0,y:0},arrowColor:0}),*/
+            3: null, /*new loc.Candle({pos:{x:0,y:0},color:0}),*/
+            4: null, /*new loc.Whistle({pos:{x:0,y:0}}),*/
+            5: null, /*new loc.Bait({pos:{x:0,y:0}}),*/
+            6: null, /*new loc.Letter({pos:{x:0,y:0}}),*/
+            7: null, /*new loc.Wand({pos:{x:0,y:0}})*/
+        }
+    },
+    _resetTools: function player_resetTools() {
+        this.tools = { /* larger inventory items, cannot be equipped and used directly */
+            0: null,  /* raft            */
+            1: null,  /* magic book      */
+            2: null,  /* ladder          */
+            3: null,  /* power bracelet  */
+        }
+    },
+    _resetTriforceShards: function player_resetTriforceShards() {
+        this.triforces = {  /* retrieved triforce shards */
+            0: null, 1: null, 2: null, 3: null, 4: null, 5: null, 6: null, 7: null
+        }
     },
     _animTick: function _animTick() {
         // decrement the "hurt" counter, if active
@@ -112,6 +121,69 @@ dojo.declare("loc.Player", loc.Sprite, {
         }
         var retVal = this.inherited(arguments);
         return {x: retVal.x+dx, y: retVal.y+dy};
+    },
+    drawChildren: function player_drawChildren(ctx) {
+        //if (this._state) { console.log("player.drawChildren(state:",this._state,")"); };
+
+        var halfSize = game.scale * 8;
+        var quarterSize = game.scale * 4;
+
+        // if in "hurt" state, add a splotch of color to indicate it
+        if (this._hurtTimer) { // hurt
+            if (this._hurtTimer % 2 == 0) {
+                // black
+                ctx.fillStyle = "rgba(64,64,64,0.35)";
+            } else {
+                // white
+                ctx.fillStyle = "rgba(240,240,240,0.35)";
+            }
+            ctx.beginPath();
+            ctx.arc(this.pos.x*game.scale,this.pos.y*game.scale,8*game.scale,0,Math.PI*2,true);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        // determine what, if any, subordinate sprites to draw
+        switch (this._state) {
+            case 0: // active
+            case 1: // dying
+            case 5: // catching a thrown item (e.g. boomerang)
+                // no additional sprite elements necessary in these states
+                break;
+
+            case 2: // attacking / using an item
+                //this._drawAttack(ctx,xpos,ypos,'Sword');
+
+                // OR:
+
+                //var currentItem = player.inventory[player._item];
+                //if (currentItem)
+                //    this._drawAttack(ctx,xpos,ypos,currentItem.declaredClass);
+                break;
+            
+            case 3: // small treasure
+            case 4: // large treasure
+                if (this._heldItem) {
+                    var xpos = this.pos.x - quarterSize;
+                    var ypos = this.pos.y - quarterSize - this._heldItem.size.h;
+                    this._heldItem.pos = {x:xpos*game.scale, y:ypos*game.scale};
+                    this._heldItem.draw(ctx);
+                }
+                break;
+            
+            default:
+                break;
+        }
+
+        // if in boss mode, add a gold "aura" to indicate it
+        if (game.currentMode == 99) {
+            ctx.fillStyle = "rgba(239,191,0,0.35)";
+            ctx.beginPath();
+            //ctx.fillRect((xpos-2)*game.scale,(ypos-2)*game.scale,20*game.scale,20*game.scale);
+            ctx.arc(xpos*game.scale,ypos*game.scale,12*game.scale,0,Math.PI*2,true);
+            ctx.closePath();
+            ctx.fill();
+        }
     },
     drawInventory: function(ctx,mode){
         // set up some constants
@@ -233,38 +305,42 @@ dojo.declare("loc.Player", loc.Sprite, {
     },
     die: function die() {
         dojo.publish("player.onDie", []);
+        soundManager.play('die');
         this.inherited(arguments);
     },
     reset: function reset(){
         this.inherited(arguments);
         this.HP = 6; this.maxHP = 6;
         this._shield = 0; this._tunic = 0; this._sword = -1;
-        this._item = 0; this._newItem = {}; this._arrow = -1;
+        this._item = 0; this._arrow = -1;
         this._rupees = 0; this._keys = 0;
         this._bombs = 0; this._maxBombs = 8;
-        this.pos = dojo.clone(this.startingPosition);
-        //this.inventory = this._getInventory();
-        //this.tools = this._getTools();
-        //this.triforces = this._getTriforceShards();
+        this._resetInventory();
+        this._resetTools();
+        this._resetTriforceShards();
     },
     attack: function player_attack() {
-        if (!this._proj) {
+        if (this._sword >= 0 && !this._proj) {
             this.changeState(2);
+            soundManager.play('sword');
+            
+            if (this.HP == this.maxHP) {
+                var args = {
+                    vector: this._getAttackVector(),
+                    pos: this.getPos(),
+                    scale: this.scale,
+                    spriteSrc: "items",
+                    index: game.projectiles.length,
+                    owner: this
+                }
+                args.width = (args.vector.x != 0) ? 16 : 7;
+                args.height = (args.vector.y != 0) ? 16 : 7;
+                args.size = {w: args.width, h: args.height};
 
-            var args = {
-                vector: this._getAttackVector(),
-                pos: dojo.clone(this.pos),
-                scale: this.scale,
-                spriteSrc: "items",
-                index: game.projectiles.length,
-                owner: this
+                this._proj = new loc.SwordProj(args);
+                game.projectiles.push(this._proj);
+                soundManager.play('swordshoot');
             }
-            args.width = (args.vector.x != 0) ? 16 : 7;
-            args.height = (args.vector.y != 0) ? 16 : 7;
-            args.size = {w: args.width, h: args.height};
-
-            this._proj = new loc.SwordProj(args);
-            game.projectiles.push(this._proj);
         }
     },
     _getAttackVector: function player_attackVector() {
@@ -298,6 +374,14 @@ dojo.declare("loc.Player", loc.Sprite, {
                     // check any 'cost' associated with this projectile type
                     var canUse = true;
                     switch (itm.declaredClass) {
+                        case 'loc.Bomb':
+                            if (this._bombs) {
+                                canUse = true;
+                                this._bombs--;
+                            } else {
+                                canUse = false;
+                            }
+                            break;
                         case 'loc.Bow':
                             if (this._rupees) {
                                 canUse = true;
@@ -305,6 +389,11 @@ dojo.declare("loc.Player", loc.Sprite, {
                             } else {
                                 canUse = false;
                             }
+                            break;
+                        case 'loc.Bait':
+                            canUse = true;
+                            delete this.inventory[5];
+                            this._item = 0;
                             break;
                         default:
                             break;
@@ -315,7 +404,7 @@ dojo.declare("loc.Player", loc.Sprite, {
                         var vec = this._getAttackVector();
                         var args = {
                             vector: vec,
-                            pos: dojo.clone(this.pos),
+                            pos: this.getPos(),
                             scale: this.scale,
                             color: itm.color,
                             spriteSrc: "items",
@@ -324,7 +413,7 @@ dojo.declare("loc.Player", loc.Sprite, {
                         }
                         var newProj = itm.getProjectile(args);
                         if (newProj) {
-                            this._proj = newProj;
+                            //this._proj = newProj;
                             game.projectiles.push(newProj);
                         }
                     }
@@ -334,12 +423,13 @@ dojo.declare("loc.Player", loc.Sprite, {
             }
         }
     },
-    catchItem: function player_catchItem(){
+    catchItem: function player_catchItem(item){
+        console.log("player.catchItem(",item,")");
         this.changeState(5);
     },
     changeItem: function(offset){
         var newIndex = this._item+8;
-        //soundManager.play('rupee');
+        soundManager.play('rupee');
 
         do {
             newIndex += offset; // try the next position
@@ -352,20 +442,31 @@ dojo.declare("loc.Player", loc.Sprite, {
             }
         } while ((newIndex % 8) != this._item)
     },
+    changeState: function player_changeState(index) {
+        if (this._state == 3 || this._state == 4) {
+            // we were in "got item" state, resume the paused music now
+            soundManager.resumeAll();
+        }
+        this.inherited(arguments);
+    },
     getItem: function player_getItem(item){
         if (this._state == 0) {
             switch (item.declaredClass) {
                 case "loc.Heart":
-                    //soundManager.play('heart');
+                    soundManager.play('heart');
                     this.HP = Math.min(this.HP+2, this.maxHP);
                     break;
+                case "loc.Fairy":
+                    soundManager.play('special');
+                    this.HP = Math.min(this.HP+6, this.maxHP);
+                    break;
                 case "loc.Rupee":
-                    //soundManager.play('rupee');
+                    soundManager.play('rupee');
                     this._rupees = Math.min(this._rupees+item.amount,255);
                     break;
 
                 case "loc.Bomb":
-                    //soundManager.play('special');
+                    soundManager.play('special');
                     if (!this.inventory[1]) {
                         this.inventory[1] = item;
                     }
@@ -373,16 +474,14 @@ dojo.declare("loc.Player", loc.Sprite, {
                     break;
 
                 default:
-                    console.log("getting item: %o", item);
-                    //soundManager.pauseAll();
-                    //soundManager.play('item');
-                    this._newItem = item;
-                    this.changeState(3);    // or 4 if it's a large item
+                    this.updateInventory(item);
+                    break;
             }
         }
     },
     getHit: function player_getHit(damage) {
         if (!this._hurtTimer) {
+            soundManager.play('hurt');
             this.HP -= damage;
             this._hurtTimer = 50;
             if (this.HP <= 0) {
@@ -390,10 +489,33 @@ dojo.declare("loc.Player", loc.Sprite, {
             }
         }
     },
-    killProjectile: function player_killProj() {
-        if (this._proj) {
-            if ('index' in this._proj) { delete game.projectiles[this._proj.index]; }
+    killProjectile: function player_killProj(proj) {
+        if (proj) {
+            if ('index' in proj) { delete game.projectiles[proj.index]; }
             this._proj = null;
         }
+    },
+    updateInventory: function player_updateInventory(item) {
+        //console.log("getting item: %o", item);
+        var newState = (item.weight > 1) ? 4 : 3; // (small items get state 3, large get state 4)
+        this._heldItem = item; // keep track of it while I'm holding it up so the engine can draw it
+
+        soundManager.pauseAll();
+        soundManager.play('special');
+        soundManager.play('item');
+        switch (item.declaredClass) {
+            case 'loc.Sword':
+                if (this._sword < item.color) { this._sword = item.color };
+                break;
+
+            case 'loc.BigHeart':
+                this.maxHP = Math.min(this.maxHP+2, 32);
+                this.HP = Math.min(this.HP+2, this.maxHP);
+                break;
+
+            default:
+                break;
+        }
+        this.changeState(newState);
     }
 });

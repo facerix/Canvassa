@@ -4,68 +4,44 @@
   <head>
     <title>The Legend of Canvassa [v0.5]</title>
     <link rel="icon" type="image/vnd.microsoft.icon" href="http://www.buyog.com/code/loc/favicon.ico"/>
-    <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.3/dojo/dojo.js" djConfig="isDebug:false"></script>
-<!--[if IE]>
-    <script type="text/javascript" src="http://pipes.yahoo.com/js/excanvas.js"></script>
-    <script type='text/javascript' src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
-<![endif]-->
-    <link rel='stylesheet' href='../loc.css'/>
-    <style type="text/css">
-      div.controls {
-         top: 20px;
-         left: 300px;
-      }
-      div.debugControls {
-         top: 100px;
-         left: 300px;
-      }
-      #throbber {
-          position: absolute;
-          left: 40px;
-          top: 120px;
-          text-align: center;
-      }
-      area {
-         cursor: pointer;
-      }
-      img#pad {
-         border-style: none;
-      }
-      .nesButton {
-         background-color: #BBB;
-         border: 2px outset black;
-         color: #900;
-         cursor: pointer;
-         float: right;
-         font: normal small-caps normal 12px 'Arial Black',Gadget,sans-serif;
-         padding: 6px 3px 0 18px;
-      }
-    </style>
+    <link rel='stylesheet' href='loc.css'/>
+
+    <script>
+        var basePath = window.location.href.match(/(.*)\//)[0] + "loc";
+        var djConfig = { isDebug:false, modulePaths:{ "loc": basePath } };
+    </script>
+    <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.3/dojo/dojo.js"></script>
+    <script type="text/javascript" src="../../sndmgr/script/soundmanager2-nodebug-jsmin.js"></script>
+    <!--[if IE]>
+        <script type="text/javascript" src="http://pipes.yahoo.com/js/excanvas.js"></script>
+    <![endif]-->
+
     <script type="text/javascript">
         // before ANYTHING else, see if we can get a canvas context
         dojo.addOnLoad(function init_loader(){
             window.map_canvas = dojo.byId('map');
             window.sprite_canvas = dojo.byId('sprites');
-            if (map_canvas.getContext){
-                dojo.registerModulePath("loc","http://www.buyog.com/code/loc/Canvassa");
+            if ('getContext' in map_canvas && map_canvas.getContext){
                 dojo.require("loc.Preloader");
                 dojo.addOnLoad(preload);
             } else {
-                dojo.style("throbber", "width", "220px")
-                dojo.byId("throbber").innerHTML = "No canvas found, or canvas 2d context cannot be retrieved.";
+                dojo.style("throbber", "display", "none")
             }
         }); // end of init_loader()
 
         function preload() {
             window.loader = new loc.Preloader({
               images: {
-                HUD: "../res/hud.png",
-                tiles: "../res/overworld_tiles.png",
-                link: "../res/link.png",
-                items: "../res/items.png",
-                monsters: "../res/monsters.png"
+                title: "loc/res/title.png",
+                select: "loc/res/select.png",
+                font: "loc/res/font.png",
+                HUD: "loc/res/hud.png",
+                tiles: "loc/res/overworld_tiles.png",
+                link: "loc/res/link.png",
+                items: "loc/res/items.png",
+                monsters: "loc/res/monsters.png"
               },
-              modules: ["loc._quest1", "loc.Game"]
+              modules: ["loc.Sounds","loc.Game"]
             })
 
             if (loader.ready()) {
@@ -113,38 +89,39 @@
     </script>
   </head>
   <body class="origSize">
-    <canvas id="map" width="256" height="240"></canvas>
+    <canvas id="map" width="256" height="240">No canvas found, or canvas 2d context cannot be retrieved.</canvas>
     <canvas id="sprites" width="256" height="240"></canvas>
-    <div id="throbber" style="display: none;"><img src="../res/wait.gif" /><br/>Loading resources...</div>
+    <div id="throbber"><img src="loc/res/wait.gif" /><br/>Loading resources...</div>
     <div class="controls">
-        <img id="pad" src="../res/nespad.png" alt="" usemap="#padmap" />
+        <img id="pad" src="loc/res/nespad.png" alt="" usemap="#padmap" />
         <map name="padmap">
             <!-- up -->
-            <area shape="rect" coords="34,43,59,65" onmousedown="game.keyDown(38);" onmouseup="game.keyUp(38);"/>
+            <area shape="rect" coords="34,43,59,65" onmousedown="game.keyDown(38);" onmouseup="game.keyUp(38);" title="(up arrow)"/>
 
             <!-- left -->
-            <area shape="rect" coords="20,60,41,83" onmousedown="game.keyDown(37);" onmouseup="game.keyUp(37);" onmouseout="game.keyUp(37);" />
+            <area shape="rect" coords="20,60,41,83" onmousedown="game.keyDown(37);" onmouseup="game.keyUp(37);" onmouseout="game.keyUp(37);" title="(left arrow)"/>
 
             <!-- right -->
-            <area shape="rect" coords="55,60,76,83" onmousedown="game.keyDown(39);" onmouseup="game.keyUp(39);" onmouseout="game.keyUp(39);" />
+            <area shape="rect" coords="55,60,76,83" onmousedown="game.keyDown(39);" onmouseup="game.keyUp(39);" onmouseout="game.keyUp(39);" title="(right arrow)"/>
 
             <!-- down -->
-            <area shape="rect" coords="34,81,59,103" onmousedown="game.keyDown(40);" onmouseup="game.keyUp(40);" onmouseout="game.keyUp(40);" />
+            <area shape="rect" coords="34,81,59,103" onmousedown="game.keyDown(40);" onmouseup="game.keyUp(40);" onmouseout="game.keyUp(40);" title="(down arrow)"/>
 
             <!-- select -->
-            <area shape="rect" coords="100,81,124,92" onmousedown="game.keyDown(219);" onmouseup="game.keyUp(219);" />
+            <area shape="rect" coords="100,81,124,92" onmousedown="game.keyDown(219);" onmouseup="game.keyUp(219);" title="([ button)"/>
 
             <!-- start -->
-            <area shape="rect" coords="137,81,161,92" onmousedown="game.keyDown(221);" onmouseup="game.keyUp(221);" />
+            <area shape="rect" coords="137,81,161,92" onmousedown="game.keyDown(221);" onmouseup="game.keyUp(221);" title="(] button)" />
 
             <!-- B button -->
-            <area shape="circle" coords="199,85,14" onmousedown="game.keyDown(90);" onmouseup="game.keyUp(90);" onmouseout="game.keyUp(90);" />
+            <area shape="circle" coords="199,85,14" onmousedown="game.keyDown(90);" onmouseup="game.keyUp(90);" onmouseout="game.keyUp(90);" title="(Z button)" />
 
             <!-- A button -->
-            <area shape="circle" coords="237,85,14" onmousedown="game.keyDown(88);" onmouseup="game.keyUp(88);" onmouseout="game.keyUp(88);" />
+            <area shape="circle" coords="237,85,14" onmousedown="game.keyDown(88);" onmouseup="game.keyUp(88);" onmouseout="game.keyUp(88);" title="(X button)" />
         </map>
 
         <br/>
+        <span>Controls: arrow keys, [ ] Z X</span>
         <button id="resetButton" class="nesButton" onClick="game.reset();">reset</button><br/>
         <span id="user_msg" style="color:red; display:none; width:100%;">Cheaters never prosper!</span>
         <!--a href="index.html">1x size</a> | <a href="index2x.html">2x size</a> | <a href="index3x.html">3x size</a-->

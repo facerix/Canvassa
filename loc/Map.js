@@ -198,7 +198,19 @@ dojo.declare("loc.MapScreen", null, {
         
         return istype;
     },
-    
+
+    removeItem: function mapscreen_removeItem(itemName) {
+        if (itemName.match("^loc.") != "loc.") { itemName = "loc."+itemName; }
+        for (var i in this.items) {
+            console.log(i, this.items[i]);
+            var thisItemName = ('type' in this.items[i]) ? "loc."+this.items[i].type : ('declaredClass' in this.items[i]) ? this.items[i].declaredClass : '';
+            thisItemName = thisItemName.toLowerCase();
+            if (thisItemName == itemName) {
+                delete this.items[i];
+            }
+        }
+    },
+
     _addEnemy: function(enemyDef) {
         if (this.enemies) {
             this.enemies.push(enemyDef);
