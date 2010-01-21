@@ -9,6 +9,10 @@ The Legend of Canvassa
 An open-source, Javascript+Dojo clone of the original "Legend of Zelda" game for the NES
 Uses HTML5 Canvas (and ExplorerCanvas in Internet Explorer)
 
+COMMIT HISTORY:
+---------
+6/10/2009
+
 This is a preliminary sandboxed checkin, primarily repackaged for sharing on Github.
 It is not at all complete, but as of the first checkin, the basic preloading and sprite engines are in place.
 There are currently two entry points:
@@ -17,19 +21,26 @@ bestiary.html -- test harness that allows you to spawn the various enemy types i
 
 Note also that sprite collision isn't yet enabled in the initial checkin. However, it has been added in subsequent checkins; see Git checkin logs for details.
 
+---------
+12/25/2009
 
-Latest update: 0.5.x tasks still to do, as of 12/25/2009:
+Some of the (many) updates in this checkin:
+- added text to the page describing the game controls
+- (re)implemented sounds
+- made killed monsters leave behind hearts and rupees (fairies and clocks come later)
+- added the sword projectile "flash" effect
+- fixed bug: Reset button is broken
+- fixed bug: erase "PAUSED" from notification area when unpausing
+
+
+Still several things on the overworld that need to be fixed/implemented:
 
 Monsters:
-X leevers not killable underground
-X zolas not killable underwater
-- zolas can't go on land
-- zolas shoot fireballs
-- peahat AI is seriously gwoked
-X peahats only killable when at rest
-X boulders are unhittable
-- armos should wake up on touch
-- correct the # of hits needed to kill everything
+- zolas should be able to go on land
+- zolas should shoot fireballs
+- peahat AI is seriously messed up
+- armos should wake up when touched
+- need to correct the # of hits needed to kill everything
 
 Items:
 - add loc.Helper base item for sword and wand
@@ -42,23 +53,13 @@ Items:
 
 Map:
 - bug: need to permanently remove predefined items from the map when picked up (e.g. the wooden sword on the start screen -- grab it, leave the screen, then come back: it's there again!)
-- add Z-index to allow for multiple maps in a single world
-- Provide an opt-out for sound/music
+- add Z-index the Map class to allow for multiple map layers (think dungeons) in a single "world"
 
 Game:
 - improvement: Make Link & the monsters get knocked back when hit
-- improvement: block octoroc rocks if facing them and in state 0
-- improvement: Disable AllItems button after first use
+- improvement: shield should block octoroc rocks if facing them and in state 0
+- improvement: Disable AllItems cheat button after first use
 
 Misc. improvements:
 - add BigHearts and Silver/Master Swords to overworld map
-- Provide an opt-out for sound/music
-
-
-Recent updates:
-- Add text to the page describing the game controls
-- (re)implement sounds
-- Make killed monsters leave behind hearts and rupees (fairies and clocks come later)
-- Add the sword projectile "flash" effect when it hits something
-- bug: Reset button is broken
-- bug: erase "PAUSED" from notification area when unpausing
+- Provide a way to turn off sound and/or music
