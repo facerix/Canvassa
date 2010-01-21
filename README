@@ -1,6 +1,6 @@
 /***************************/
 //@Author: Ryan Corradini
-//@website: http://www.buyog.com/code/loc
+//@website: http://buyog.com/code/
 //@email: ryancorradini@yahoo.com
 //@license: Free to use & modify, but please keep this credits message
 /***************************/
@@ -8,6 +8,7 @@
 The Legend of Canvassa
 An open-source, Javascript+Dojo clone of the original "Legend of Zelda" game for the NES
 Uses HTML5 Canvas (and ExplorerCanvas in Internet Explorer)
+Currently depends on Dojo toolkit base library (but not Dijit)
 
 COMMIT HISTORY:
 ---------
