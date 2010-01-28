@@ -1,0 +1,59 @@
+Notes on enemy AIs:
+
+Enemy:          Movement:           Damage:     HP
+red octoroc     random              0.5         1
+blue octoroc    random              0.5         2
+red tectite     random (jumps)      0.5         1
+blue tectite    random, slower      0.5         1
+red leever      attracted           0.5         2
+blue leever     up where it sinks   1           4
+ghini           attracted                       9
+red moblin      random?             0.5         2
+blue moblin     random              0.5         3
+armos           random              1           3
+peahat          random              0.5         2
+zola            random              0.5         >12
+rock            random                          -
+red lynel       random              1 (touch)
+                                    2 sword     4
+blue lynel      random                          6
+
+lvl1:
+keese b (bat)   random              0.5         <1 (boomerang kills)
+stalfos         semi-random         0.5         2
+gel             random              0.5         <1 (boomerang kills)
+red goriya      random              0.5         3
+blue goriya
+trap            attracted           1           -
+aquamentus      -                   ?           6
+
+lvl2:
+rope            attracted
+vire                                (+2 red keese)
+
+lvl3:
+zol             random              1           1(+2gels)
+red darknut     random
+
+dungeon enemies:
+bubble r/b      random
+darknut r/b     ?
+gel
+gibdo
+goriya r/b
+keese r/b
+lanmola r/b     (may treat as "boss" because they're multi-sprited)
+like-like
+moldorm         (same as lanmola)
+patra           (same as lanmola)
+pols voice
+rope
+stalfos
+stone statues
+trap
+vire
+wall master
+wizzrobe r/b
+zol
+
+
