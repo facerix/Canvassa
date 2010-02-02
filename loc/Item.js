@@ -260,6 +260,7 @@ dojo.declare("loc.Bow", [loc.Item, loc.InventoryItem], {
 
 dojo.declare("loc.Candle", [loc.Item, loc.InventoryItem], {
     color: 0,
+    available: true,
     constructor: function candle_constructor(args){
         dojo.mixin(this, args);
         var xcut = 96 + 8 * this.color;
@@ -289,10 +290,15 @@ dojo.declare("loc.Candle", [loc.Item, loc.InventoryItem], {
         }
     },
     getProjectile: function(args) {
-        // TODO: if we're color=0 (blue), check to see if we've been used already on this screen
-
-        soundManager.play('candle');
-        return new loc.FlameProj(args);
+        // if we're color=0 (blue), check to see if we've been used already on this screen
+        if (this.available || this.color) {
+            this.available = false;
+            soundManager.play('candle');
+            return new loc.FlameProj(args);
+        }
+    },
+    reset: function() {
+        this.available = true;
     }
 });
 
