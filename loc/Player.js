@@ -513,6 +513,9 @@ dojo.declare("loc.Player", loc.Sprite, {
                 this.HP = Math.min(this.HP+2, this.maxHP);
                 break;
 
+            case 'loc.Candle':
+                dojo.connect(game, 'setupMapScreen', game.player.inventory[3].reset);
+
             default:
                 break;
         }
