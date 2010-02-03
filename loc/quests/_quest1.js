@@ -33,10 +33,10 @@
             [10,10,10,10,10,00,20,10,10,10,10]
         ]},
         {enemies: [
-            {type:'lynel',color:1,position:{x:88,y:72}},
-            {type:'lynel',color:1,position:{x:120,y:88}},
-            {type:'lynel',color:1,position:{x:88,y:136}},
-            {type:'lynel',color:1,position:{x:152,y:104}},
+            {"type":'lynel',"color":1,"pos":{x:88,y:72}},
+            {"type":'lynel',"color":1,"pos":{x:120,y:88}},
+            {"type":'lynel',"color":1,"pos":{x:88,y:136}},
+            {"type":'lynel',"color":1,"pos":{x:152,y:104}},
         ],
         tiles: [ // screen 0,1
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -57,7 +57,7 @@
             [10,10,00,80,81,00,00,00,00,20,10]
         ]},
         {enemies: [
-            {type:'ghini',color:0,position:{x:120,y:88}},
+            {"type":'ghini',"color":0,"pos":{x:120,y:88}},
          ],
          tiles: [ // screen 0,2
             [14,14,14,14,14,14,14,14,14,14,14],
@@ -78,7 +78,7 @@
             [14,14,02,02,02,02,02,02,02,24,14]
         ]},
         {enemies: [
-            {type:'ghini',color:0,position:{x:72,y:104}},
+            {"type":'ghini',"color":0,"pos":{x:72,y:104}},
          ],
          tiles: [ // screen 0,3
             [14,14,14,14,14,14,14,14,14,14,14],
@@ -99,7 +99,7 @@
             [14,14,02,02,02,02,02,02,02,24,14]
         ]},
         {enemies: [
-            {type:'ghini',color:0,position:{x:184,y:56}},
+            {"type":'ghini',"color":0,"pos":{x:184,y:56}},
          ],
          tiles: [ // screen 0,4
             [14,14,14,14,14,14,14,14,14,14,14],
@@ -120,9 +120,9 @@
             [14,14,02,02,02,02,02,02,02,24,14]
         ]},
         {enemies: [
-            {type:'lynel',color:0,position:{x:88,y:104}},
-            {type:'lynel',color:0,position:{x:136,y:88}},
-            {type:'lynel',color:0,position:{x:168,y:104}},
+            {"type":'lynel',"color":0,"pos":{x:88,y:104}},
+            {"type":'lynel',"color":0,"pos":{x:136,y:88}},
+            {"type":'lynel',"color":0,"pos":{x:168,y:104}},
         ],
         tiles: [ // screen 0,5
             [14,14,14,14,14,14,14,14,14,14,14],
@@ -144,12 +144,12 @@
         ]},
         { // screen 0,6
          enemies: [
-            {type:'lynel',color:0,position:{x:120,y:72}},
-            {type:'lynel',color:0,position:{x:168,y:40}},
-            {type:'lynel',color:1,position:{x:120,y:104}},
-            {type:'lynel',color:1,position:{x:168,y:136}},
-            {type:'peahat',position:{x:88,y:70}},
-            {type:'peahat',position:{x:88,y:104}},
+            {"type":'lynel',"color":0,"pos":{x:120,y:72}},
+            {"type":'lynel',"color":0,"pos":{x:168,y:40}},
+            {"type":'lynel',"color":1,"pos":{x:120,y:104}},
+            {"type":'lynel',"color":1,"pos":{x:168,y:136}},
+            {"type":'peahat',"pos":{x:88,y:70}},
+            {"type":'peahat',"pos":{x:88,y:104}},
         ],
         tiles: [
             [11,11,11,11,11,11,11,11,11,11,11],
@@ -171,10 +171,10 @@
         ]},
         { // screen 0,7
         enemies: [
-            {type:'peahat',color:0,position:{x:72,y:152}},
-            {type:'peahat',color:0,position:{x:40,y:104}},
-            {type:'peahat',color:0,position:{x:168,y:56}},
-            {type:'peahat',color:0,position:{x:120,y:40}},
+            {"type":'peahat',"color":0,"pos":{x:72,y:152}},
+            {"type":'peahat',"color":0,"pos":{x:40,y:104}},
+            {"type":'peahat',"color":0,"pos":{x:168,y:56}},
+            {"type":'peahat',"color":0,"pos":{x:120,y:40}},
          ],
          tiles: [
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -196,32 +196,32 @@
         ]},
         { // screen 0,8 (hidden; "treasure room" for testing item pick-up)
         items: [
-            {type:"sword",color:0,position:{x:24,y:32}},
-            {type:"sword",color:1,position:{x:48,y:32}},
-            {type:"sword",color:2,position:{x:72,y:32}},
-            {type:"shield",color:1,position:{x:96,y:32}},
-            {type:"ring",color:0,position:{x:120,y:32}},
-            {type:"ring",color:1,position:{x:144,y:32}},
-            {type:"bigheart",position:{x:168,y:32}},
-            {type:"heart",color:0,position:{x:192,y:32}},
-            {type:"rupee",amount:1,position:{x:216,y:32}},
-            {type:"rupee",amount:5,position:{x:216,y:56}},
+            {"type":"sword","color":0,"pos":{x:24,y:32}},
+            {"type":"sword","color":1,"pos":{x:48,y:32}},
+            {"type":"sword","color":2,"pos":{x:72,y:32}},
+            {"type":"shield","color":1,"pos":{x:96,y:32}},
+            {"type":"ring","color":0,"pos":{x:120,y:32}},
+            {"type":"ring","color":1,"pos":{x:144,y:32}},
+            {"type":"bigheart","pos":{x:168,y:32}},
+            {"type":"heart","color":0,"pos":{x:192,y:32}},
+            {"type":"rupee",amount:1,"pos":{x:216,y:32}},
+            {"type":"rupee",amount:5,"pos":{x:216,y:56}},
 
-            {type:"boomerang",color:0,position:{x:24,y:80}},
-            {type:"boomerang",color:1,position:{x:48,y:80}},
-            {type:"bomb",position:{x:72,y:80}},
-            {type:"bow",position:{x:168,y:80}},
-            {type:"arrow",color:0,position:{x:192,y:80}},
-            {type:"arrow",color:1,position:{x:216,y:80}},
+            {"type":"boomerang","color":0,"pos":{x:24,y:80}},
+            {"type":"boomerang","color":1,"pos":{x:48,y:80}},
+            {"type":"bomb","pos":{x:72,y:80}},
+            {"type":"bow","pos":{x:168,y:80}},
+            {"type":"arrow","color":0,"pos":{x:192,y:80}},
+            {"type":"arrow","color":1,"pos":{x:216,y:80}},
 
-            {type:"candle",color:0,position:{x:24,y:128}},
-            {type:"candle",color:1,position:{x:48,y:128}},
-            {type:"whistle",position:{x:72,y:128}},
-            {type:"bait",position:{x:96,y:128}},
-            {type:"letter",position:{x:120,y:128}},
-            {type:"medicine",color:0,position:{x:144,y:128}},
-            {type:"medicine",color:1,position:{x:168,y:128}},
-            {type:"wand",position:{x:192,y:128}},
+            {"type":"candle","color":0,"pos":{x:24,y:128}},
+            {"type":"candle","color":1,"pos":{x:48,y:128}},
+            {"type":"whistle","pos":{x:72,y:128}},
+            {"type":"bait","pos":{x:96,y:128}},
+            {"type":"letter","pos":{x:120,y:128}},
+            {"type":"medicine","color":0,"pos":{x:144,y:128}},
+            {"type":"medicine","color":1,"pos":{x:168,y:128}},
+            {"type":"wand","pos":{x:192,y:128}},
         ],
         tiles: [
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -244,10 +244,10 @@
     ],
     [ // column 1
         {enemies: [
-            {type:'lynel',color:0,position:{x:40,y:88}},
-            {type:'lynel',color:0,position:{x:56,y:120}},
-            {type:'lynel',color:0,position:{x:88,y:72}},
-            {type:'lynel',color:0,position:{x:168,y:136}},
+            {"type":'lynel',"color":0,"pos":{x:40,y:88}},
+            {"type":'lynel',"color":0,"pos":{x:56,y:120}},
+            {"type":'lynel',"color":0,"pos":{x:88,y:72}},
+            {"type":'lynel',"color":0,"pos":{x:168,y:136}},
         ],
         tiles: [ // screen 1,0
             [10,10,10,10,10,00,20,10,10,10,10],
@@ -268,11 +268,11 @@
             [10,10,10,10,41,00,40,10,10,10,10]
         ]},
         {enemies: [
-            {type:'lynel',color:0,position:{x:88,y:136}},
-            {type:'lynel',color:0,position:{x:216,y:88}},
-            {type:'lynel',color:1,position:{x:88,y:40}},
-            {type:'lynel',color:1,position:{x:136,y:72}},
-            {type:'peahat',position:{x:136,y:104}},
+            {"type":'lynel',"color":0,"pos":{x:88,y:136}},
+            {"type":'lynel',"color":0,"pos":{x:216,y:88}},
+            {"type":'lynel',"color":1,"pos":{x:88,y:40}},
+            {"type":'lynel',"color":1,"pos":{x:136,y:72}},
+            {"type":'peahat',"pos":{x:136,y:104}},
         ],
         tiles: [ // screen 1,1
             [10,10,00,90,91,00,00,00,00,20,10],
@@ -292,10 +292,14 @@
             [10,10,41,00,00,00,00,00,40,10,10],
             [10,10,10,10,10,10,10,10,10,10,10]
         ]},
-        {enemies: [
-            {type:'ghini',color:0,position:{x:120,y:120}},
-         ],
-         tiles: [ // screen 1,2
+        { // screen 1,2
+        items: [
+            {"type":"sword","color":2,"pos":{x:148,y:72}}
+        ],
+        enemies: [
+            {"type":'ghini',"color":0,"pos":{x:120,y:120}},
+        ],
+        tiles: [
             [14,14,02,02,02,02,02,02,02,24,14],
             [14,14,02,02,02,02,02,02,02,24,14],
             [14,14,02,02,02,02,02,02,02,02,02],
@@ -314,9 +318,9 @@
             [15,15,15,15,15,15,15,15,15,15,15]
         ]},
         {enemies: [
-            {type:'ghini',color:0,position:{x:120,y:88}},
-         ],
-         tiles: [ // screen 1,3
+            {"type":'ghini',"color":0,"pos":{x:120,y:88}},
+        ],
+        tiles: [ // screen 1,3
             [14,14,02,02,02,02,02,02,02,24,14],
             [14,35,02,02,02,02,02,02,02,34,14],
             [02,02,02,02,02,02,02,02,02,02,02],
@@ -335,7 +339,7 @@
             [15,15,15,15,02,02,02,15,15,15,15]
         ]},
         {enemies: [
-            {type:'ghini',color:0,position:{x:40,y:104}},
+            {"type":'ghini',"color":0,"pos":{x:40,y:104}},
          ],
          tiles: [ // screen 1,4
             [14,14,02,02,02,02,02,02,02,24,14],
@@ -357,11 +361,11 @@
         ]},
         { // screen 1,5
         enemies: [
-            {"type":"moblin","color":1,"position":{"x":56,"y":56}},
-            {"type":"moblin","color":1,"position":{"x":40,"y":88}},
-            {"type":"moblin","color":1,"position":{"x":56,"y":120}},
-            {"type":"moblin","color":1,"position":{"x":168,"y":40}},
-            {"type":"moblin","color":1,"position":{"x":168,"y":136}},
+            {"type":"moblin","color":1,"pos":{"x":56,"y":56}},
+            {"type":"moblin","color":1,"pos":{"x":40,"y":88}},
+            {"type":"moblin","color":1,"pos":{"x":56,"y":120}},
+            {"type":"moblin","color":1,"pos":{"x":168,"y":40}},
+            {"type":"moblin","color":1,"pos":{"x":168,"y":136}},
         ],
         tiles: [
             [11,11,11,11,11,11,11,11,11,11,11],
@@ -382,10 +386,10 @@
             [11,11,11,11,00,00,00,11,11,11,11],
         ]},
         {enemies: [
-            {type:'moblin',color:1,position:{x:8,y:88}},
-            {type:'moblin',color:1,position:{x:168,y:8}},
-            {type:'moblin',color:1,position:{x:248,y:88}},
-            {type:'moblin',color:1,position:{x:248,y:104}},
+            {"type":'moblin',"color":1,"pos":{x:8,y:88}},
+            {"type":'moblin',"color":1,"pos":{x:168,y:8}},
+            {"type":'moblin',"color":1,"pos":{x:248,y:88}},
+            {"type":'moblin',"color":1,"pos":{x:248,y:104}},
         ],
         tiles: [ // screen 1,6
             [11,11,11,11,00,00,00,11,11,11,11],
@@ -406,10 +410,10 @@
             [11,11,11,11,00,00,00,11,11,11,11]
         ]},
         {enemies: [
-            {type:'moblin',color:1,position:{x:8,y:56}},
-            {type:'moblin',color:1,position:{x:8,y:88}},
-            {type:'moblin',color:1,position:{x:8,y:104}},
-            {type:'moblin',color:1,position:{x:168,y:8}},
+            {"type":'moblin',"color":1,"pos":{x:8,y:56}},
+            {"type":'moblin',"color":1,"pos":{x:8,y:88}},
+            {"type":'moblin',"color":1,"pos":{x:8,y:104}},
+            {"type":'moblin',"color":1,"pos":{x:168,y:8}},
         ],
         tiles: [ // screen 1,7
             [10,10,00,00,00,00,00,00,00,20,10],
@@ -432,9 +436,9 @@
     ],
     [ // column 2
         {enemies: [
-            {type:'lynel',color:0,position:{x:136,y:88}},
-            {type:'lynel',color:0,position:{x:168,y:104}},
-            {type:'lynel',color:0,position:{x:200,y:56}},
+            {"type":'lynel',"color":0,"pos":{x:136,y:88}},
+            {"type":'lynel',"color":0,"pos":{x:168,y:104}},
+            {"type":'lynel',"color":0,"pos":{x:200,y:56}},
         ],
         tiles: [ // screen 2,0
             [10,10,10,10,10,00,20,10,10,10,10],
@@ -456,12 +460,12 @@
         ]},
         { // screen 2,1
         enemies: [
-            {"type":"lynel","color":1,"position":{"x":56,"y":56}},
-            {"type":"lynel","color":1,"position":{"x":40,"y":88}},
-            {"type":"lynel","color":1,"position":{"x":56,"y":120}},
-            {"type":"lynel","color":1,"position":{"x":88,"y":104}},
-            {"type":"lynel","color":1,"position":{"x":120,"y":104}},
-            {"type":"lynel","color":1,"position":{"x":120,"y":72}},
+            {"type":"lynel","color":1,"pos":{"x":56,"y":56}},
+            {"type":"lynel","color":1,"pos":{"x":40,"y":88}},
+            {"type":"lynel","color":1,"pos":{"x":56,"y":120}},
+            {"type":"lynel","color":1,"pos":{"x":88,"y":104}},
+            {"type":"lynel","color":1,"pos":{"x":120,"y":104}},
+            {"type":"lynel","color":1,"pos":{"x":120,"y":72}},
         ],
         tiles: [
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -482,19 +486,19 @@
             [10,10,00,80,81,00,00,00,00,20,10],
         ]},
         {enemies: [
-            {type:'armos',color:2,position:{x:56,y:72}},
-            {type:'armos',color:2,position:{x:72,y:72}},
-            {type:'armos',color:2,position:{x:88,y:72}},
-            {type:'armos',color:2,position:{x:168,y:72}},
-            {type:'armos',color:2,position:{x:184,y:72}},
-            {type:'armos',color:2,position:{x:200,y:72}},
-            {type:'armos',color:2,position:{x:56,y:104}},
-            {type:'armos',color:2,position:{x:72,y:104}},
-            {type:'armos',color:2,position:{x:88,y:104}},
-            {type:'armos',color:2,position:{x:168,y:104}},
-            {type:'armos',color:2,position:{x:184,y:104}},
-            {type:'armos',color:2,position:{x:200,y:104}},
-            {type:'lynel',color:0,position:{x:168,y:40}},
+            {"type":'armos',"color":2,"pos":{x:56,y:72}},
+            {"type":'armos',"color":2,"pos":{x:72,y:72}},
+            {"type":'armos',"color":2,"pos":{x:88,y:72}},
+            {"type":'armos',"color":2,"pos":{x:168,y:72}},
+            {"type":'armos',"color":2,"pos":{x:184,y:72}},
+            {"type":'armos',"color":2,"pos":{x:200,y:72}},
+            {"type":'armos',"color":2,"pos":{x:56,y:104}},
+            {"type":'armos',"color":2,"pos":{x:72,y:104}},
+            {"type":'armos',"color":2,"pos":{x:88,y:104}},
+            {"type":'armos',"color":2,"pos":{x:168,y:104}},
+            {"type":'armos',"color":2,"pos":{x:184,y:104}},
+            {"type":'armos',"color":2,"pos":{x:200,y:104}},
+            {"type":'lynel',"color":0,"pos":{x:168,y:40}},
          ],
          tiles: [ // screen 2,2 (dungeon 6)
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -516,12 +520,12 @@
         ]},
         { // screen 2,3
         enemies: [
-            {"type":"peahat","color":0,"position":{"x":152,"y":88}},
-            {"type":"peahat","color":0,"position":{"x":72,"y":136}},
-            {"type":"lynel","color":0,"position":{"x":88,"y":104}},
-            {"type":"lynel","color":0,"position":{"x":136,"y":120}},
-            {"type":"lynel","color":1,"position":{"x":168,"y":72}},
-            {"type":"lynel","color":1,"position":{"x":184,"y":120}},
+            {"type":"peahat","color":0,"pos":{"x":152,"y":88}},
+            {"type":"peahat","color":0,"pos":{"x":72,"y":136}},
+            {"type":"lynel","color":0,"pos":{"x":88,"y":104}},
+            {"type":"lynel","color":0,"pos":{"x":136,"y":120}},
+            {"type":"lynel","color":1,"pos":{"x":168,"y":72}},
+            {"type":"lynel","color":1,"pos":{"x":184,"y":120}},
         ],
         tiles: [
             [10,10,10,41,00,00,00,40,10,10,10],
@@ -543,7 +547,7 @@
         ]},
         {  // screen 2,4 (dungeon 7)
         enemies: [
-            {"type":"moblin","color":0,"position":{"x":88,"y":40}},
+            {"type":"moblin","color":0,"pos":{"x":88,"y":40}},
         ],
         tiles: [
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -565,10 +569,10 @@
         ]},
         { // screen 2,5
         enemies: [
-            {"type":"moblin","color":0,"position":{"x":136,"y":8}},
-            {"type":"moblin","color":1,"position":{"x":120,"y":8}},
-            {"type":"moblin","color":1,"position":{"x":248,"y":40}},
-            {"type":"moblin","color":0,"position":{"x":248,"y":136}},
+            {"type":"moblin","color":0,"pos":{"x":136,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":120,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":248,"y":40}},
+            {"type":"moblin","color":0,"pos":{"x":248,"y":136}},
         ],
         tiles: [
             [11,11,11,11,00,00,00,11,11,11,11],
@@ -590,10 +594,10 @@
         ]},
         { // screen 2,6
         enemies: [
-            {"type":"moblin","color":1,"position":{"x":104,"y":8}},
-            {"type":"moblin","color":1,"position":{"x":168,"y":8}},
-            {"type":"moblin","color":1,"position":{"x":248,"y":72}},
-            {"type":"moblin","color":1,"position":{"x":248,"y":104}},
+            {"type":"moblin","color":1,"pos":{"x":104,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":168,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":248,"y":72}},
+            {"type":"moblin","color":1,"pos":{"x":248,"y":104}},
         ],
         tiles: [
             [11,11,11,11,00,00,00,11,11,11,11],
@@ -615,10 +619,10 @@
         ]},
         { // screen 2,7
         enemies: [
-            {"type":"moblin","color":1,"position":{"x":120,"y":8}},
-            {"type":"moblin","color":1,"position":{"x":8,"y":88}},
-            {"type":"moblin","color":1,"position":{"x":248,"y":40}},
-            {"type":"moblin","color":0,"position":{"x":104,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":120,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":8,"y":88}},
+            {"type":"moblin","color":1,"pos":{"x":248,"y":40}},
+            {"type":"moblin","color":0,"pos":{"x":104,"y":8}},
         ],
         tiles: [
             [11,11,11,11,00,00,00,11,11,11,11],
@@ -641,9 +645,9 @@
     ],
     [ // column 3
         {enemies: [
-            {type:'rock',color:0,position:{x:152,y:16}},
-            {type:'rock',color:0,position:{x:200,y:40}},
-            {type:'rock',color:0,position:{x:224,y:16}},
+            {"type":'rock',"color":0,"pos":{x:152,y:16}},
+            {"type":'rock',"color":0,"pos":{x:200,y:40}},
+            {"type":'rock',"color":0,"pos":{x:224,y:16}},
         ],
         tiles: [ // screen 3,0
             [10,10,10,10,31,00,00,00,00,20,10],
@@ -665,10 +669,10 @@
         ]},
         { // screen 3,1
         enemies: [
-            {"type":"lynel","color":1,"position":{"x":168,"y":56}},
-            {"type":"lynel","color":1,"position":{"x":24,"y":104}},
-            {"type":"lynel","color":0,"position":{"x":56,"y":72}},
-            {"type":"lynel","color":0,"position":{"x":200,"y":120}},
+            {"type":"lynel","color":1,"pos":{"x":168,"y":56}},
+            {"type":"lynel","color":1,"pos":{"x":24,"y":104}},
+            {"type":"lynel","color":0,"pos":{"x":56,"y":72}},
+            {"type":"lynel","color":0,"pos":{"x":200,"y":120}},
         ],
         tiles: [
             [10,10,00,90,91,00,00,00,00,20,10],
@@ -690,10 +694,10 @@
         ]},
         { // screen 3,2
         enemies: [
-            {"type":"lynel","color":0,"position":{"x":40,"y":72}},
-            {"type":"lynel","color":0,"position":{"x":56,"y":120}},
-            {"type":"lynel","color":0,"position":{"x":200,"y":56}},
-            {"type":"lynel","color":0,"position":{"x":184,"y":104}},
+            {"type":"lynel","color":0,"pos":{"x":40,"y":72}},
+            {"type":"lynel","color":0,"pos":{"x":56,"y":120}},
+            {"type":"lynel","color":0,"pos":{"x":200,"y":56}},
+            {"type":"lynel","color":0,"pos":{"x":184,"y":104}},
         ],
         tiles: [
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -714,16 +718,16 @@
             [10,10,00,00,00,00,00,00,00,20,10],
         ]},
         {enemies: [
-            {type:'armos',color:2,position:{x:56,y:72}},
-            {type:'armos',color:2,position:{x:88,y:72}},
-            {type:'armos',color:2,position:{x:120,y:72}},
-            {type:'armos',color:2,position:{x:152,y:72}},
-            {type:'armos',color:2,position:{x:184,y:72}},
-            {type:'armos',color:2,position:{x:56,y:104}},
-            {type:'armos',color:2,position:{x:88,y:104}},
-            {type:'armos',color:2,position:{x:120,y:104}},
-            {type:'armos',color:2,position:{x:152,y:104}},
-            {type:'armos',color:2,position:{x:184,y:104}},
+            {"type":'armos',"color":2,"pos":{x:56,y:72}},
+            {"type":'armos',"color":2,"pos":{x:88,y:72}},
+            {"type":'armos',"color":2,"pos":{x:120,y:72}},
+            {"type":'armos',"color":2,"pos":{x:152,y:72}},
+            {"type":'armos',"color":2,"pos":{x:184,y:72}},
+            {"type":'armos',"color":2,"pos":{x:56,y:104}},
+            {"type":'armos',"color":2,"pos":{x:88,y:104}},
+            {"type":'armos',"color":2,"pos":{x:120,y:104}},
+            {"type":'armos',"color":2,"pos":{x:152,y:104}},
+            {"type":'armos',"color":2,"pos":{x:184,y:104}},
          ],
          tiles: [ // screen 3,3
             [10,10,10,10,10,00,20,10,10,10,10],
@@ -763,11 +767,11 @@
         ]},
         { // screen 3,5
         enemies: [
-            {"type":"moblin","color":1,"position":{"x":136,"y":72}},
-            {"type":"moblin","color":1,"position":{"x":136,"y":104}},
-            {"type":"moblin","color":1,"position":{"x":168,"y":104}},
-            {"type":"moblin","color":0,"position":{"x":184,"y":56}},
-            {"type":"moblin","color":0,"position":{"x":200,"y":88}},
+            {"type":"moblin","color":1,"pos":{"x":136,"y":72}},
+            {"type":"moblin","color":1,"pos":{"x":136,"y":104}},
+            {"type":"moblin","color":1,"pos":{"x":168,"y":104}},
+            {"type":"moblin","color":0,"pos":{"x":184,"y":56}},
+            {"type":"moblin","color":0,"pos":{"x":200,"y":88}},
         ],
         tiles: [
             [11,11,00,11,11,11,11,11,00,11,11],
@@ -789,12 +793,12 @@
         ]},
         { // screen 3,6
         enemies: [
-            {"type":"moblin","color":0,"position":{"x":168,"y":40}},
-            {"type":"moblin","color":0,"position":{"x":184,"y":136}},
-            {"type":"moblin","color":0,"position":{"x":152,"y":104}},
-            {"type":"moblin","color":1,"position":{"x":120,"y":56}},
-            {"type":"octoroc","color":1,"position":{"x":88,"y":88}},
-            {"type":"octoroc","color":1,"position":{"x":120,"y":120}},
+            {"type":"moblin","color":0,"pos":{"x":168,"y":40}},
+            {"type":"moblin","color":0,"pos":{"x":184,"y":136}},
+            {"type":"moblin","color":0,"pos":{"x":152,"y":104}},
+            {"type":"moblin","color":1,"pos":{"x":120,"y":56}},
+            {"type":"octoroc","color":1,"pos":{"x":88,"y":88}},
+            {"type":"octoroc","color":1,"pos":{"x":120,"y":120}},
         ],
         tiles: [
             [11,11,11,00,00,00,00,00,11,11,11],
@@ -816,10 +820,10 @@
         ]},
         { // screen 3,7
         enemies: [
-            {"type":"moblin","color":1,"position":{"x":248,"y":72}},
-            {"type":"moblin","color":1,"position":{"x":248,"y":104}},
-            {"type":"moblin","color":1,"position":{"x":216,"y":8}},
-            {"type":"moblin","color":1,"position":{"x":152,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":248,"y":72}},
+            {"type":"moblin","color":1,"pos":{"x":248,"y":104}},
+            {"type":"moblin","color":1,"pos":{"x":216,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":152,"y":8}},
         ],
         tiles: [
             [11,11,00,11,11,11,11,11,00,11,11],
@@ -842,12 +846,12 @@
     ],
     [ // column 4
         {enemies: [
-            {type:'lynel',color:1,position:{x:40,y:88}},
-            {type:'lynel',color:1,position:{x:56,y:120}},
-            {type:'lynel',color:1,position:{x:88,y:72}},
-            {type:'lynel',color:1,position:{x:88,y:104}},
-            {type:'lynel',color:1,position:{x:120,y:104}},
-            {type:'lynel',color:1,position:{x:168,y:136}},
+            {"type":'lynel',"color":1,"pos":{x:40,y:88}},
+            {"type":'lynel',"color":1,"pos":{x:56,y:120}},
+            {"type":'lynel',"color":1,"pos":{x:88,y:72}},
+            {"type":'lynel',"color":1,"pos":{x:88,y:104}},
+            {"type":'lynel',"color":1,"pos":{x:120,y:104}},
+            {"type":'lynel',"color":1,"pos":{x:168,y:136}},
         ],
         tiles: [ // screen 4,0
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -869,18 +873,18 @@
         ]},
         { // screen 4,1
         enemies: [
-            {"type":"armos","color":0,"position":{"x":56,"y":72}},
-            {"type":"armos","color":0,"position":{"x":104,"y":72}},
-            {"type":"armos","color":0,"position":{"x":152,"y":72}},
-            {"type":"armos","color":0,"position":{"x":208,"y":72}},
-            {"type":"armos","color":0,"position":{"x":56,"y":104}},
-            {"type":"armos","color":0,"position":{"x":104,"y":104}},
-            {"type":"armos","color":0,"position":{"x":152,"y":104}},
-            {"type":"armos","color":0,"position":{"x":208,"y":104}},
-            {"type":"lynel","color":0,"position":{"x":168,"y":136}},
-            {"type":"lynel","color":0,"position":{"x":168,"y":40}},
-            {"type":"lynel","color":0,"position":{"x":104,"y":56}},
-            {"type":"lynel","color":0,"position":{"x":104,"y":120}},
+            {"type":"armos","color":0,"pos":{"x":56,"y":72}},
+            {"type":"armos","color":0,"pos":{"x":104,"y":72}},
+            {"type":"armos","color":0,"pos":{"x":152,"y":72}},
+            {"type":"armos","color":0,"pos":{"x":208,"y":72}},
+            {"type":"armos","color":0,"pos":{"x":56,"y":104}},
+            {"type":"armos","color":0,"pos":{"x":104,"y":104}},
+            {"type":"armos","color":0,"pos":{"x":152,"y":104}},
+            {"type":"armos","color":0,"pos":{"x":208,"y":104}},
+            {"type":"lynel","color":0,"pos":{"x":168,"y":136}},
+            {"type":"lynel","color":0,"pos":{"x":168,"y":40}},
+            {"type":"lynel","color":0,"pos":{"x":104,"y":56}},
+            {"type":"lynel","color":0,"pos":{"x":104,"y":120}},
         ],
         tiles: [
             [10,10,00,00,00,00,00,00,00,20,10],
@@ -901,16 +905,16 @@
             [10,10,10,10,41,00,00,00,00,20,10],
         ]},
         {enemies: [ // screen 4,2
-            {type:'armos',color:0,position:{x:40,y:72}},
-            {type:'armos',color:0,position:{x:88,y:72}},
-            {type:'armos',color:0,position:{x:128,y:72}},
-            {type:'armos',color:0,position:{x:184,y:72}},
-            {type:'armos',color:0,position:{x:224,y:72}},
-            {type:'armos',color:0,position:{x:40,y:104}},
-            {type:'armos',color:0,position:{x:88,y:104}},
-            {type:'armos',color:0,position:{x:128,y:104}},
-            {type:'armos',color:0,position:{x:184,y:104}},
-            {type:'armos',color:0,position:{x:224,y:104}},
+            {"type":'armos',"color":0,"pos":{x:40,y:72}},
+            {"type":'armos',"color":0,"pos":{x:88,y:72}},
+            {"type":'armos',"color":0,"pos":{x:128,y:72}},
+            {"type":'armos',"color":0,"pos":{x:184,y:72}},
+            {"type":'armos',"color":0,"pos":{x:224,y:72}},
+            {"type":'armos',"color":0,"pos":{x:40,y:104}},
+            {"type":'armos',"color":0,"pos":{x:88,y:104}},
+            {"type":'armos',"color":0,"pos":{x:128,y:104}},
+            {"type":'armos',"color":0,"pos":{x:184,y:104}},
+            {"type":'armos',"color":0,"pos":{x:224,y:104}},
          ],
          tiles: [
             [10,10,00,00,00,00,00,00,00,20,10],
@@ -932,16 +936,16 @@
         ]},
         { // screen 4,3
         enemies: [
-            {type:'armos',color:0,position:{x:40,y:72}},
-            {type:'armos',color:0,position:{x:72,y:72}},
-            {type:'armos',color:0,position:{x:104,y:72}},
-            {type:'armos',color:0,position:{x:40,y:104}},
-            {type:'armos',color:0,position:{x:72,y:104}},
-            {type:'armos',color:0,position:{x:104,y:104}},
-            {type:'leever',color:1,position:{x:72,y:40}},
-            {type:'leever',color:1,position:{x:104,y:40}},
-            {type:'leever',color:1,position:{x:152,y:40}},
-            {type:'leever',color:1,position:{x:152,y:72}},
+            {"type":'armos',"color":0,"pos":{x:40,y:72}},
+            {"type":'armos',"color":0,"pos":{x:72,y:72}},
+            {"type":'armos',"color":0,"pos":{x:104,y:72}},
+            {"type":'armos',"color":0,"pos":{x:40,y:104}},
+            {"type":'armos',"color":0,"pos":{x:72,y:104}},
+            {"type":'armos',"color":0,"pos":{x:104,y:104}},
+            {"type":'leever',"color":1,"pos":{x:72,y:40}},
+            {"type":'leever',"color":1,"pos":{x:104,y:40}},
+            {"type":'leever',"color":1,"pos":{x:152,y:40}},
+            {"type":'leever',"color":1,"pos":{x:152,y:72}},
          ],
          tiles: [
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -963,11 +967,11 @@
         ]},
         { // screen 4,4
         enemies: [
-            {"type":"octoroc","color":0,"position":{"x":136,"y":88}},
-            {"type":"octoroc","color":0,"position":{"x":88,"y":40}},
-            {"type":"octoroc","color":0,"position":{"x":104,"y":104}},
-            {"type":"octoroc","color":0,"position":{"x":40,"y":72}},
-            {"type":"zola","color":0,"position":{"x":184,"y":40}},
+            {"type":"octoroc","color":0,"pos":{"x":136,"y":88}},
+            {"type":"octoroc","color":0,"pos":{"x":88,"y":40}},
+            {"type":"octoroc","color":0,"pos":{"x":104,"y":104}},
+            {"type":"octoroc","color":0,"pos":{"x":40,"y":72}},
+            {"type":"zola","color":0,"pos":{"x":184,"y":40}},
         ],
         tiles: [
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -988,11 +992,11 @@
             [57,57,57,57,57,57,57,57,57,57,57],
         ]},
         {enemies: [
-            {type:'octoroc',color:0,position:{x:104,y:72}},
-            {type:'octoroc',color:0,position:{x:40,y:72}},
-            {type:'octoroc',color:0,position:{x:104,y:104}},
-            {type:'octoroc',color:0,position:{x:56,y:120}},
-            {type:'zola',color:0,position:{x:184,y:40}}
+            {"type":'octoroc',"color":0,"pos":{x:104,y:72}},
+            {"type":'octoroc',"color":0,"pos":{x:40,y:72}},
+            {"type":'octoroc',"color":0,"pos":{x:104,y:104}},
+            {"type":'octoroc',"color":0,"pos":{x:56,y:120}},
+            {"type":'zola',"color":0,"pos":{x:184,y:40}}
         ],
         tiles: [ // screen 4,5
             [13,13,13,13,00,00,00,13,13,13,13],
@@ -1013,11 +1017,11 @@
             [57,57,57,57,58,00,22,12,12,12,12],
         ]},
         {enemies: [
-            {type:'octoroc',color:0,position:{x:72,y:40}},
-            {type:'octoroc',color:0,position:{x:104,y:40}},
-            {type:'octoroc',color:0,position:{x:152,y:40}},
-            {type:'octoroc',color:1,position:{x:128,y:72}},
-            {type:'octoroc',color:1,position:{x:152,y:88}},
+            {"type":'octoroc',"color":0,"pos":{x:72,y:40}},
+            {"type":'octoroc',"color":0,"pos":{x:104,y:40}},
+            {"type":'octoroc',"color":0,"pos":{x:152,y:40}},
+            {"type":'octoroc',"color":1,"pos":{x:128,y:72}},
+            {"type":'octoroc',"color":1,"pos":{x:152,y:88}},
         ],
         tiles: [ // screen 4,6
             [12,12,12,43,00,00,00,42,12,12,12],
@@ -1038,15 +1042,15 @@
             [12,12,00,00,00,00,00,00,00,22,12],
         ]},
         {enemies: [
-            {type:'armos',color:0,position:{x:72,y:72}},
-            {type:'armos',color:0,position:{x:104,y:72}},
-            {type:'armos',color:0,position:{x:168,y:72}},
-            {type:'armos',color:0,position:{x:200,y:72}},
-            {type:'armos',color:0,position:{x:72,y:104}},
-            {type:'armos',color:0,position:{x:104,y:104}},
-            {type:'armos',color:0,position:{x:168,y:104}},
-            {type:'armos',color:0,position:{x:200,y:104}},
-            {type:'tectite',color:0,position:{x:104,y:40}},
+            {"type":'armos',"color":0,"pos":{x:72,y:72}},
+            {"type":'armos',"color":0,"pos":{x:104,y:72}},
+            {"type":'armos',"color":0,"pos":{x:168,y:72}},
+            {"type":'armos',"color":0,"pos":{x:200,y:72}},
+            {"type":'armos',"color":0,"pos":{x:72,y:104}},
+            {"type":'armos',"color":0,"pos":{x:104,y:104}},
+            {"type":'armos',"color":0,"pos":{x:168,y:104}},
+            {"type":'armos',"color":0,"pos":{x:200,y:104}},
+            {"type":'tectite',"color":0,"pos":{x:104,y:40}},
          ],
          tiles: [ // screen 4,7 (dungeon 3)
             [12,12,12,33,00,00,00,32,12,12,12],
@@ -1069,12 +1073,12 @@
     ],
     [ // column 5
         {enemies: [
-            {type:'leever',color:0,position:{x:104,y:40}},
-            {type:'leever',color:1,position:{x:120,y:120}},
-            {type:'lynel',color:0,position:{x:56,y:56}},
-            {type:'lynel',color:0,position:{x:168,y:40}},
-            {type:'lynel',color:1,position:{x:120,y:72}},
-            {type:'lynel',color:1,position:{x:168,y:136}},
+            {"type":'leever',"color":0,"pos":{x:104,y:40}},
+            {"type":'leever',"color":1,"pos":{x:120,y:120}},
+            {"type":'lynel',"color":0,"pos":{x:56,y:56}},
+            {"type":'lynel',"color":0,"pos":{x:168,y:40}},
+            {"type":'lynel',"color":1,"pos":{x:120,y:72}},
+            {"type":'lynel',"color":1,"pos":{x:168,y:136}},
         ],
         tiles: [ // screen 5,0
             [10,10,31,00,00,00,00,00,30,10,10],
@@ -1096,12 +1100,12 @@
         ]},
         { // screen 5,1
         enemies: [
-            {"type":"peahat","color":0,"position":{"x":184,"y":56}},
-            {"type":"peahat","color":0,"position":{"x":168,"y":120}},
-            {"type":"lynel","color":0,"position":{"x":232,"y":56}},
-            {"type":"lynel","color":0,"position":{"x":184,"y":88}},
-            {"type":"lynel","color":1,"position":{"x":88,"y":120}},
-            {"type":"lynel","color":1,"position":{"x":152,"y":72}},
+            {"type":"peahat","color":0,"pos":{"x":184,"y":56}},
+            {"type":"peahat","color":0,"pos":{"x":168,"y":120}},
+            {"type":"lynel","color":0,"pos":{"x":232,"y":56}},
+            {"type":"lynel","color":0,"pos":{"x":184,"y":88}},
+            {"type":"lynel","color":1,"pos":{"x":88,"y":120}},
+            {"type":"lynel","color":1,"pos":{"x":152,"y":72}},
         ],
         tiles: [
             [10,10,10,10,10,00,00,00,00,20,10],
@@ -1123,18 +1127,18 @@
         ]},
         { // screen 5,2
         enemies: [
-            {"type":"armos","color":0,"position":{"x":40,"y":72}},
-            {"type":"armos","color":0,"position":{"x":88,"y":72}},
-            {"type":"armos","color":0,"position":{"x":128,"y":72}},
-            {"type":"armos","color":0,"position":{"x":184,"y":72}},
-            {"type":"armos","color":0,"position":{"x":40,"y":104}},
-            {"type":"armos","color":0,"position":{"x":88,"y":104}},
-            {"type":"armos","color":0,"position":{"x":128,"y":104}},
-            {"type":"armos","color":0,"position":{"x":184,"y":104}},
-            {"type":"peahat","color":0,"position":{"x":88,"y":40}},
-            {"type":"peahat","color":0,"position":{"x":168,"y":56}},
-            {"type":"peahat","color":0,"position":{"x":200,"y":104}},
-            {"type":"peahat","color":0,"position":{"x":120,"y":136}},
+            {"type":"armos","color":0,"pos":{"x":40,"y":72}},
+            {"type":"armos","color":0,"pos":{"x":88,"y":72}},
+            {"type":"armos","color":0,"pos":{"x":128,"y":72}},
+            {"type":"armos","color":0,"pos":{"x":184,"y":72}},
+            {"type":"armos","color":0,"pos":{"x":40,"y":104}},
+            {"type":"armos","color":0,"pos":{"x":88,"y":104}},
+            {"type":"armos","color":0,"pos":{"x":128,"y":104}},
+            {"type":"armos","color":0,"pos":{"x":184,"y":104}},
+            {"type":"peahat","color":0,"pos":{"x":88,"y":40}},
+            {"type":"peahat","color":0,"pos":{"x":168,"y":56}},
+            {"type":"peahat","color":0,"pos":{"x":200,"y":104}},
+            {"type":"peahat","color":0,"pos":{"x":120,"y":136}},
         ],
         tiles: [
             [10,10,00,00,00,00,00,00,00,20,10],
@@ -1156,7 +1160,7 @@
         ]},
         { // screen 5,3
         enemies: [
-            {"type":"zola","color":0,"position":{"x":184,"y":136}},
+            {"type":"zola","color":0,"pos":{"x":184,"y":136}},
         ],
         tiles: [
             [10,10,10,10,10,10,57,57,57,57,57],
@@ -1178,7 +1182,7 @@
         ]},
         { // screen 5,4 (dungeon 4)
         enemies: [
-            {"type":"peahat","color":0,"position":{"x":56,"y":56}},
+            {"type":"peahat","color":0,"pos":{"x":56,"y":56}},
         ],
         tiles: [
             [57,57,57,57,57,57,57,57,57,57,57],
@@ -1199,8 +1203,8 @@
             [57,57,57,57,57,57,57,57,57,57,57],
         ]},
         {enemies: [
-            {type:'octoroc',color:0,position:{x:152,y:104}},
-            {type:'zola',color:0,position:{x:88,y:72}}
+            {"type":'octoroc',"color":0,"pos":{x:152,y:104}},
+            {"type":'zola',"color":0,"pos":{x:88,y:72}}
         ],
         tiles: [ // screen 5,5
             [57,57,57,57,58,00,22,12,12,12,12],
@@ -1221,11 +1225,11 @@
             [57,57,57,57,58,00,22,12,12,12,12],
         ]},
         {enemies: [
-            {type:'octoroc',color:0,position:{x:16,y:40}},
-            {type:'octoroc',color:0,position:{x:152,y:72}},
-            {type:'octoroc',color:0,position:{x:56,y:104}},
-            {type:'octoroc',color:0,position:{x:120,y:116}},
-            {type:'zola',color:0,position:{x:88,y:72}}
+            {"type":'octoroc',"color":0,"pos":{x:16,y:40}},
+            {"type":'octoroc',"color":0,"pos":{x:152,y:72}},
+            {"type":'octoroc',"color":0,"pos":{x:56,y:104}},
+            {"type":'octoroc',"color":0,"pos":{x:120,y:116}},
+            {"type":'zola',"color":0,"pos":{x:88,y:72}}
         ],
         tiles: [ // screen 5,6
             [12,12,00,00,00,00,00,00,00,22,12],
@@ -1246,13 +1250,13 @@
             [12,12,00,00,00,00,00,00,00,22,12],
         ]},
         {enemies: [
-            {type:'peahat',color:0,position:{x:72,y:152}},
-            {type:'peahat',color:0,position:{x:40,y:104}},
-            {type:'peahat',color:0,position:{x:152,y:72}},
-            {type:'leever',color:0,position:{x:56,y:72}},
-            {type:'leever',color:1,position:{x:184,y:120}},
-            {type:'leever',color:1,position:{x:120,y:88}},
-            {type:'zola',color:0,position:{x:88,y:72}}
+            {"type":'peahat',"color":0,"pos":{x:72,y:152}},
+            {"type":'peahat',"color":0,"pos":{x:40,y:104}},
+            {"type":'peahat',"color":0,"pos":{x:152,y:72}},
+            {"type":'leever',"color":0,"pos":{x:56,y:72}},
+            {"type":'leever',"color":1,"pos":{x:184,y:120}},
+            {"type":'leever',"color":1,"pos":{x:120,y:88}},
+            {"type":'zola',"color":0,"pos":{x:88,y:72}}
         ],
         tiles: [ // screen 5,7
             [12,12,12,12,12,12,12,12,12,12,12],
@@ -1275,12 +1279,12 @@
     ],
     [ // column 6
         {enemies: [
-            {type:'peahat',position:{x:72,y:72}},
-            {type:'peahat',position:{x:88,y:104}},
-            {type:'lynel',color:0,position:{x:88,y:72}},
-            {type:'lynel',color:0,position:{x:120,y:72}},
-            {type:'lynel',color:1,position:{x:40,y:88}},
-            {type:'lynel',color:1,position:{x:120,y:104}},
+            {"type":'peahat',"pos":{x:72,y:72}},
+            {"type":'peahat',"pos":{x:88,y:104}},
+            {"type":'lynel',"color":0,"pos":{x:88,y:72}},
+            {"type":'lynel',"color":0,"pos":{x:120,y:72}},
+            {"type":'lynel',"color":1,"pos":{x:40,y:88}},
+            {"type":'lynel',"color":1,"pos":{x:120,y:104}},
         ],
         tiles: [ // screen 6,0
             [10,10,10,10,31,00,30,10,10,10,10],
@@ -1302,9 +1306,9 @@
         ]},
         { // screen 6,1
         enemies: [
-            {"type":"rock","color":0,"position":{"x":232,"y":8}},
-            {"type":"rock","color":0,"position":{"x":200,"y":24}},
-            {"type":"rock","color":0,"position":{"x":168,"y":8}},
+            {"type":"rock","color":0,"pos":{"x":232,"y":8}},
+            {"type":"rock","color":0,"pos":{"x":200,"y":24}},
+            {"type":"rock","color":0,"pos":{"x":168,"y":8}},
         ],
         tiles: [
             [10,10,41,00,00,00,00,00,40,10,10],
@@ -1326,13 +1330,13 @@
         ]},
         { // screen 6,2
         enemies: [
-            {"type":"peahat","color":0,"position":{"x":104,"y":40}},
-            {"type":"peahat","color":0,"position":{"x":72,"y":72}},
-            {"type":"peahat","color":0,"position":{"x":104,"y":120}},
-            {"type":"peahat","color":0,"position":{"x":168,"y":72}},
-            {"type":"peahat","color":0,"position":{"x":152,"y":88}},
-            {"type":"peahat","color":0,"position":{"x":120,"y":72}},
-            {"type":"zola","color":0,"position":{"x":216,"y":136}},
+            {"type":"peahat","color":0,"pos":{"x":104,"y":40}},
+            {"type":"peahat","color":0,"pos":{"x":72,"y":72}},
+            {"type":"peahat","color":0,"pos":{"x":104,"y":120}},
+            {"type":"peahat","color":0,"pos":{"x":168,"y":72}},
+            {"type":"peahat","color":0,"pos":{"x":152,"y":88}},
+            {"type":"peahat","color":0,"pos":{"x":120,"y":72}},
+            {"type":"zola","color":0,"pos":{"x":216,"y":136}},
         ],
         tiles: [
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -1354,7 +1358,7 @@
         ]},
         { // screen 6,3
         enemies: [
-            {"type":"zola","color":0,"position":{"x":200,"y":104}},
+            {"type":"zola","color":0,"pos":{"x":200,"y":104}},
         ],
         tiles: [
             [10,10,10,41,00,00,56,57,57,57,57],
@@ -1376,7 +1380,7 @@
         ]},
         { // screen 6,4
         enemies: [
-            {"type":"zola","color":0,"position":{"x":120,"y":56}},
+            {"type":"zola","color":0,"pos":{"x":120,"y":56}},
         ],
         tiles: [
             [57,57,57,57,57,57,57,57,57,57,57],
@@ -1398,11 +1402,11 @@
         ]},
         { // screen 6,5
         enemies: [
-            {"type":"zola","color":0,"position":{"x":72,"y":40}},
-            {"type":"octoroc","color":0,"position":{"x":216,"y":88}},
-            {"type":"octoroc","color":0,"position":{"x":200,"y":120}},
-            {"type":"octoroc","color":0,"position":{"x":200,"y":56}},
-            {"type":"octoroc","color":0,"position":{"x":88,"y":120}},
+            {"type":"zola","color":0,"pos":{"x":72,"y":40}},
+            {"type":"octoroc","color":0,"pos":{"x":216,"y":88}},
+            {"type":"octoroc","color":0,"pos":{"x":200,"y":120}},
+            {"type":"octoroc","color":0,"pos":{"x":200,"y":56}},
+            {"type":"octoroc","color":0,"pos":{"x":88,"y":120}},
         ],
         tiles: [
             [57,57,57,57,58,00,22,12,12,12,12],
@@ -1423,11 +1427,14 @@
             [13,13,00,00,00,00,00,00,00,13,13],
         ]},
         { // screen 6,6
+        items: [
+            {"type":"candle","color":0,"pos":{x:120,y:40}}
+        ],
         enemies: [
-            {"type":"octoroc","color":0,"position":{"x":40,"y":72}},
-            {"type":"octoroc","color":0,"position":{"x":184,"y":40}},
-            {"type":"octoroc","color":0,"position":{"x":104,"y":104}},
-            {"type":"octoroc","color":0,"position":{"x":56,"y":136}},
+            {"type":"octoroc","color":0,"pos":{"x":40,"y":72}},
+            {"type":"octoroc","color":0,"pos":{"x":184,"y":40}},
+            {"type":"octoroc","color":0,"pos":{"x":104,"y":104}},
+            {"type":"octoroc","color":0,"pos":{"x":56,"y":136}},
         ],
         tiles: [
             [12,12,00,00,00,00,00,00,00,22,12],
@@ -1449,10 +1456,10 @@
         ]},
         { // screen 6,7
         enemies: [
-            {"type":"tectite","color":0,"position":{"x":88,"y":72}},
-            {"type":"tectite","color":0,"position":{"x":88,"y":104}},
-            {"type":"tectite","color":0,"position":{"x":56,"y":120}},
-            {"type":"tectite","color":0,"position":{"x":120,"y":72}},
+            {"type":"tectite","color":0,"pos":{"x":88,"y":72}},
+            {"type":"tectite","color":0,"pos":{"x":88,"y":104}},
+            {"type":"tectite","color":0,"pos":{"x":56,"y":120}},
+            {"type":"tectite","color":0,"pos":{"x":120,"y":72}},
         ],
         tiles: [
             [12,12,00,00,00,00,00,00,00,22,12],
@@ -1475,7 +1482,7 @@
     ],
     [ // column 7
         {enemies: [
-            {type:'lynel',color:0,position:{x:136,y:88}},
+            {"type":'lynel',"color":0,"pos":{x:136,y:88}},
         ],
         tiles: [ // screen 7,0
             [10,10,10,10,10,00,20,10,10,10,10],
@@ -1497,10 +1504,10 @@
         ]},
         { // screen 7,1
         enemies: [
-            {"type":"zola","color":0,"position":{"x":104,"y":72}},
-            {"type":"rock","color":0,"position":{"x":248,"y":8}},
-            {"type":"rock","color":0,"position":{"x":216,"y":24}},
-            {"type":"rock","color":0,"position":{"x":200,"y":8}},
+            {"type":"zola","color":0,"pos":{"x":104,"y":72}},
+            {"type":"rock","color":0,"pos":{"x":248,"y":8}},
+            {"type":"rock","color":0,"pos":{"x":216,"y":24}},
+            {"type":"rock","color":0,"pos":{"x":200,"y":8}},
         ],
         tiles: [
             [10,31,00,00,00,00,00,00,00,20,10],
@@ -1522,13 +1529,13 @@
         ]},
         { // screen 7,2
         enemies: [
-            {"type":"peahat","color":0,"position":{"x":168,"y":56}},
-            {"type":"peahat","color":0,"position":{"x":168,"y":56}},
-            {"type":"peahat","color":0,"position":{"x":136,"y":88}},
-            {"type":"peahat","color":0,"position":{"x":136,"y":88}},
-            {"type":"peahat","color":0,"position":{"x":104,"y":56}},
-            {"type":"peahat","color":0,"position":{"x":104,"y":56}},
-            {"type":"zola","color":0,"position":{"x":168,"y":152}},
+            {"type":"peahat","color":0,"pos":{"x":168,"y":56}},
+            {"type":"peahat","color":0,"pos":{"x":168,"y":56}},
+            {"type":"peahat","color":0,"pos":{"x":136,"y":88}},
+            {"type":"peahat","color":0,"pos":{"x":136,"y":88}},
+            {"type":"peahat","color":0,"pos":{"x":104,"y":56}},
+            {"type":"peahat","color":0,"pos":{"x":104,"y":56}},
+            {"type":"zola","color":0,"pos":{"x":168,"y":152}},
         ],
         tiles: [
             [10,10,10,41,00,00,56,57,57,57,57],
@@ -1550,7 +1557,7 @@
         ]},
         { // screen 7,3 (dungeon 1)
         enemies: [
-            {"type":"octoroc","color":0,"position":{"x":136,"y":88}},
+            {"type":"octoroc","color":0,"pos":{"x":136,"y":88}},
         ],
         tiles: [
             [57,57,57,57,57,57,57,57,57,57,57],
@@ -1572,7 +1579,10 @@
         ]},
         { // screen 7,4
         enemies: [
-            {"type":"zola","color":0,"position":{"x":200,"y":40}},
+            {"type":"zola","color":0,"pos":{"x":200,"y":40}},
+        ],
+        items: [
+            {"type":"bigheart","pos":{x:168,y:104}}
         ],
         tiles: [
             [57,57,57,57,58,00,00,13,13,13,13],
@@ -1594,10 +1604,10 @@
         ]},
         { // screen 7,5
         enemies: [
-            {"type":"octoroc","color":0,"position":{"x":248,"y":40}},
-            {"type":"octoroc","color":0,"position":{"x":248,"y":72}},
-            {"type":"octoroc","color":0,"position":{"x":8,"y":56}},
-            {"type":"octoroc","color":0,"position":{"x":8,"y":88}},
+            {"type":"octoroc","color":0,"pos":{"x":248,"y":40}},
+            {"type":"octoroc","color":0,"pos":{"x":248,"y":72}},
+            {"type":"octoroc","color":0,"pos":{"x":8,"y":56}},
+            {"type":"octoroc","color":0,"pos":{"x":8,"y":88}},
         ],
         tiles: [
             [13,13,00,00,00,00,00,00,00,13,13],
@@ -1619,10 +1629,10 @@
         ]},
         { // screen 7,6
         enemies: [
-            {"type":"octoroc","color":0,"position":{"x":72,"y":40}},
-            {"type":"octoroc","color":0,"position":{"x":152,"y":72}},
-            {"type":"octoroc","color":0,"position":{"x":104,"y":120}},
-            {"type":"octoroc","color":0,"position":{"x":216,"y":88}},
+            {"type":"octoroc","color":0,"pos":{"x":72,"y":40}},
+            {"type":"octoroc","color":0,"pos":{"x":152,"y":72}},
+            {"type":"octoroc","color":0,"pos":{"x":104,"y":120}},
+            {"type":"octoroc","color":0,"pos":{"x":216,"y":88}},
         ],
         tiles: [
             [12,12,12,33,00,00,00,32,12,12,12],
@@ -1644,7 +1654,7 @@
         ]},
         {// starting location: screen 7,7
         items: [
-            {type:"sword",color:0,position:{x:72,y:28}}
+            {"type":"sword","color":0,"pos":{x:72,y:28}}
         ],
         tiles: [
             [12,12,12,12,12,00,22,12,12,12,12],
@@ -1667,9 +1677,9 @@
     ],
     [ // column 8
         {enemies: [
-            {type:'rock',color:0,position:{x:132,y:16}},
-            {type:'rock',color:0,position:{x:162,y:40}},
-            {type:'rock',color:0,position:{x:184,y:16}},
+            {"type":'rock',"color":0,"pos":{x:132,y:16}},
+            {"type":'rock',"color":0,"pos":{x:162,y:40}},
+            {"type":'rock',"color":0,"pos":{x:184,y:16}},
         ],
         tiles: [ // screen 8,0
             [10,10,10,10,31,00,30,10,10,10,10],
@@ -1691,10 +1701,10 @@
         ]},
         { // screen 8,1
         enemies: [
-            {"type":"rock","color":0,"position":{"x":232,"y":8}},
-            {"type":"rock","color":0,"position":{"x":200,"y":24}},
-            {"type":"rock","color":0,"position":{"x":168,"y":8}},
-            {"type":"zola","color":0,"position":{"x":72,"y":72}},
+            {"type":"rock","color":0,"pos":{"x":232,"y":8}},
+            {"type":"rock","color":0,"pos":{"x":200,"y":24}},
+            {"type":"rock","color":0,"pos":{"x":168,"y":8}},
+            {"type":"zola","color":0,"pos":{"x":72,"y":72}},
         ],
         tiles: [
             [10,10,10,10,58,00,00,00,00,20,10],
@@ -1716,13 +1726,13 @@
         ]},
         { // screen 8,2
         enemies: [
-            {"type":"zola","color":0,"position":{"x":56,"y":136}},
-            {"type":"peahat","color":0,"position":{"x":200,"y":72}},
-            {"type":"peahat","color":0,"position":{"x":136,"y":56}},
-            {"type":"peahat","color":0,"position":{"x":104,"y":88}},
-            {"type":"peahat","color":0,"position":{"x":136,"y":120}},
-            {"type":"peahat","color":0,"position":{"x":168,"y":72}},
-            {"type":"peahat","color":0,"position":{"x":200,"y":136}},
+            {"type":"zola","color":0,"pos":{"x":56,"y":136}},
+            {"type":"peahat","color":0,"pos":{"x":200,"y":72}},
+            {"type":"peahat","color":0,"pos":{"x":136,"y":56}},
+            {"type":"peahat","color":0,"pos":{"x":104,"y":88}},
+            {"type":"peahat","color":0,"pos":{"x":136,"y":120}},
+            {"type":"peahat","color":0,"pos":{"x":168,"y":72}},
+            {"type":"peahat","color":0,"pos":{"x":200,"y":136}},
         ],
         tiles: [
             [11,11,00,00,00,00,56,57,57,57,57],
@@ -1744,13 +1754,13 @@
         ]},
         { // screen 8,3
         enemies: [
-            {"type":"zola","color":0,"position":{"x":56,"y":40}},
-            {"type":"octoroc","color":0,"position":{"x":232,"y":56}},
-            {"type":"octoroc","color":0,"position":{"x":216,"y":120}},
-            {"type":"octoroc","color":0,"position":{"x":168,"y":104}},
-            {"type":"octoroc","color":1,"position":{"x":152,"y":72}},
-            {"type":"octoroc","color":0,"position":{"x":200,"y":56}},
-            {"type":"octoroc","color":0,"position":{"x":136,"y":136}},
+            {"type":"zola","color":0,"pos":{"x":56,"y":40}},
+            {"type":"octoroc","color":0,"pos":{"x":232,"y":56}},
+            {"type":"octoroc","color":0,"pos":{"x":216,"y":120}},
+            {"type":"octoroc","color":0,"pos":{"x":168,"y":104}},
+            {"type":"octoroc","color":1,"pos":{"x":152,"y":72}},
+            {"type":"octoroc","color":0,"pos":{"x":200,"y":56}},
+            {"type":"octoroc","color":0,"pos":{"x":136,"y":136}},
         ],
         tiles: [
             [57,57,57,57,57,27,57,57,57,57,57],
@@ -1772,11 +1782,14 @@
         ]},
         { // screen 8,4
         enemies: [
-            {"type":"zola","color":0,"position":{"x":56,"y":40}},
-            {"type":"leever","color":0,"position":{"x":152,"y":72}},
-            {"type":"leever","color":0,"position":{"x":152,"y":104}},
-            {"type":"leever","color":0,"position":{"x":72,"y":120}},
-            {"type":"leever","color":0,"position":{"x":104,"y":120}},
+            {"type":"zola","color":0,"pos":{"x":56,"y":40}},
+            {"type":"leever","color":0,"pos":{"x":152,"y":72}},
+            {"type":"leever","color":0,"pos":{"x":152,"y":104}},
+            {"type":"leever","color":0,"pos":{"x":72,"y":120}},
+            {"type":"leever","color":0,"pos":{"x":104,"y":120}},
+        ],
+        items: [
+            {"type":"bigheart","pos":{x:196,y:40}}
         ],
         tiles: [
             [57,57,57,57,58,00,00,13,13,13,13],
@@ -1798,10 +1811,10 @@
         ]},
         { // screen 8,5
         enemies: [
-            {"type":"octoroc","color":0,"position":{"x":248,"y":72}},
-            {"type":"octoroc","color":0,"position":{"x":248,"y":104}},
-            {"type":"octoroc","color":0,"position":{"x":8,"y":40}},
-            {"type":"octoroc","color":0,"position":{"x":8,"y":72}},
+            {"type":"octoroc","color":0,"pos":{"x":248,"y":72}},
+            {"type":"octoroc","color":0,"pos":{"x":248,"y":104}},
+            {"type":"octoroc","color":0,"pos":{"x":8,"y":40}},
+            {"type":"octoroc","color":0,"pos":{"x":8,"y":72}},
         ],
         tiles: [
             [13,13,00,13,00,13,00,13,00,13,13],
@@ -1823,10 +1836,10 @@
         ]},
         { // screen 8,6
         enemies: [
-            {"type":"octoroc","color":0,"position":{"x":8,"y":72}},
-            {"type":"octoroc","color":0,"position":{"x":248,"y":72}},
-            {"type":"octoroc","color":0,"position":{"x":8,"y":104}},
-            {"type":"octoroc","color":0,"position":{"x":248,"y":104}},
+            {"type":"octoroc","color":0,"pos":{"x":8,"y":72}},
+            {"type":"octoroc","color":0,"pos":{"x":248,"y":72}},
+            {"type":"octoroc","color":0,"pos":{"x":8,"y":104}},
+            {"type":"octoroc","color":0,"pos":{"x":248,"y":104}},
         ],
         tiles: [
             [12,12,12,33,00,00,00,32,12,12,12],
@@ -1848,10 +1861,10 @@
         ]},
         { // screen 8,7
         enemies: [
-            {"type":"octoroc","color":0,"position":{"x":200,"y":8}},
-            {"type":"octoroc","color":0,"position":{"x":232,"y":8}},
-            {"type":"octoroc","color":0,"position":{"x":248,"y":120}},
-            {"type":"octoroc","color":0,"position":{"x":248,"y":72}},
+            {"type":"octoroc","color":0,"pos":{"x":200,"y":8}},
+            {"type":"octoroc","color":0,"pos":{"x":232,"y":8}},
+            {"type":"octoroc","color":0,"pos":{"x":248,"y":120}},
+            {"type":"octoroc","color":0,"pos":{"x":248,"y":72}},
         ],
         tiles: [
             [12,12,12,12,33,00,32,12,12,12,12],
@@ -1893,10 +1906,10 @@
         ]},
         { // screen 9,1
         enemies: [
-            {"type":"rock","color":0,"position":{"x":232,"y":8}},
-            {"type":"rock","color":0,"position":{"x":216,"y":24}},
-            {"type":"rock","color":0,"position":{"x":184,"y":8}},
-            {"type":"zola","color":0,"position":{"x":88,"y":72}},
+            {"type":"rock","color":0,"pos":{"x":232,"y":8}},
+            {"type":"rock","color":0,"pos":{"x":216,"y":24}},
+            {"type":"rock","color":0,"pos":{"x":184,"y":8}},
+            {"type":"zola","color":0,"pos":{"x":88,"y":72}},
         ],
         tiles: [
             [10,10,10,10,58,00,00,20,10,10,10],
@@ -1918,10 +1931,10 @@
         ]},
         { // screen 9,2
         enemies: [
-            {"type":"leever","color":0,"position":{"x":200,"y":120}},
-            {"type":"leever","color":0,"position":{"x":184,"y":120}},
-            {"type":"leever","color":0,"position":{"x":88,"y":88}},
-            {"type":"leever","color":0,"position":{"x":56,"y":88}},
+            {"type":"leever","color":0,"pos":{"x":200,"y":120}},
+            {"type":"leever","color":0,"pos":{"x":184,"y":120}},
+            {"type":"leever","color":0,"pos":{"x":88,"y":88}},
+            {"type":"leever","color":0,"pos":{"x":56,"y":88}},
         ],
         tiles: [
             [10,10,01,01,01,01,01,01,01,20,10],
@@ -1961,12 +1974,12 @@
         ]},
         { // screen 9,4
         enemies: [
-            {"type":"octoroc","color":0,"position":{"x":168,"y":72}},
-            {"type":"octoroc","color":0,"position":{"x":136,"y":104}},
-            {"type":"octoroc","color":0,"position":{"x":136,"y":24}},
-            {"type":"octoroc","color":0,"position":{"x":88,"y":104}},
-            {"type":"octoroc","color":0,"position":{"x":56,"y":72}},
-            {"type":"octoroc","color":1,"position":{"x":120,"y":72}},
+            {"type":"octoroc","color":0,"pos":{"x":168,"y":72}},
+            {"type":"octoroc","color":0,"pos":{"x":136,"y":104}},
+            {"type":"octoroc","color":0,"pos":{"x":136,"y":24}},
+            {"type":"octoroc","color":0,"pos":{"x":88,"y":104}},
+            {"type":"octoroc","color":0,"pos":{"x":56,"y":72}},
+            {"type":"octoroc","color":1,"pos":{"x":120,"y":72}},
         ],
         tiles: [
             [13,13,13,13,13,13,13,13,13,13,13],
@@ -1988,11 +2001,11 @@
         ]},
         { // screen 9,5
         enemies: [
-            {"type":"peahat","color":0,"position":{"x":136,"y":56}},
-            {"type":"peahat","color":0,"position":{"x":72,"y":104}},
-            {"type":"peahat","color":0,"position":{"x":104,"y":72}},
-            {"type":"peahat","color":0,"position":{"x":136,"y":104}},
-            {"type":"zola","color":0,"position":{"x":200,"y":136}},
+            {"type":"peahat","color":0,"pos":{"x":136,"y":56}},
+            {"type":"peahat","color":0,"pos":{"x":72,"y":104}},
+            {"type":"peahat","color":0,"pos":{"x":104,"y":72}},
+            {"type":"peahat","color":0,"pos":{"x":136,"y":104}},
+            {"type":"zola","color":0,"pos":{"x":200,"y":136}},
         ],
         tiles: [
             [13,13,13,13,00,00,00,13,13,13,13],
@@ -2014,11 +2027,11 @@
         ]},
         { // screen 9,6
         enemies: [
-            {"type":"zola","color":0,"position":{"x":200,"y":40}},
-            {"type":"octoroc","color":0,"position":{"x":184,"y":104}},
-            {"type":"octoroc","color":0,"position":{"x":168,"y":136}},
-            {"type":"octoroc","color":0,"position":{"x":120,"y":72}},
-            {"type":"octoroc","color":0,"position":{"x":56,"y":88}},
+            {"type":"zola","color":0,"pos":{"x":200,"y":40}},
+            {"type":"octoroc","color":0,"pos":{"x":184,"y":104}},
+            {"type":"octoroc","color":0,"pos":{"x":168,"y":136}},
+            {"type":"octoroc","color":0,"pos":{"x":120,"y":72}},
+            {"type":"octoroc","color":0,"pos":{"x":56,"y":88}},
         ],
         tiles: [
             [13,13,13,13,00,00,00,13,13,13,13],
@@ -2040,11 +2053,11 @@
         ]},
         { // screen 9,7
         enemies: [
-            {"type":"tectite","color":1,"position":{"x":136,"y":104}},
-            {"type":"tectite","color":1,"position":{"x":136,"y":72}},
-            {"type":"tectite","color":1,"position":{"x":168,"y":72}},
-            {"type":"tectite","color":1,"position":{"x":168,"y":104}},
-            {"type":"tectite","color":1,"position":{"x":216,"y":88}},
+            {"type":"tectite","color":1,"pos":{"x":136,"y":104}},
+            {"type":"tectite","color":1,"pos":{"x":136,"y":72}},
+            {"type":"tectite","color":1,"pos":{"x":168,"y":72}},
+            {"type":"tectite","color":1,"pos":{"x":168,"y":104}},
+            {"type":"tectite","color":1,"pos":{"x":216,"y":88}},
         ],
         tiles: [
             [10,41,00,00,00,00,00,00,00,40,10],
@@ -2066,11 +2079,15 @@
         ]}
     ],
     [ // column 10
-        {enemies: [
-            {type:'lynel',color:1,position:{x:200,y:56}},
-            {type:'zola',color:0,position:{x:72,y:56}},
+        { // screen 10,0
+        items: [
+            {"type":"sword","color":1,"pos":{x:40,y:40}}
         ],
-        tiles: [ // screen 10,0
+        enemies: [
+            {"type":'lynel',"color":1,"pos":{x:200,y:56}},
+            {"type":'zola',"color":0,"pos":{x:72,y:56}},
+        ],
+        tiles: [
             [10,10,10,10,10,10,10,10,10,10,10],
             [10,10,31,00,00,00,00,00,30,10,10],
             [10,16,00,00,00,00,00,00,00,20,10],
@@ -2090,13 +2107,13 @@
         ]},
         { // screen 10,1
         enemies: [
-            {"type":"zola","color":0,"position":{"x":40,"y":72}},
-            {"type":"tectite","color":0,"position":{"x":184,"y":120}},
-            {"type":"tectite","color":0,"position":{"x":136,"y":104}},
-            {"type":"tectite","color":0,"position":{"x":184,"y":88}},
-            {"type":"tectite","color":0,"position":{"x":88,"y":72}},
-            {"type":"tectite","color":0,"position":{"x":40,"y":104}},
-            {"type":"tectite","color":0,"position":{"x":232,"y":120}},
+            {"type":"zola","color":0,"pos":{"x":40,"y":72}},
+            {"type":"tectite","color":0,"pos":{"x":184,"y":120}},
+            {"type":"tectite","color":0,"pos":{"x":136,"y":104}},
+            {"type":"tectite","color":0,"pos":{"x":184,"y":88}},
+            {"type":"tectite","color":0,"pos":{"x":88,"y":72}},
+            {"type":"tectite","color":0,"pos":{"x":40,"y":104}},
+            {"type":"tectite","color":0,"pos":{"x":232,"y":120}},
         ],
         tiles: [
             [10,10,10,10,58,00,00,20,10,10,10],
@@ -2118,12 +2135,12 @@
         ]},
         { // screen 10,2
         enemies: [
-            {"type":"leever","color":1,"position":{"x":216,"y":72}},
-            {"type":"leever","color":1,"position":{"x":168,"y":88}},
-            {"type":"leever","color":1,"position":{"x":216,"y":152}},
-            {"type":"leever","color":1,"position":{"x":88,"y":72}},
-            {"type":"leever","color":1,"position":{"x":72,"y":136}},
-            {"type":"leever","color":1,"position":{"x":120,"y":136}},
+            {"type":"leever","color":1,"pos":{"x":216,"y":72}},
+            {"type":"leever","color":1,"pos":{"x":168,"y":88}},
+            {"type":"leever","color":1,"pos":{"x":216,"y":152}},
+            {"type":"leever","color":1,"pos":{"x":88,"y":72}},
+            {"type":"leever","color":1,"pos":{"x":72,"y":136}},
+            {"type":"leever","color":1,"pos":{"x":120,"y":136}},
         ],
         tiles: [
             [10,10,01,01,01,01,01,01,01,20,10],
@@ -2145,12 +2162,12 @@
         ]},
         { // screen 10,3
         enemies: [
-            {"type":"leever","color":1,"position":{"x":200,"y":88}},
-            {"type":"leever","color":1,"position":{"x":120,"y":120}},
-            {"type":"leever","color":0,"position":{"x":104,"y":56}},
-            {"type":"peahat","color":0,"position":{"x":168,"y":56}},
-            {"type":"peahat","color":0,"position":{"x":88,"y":88}},
-            {"type":"peahat","color":0,"position":{"x":200,"y":120}},
+            {"type":"leever","color":1,"pos":{"x":200,"y":88}},
+            {"type":"leever","color":1,"pos":{"x":120,"y":120}},
+            {"type":"leever","color":0,"pos":{"x":104,"y":56}},
+            {"type":"peahat","color":0,"pos":{"x":168,"y":56}},
+            {"type":"peahat","color":0,"pos":{"x":88,"y":88}},
+            {"type":"peahat","color":0,"pos":{"x":200,"y":120}},
         ],
         tiles: [
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -2172,12 +2189,12 @@
         ]},
         { // screen 10,4
         enemies: [
-            {"type":"tectite","color":1,"position":{"x":216,"y":88}},
-            {"type":"tectite","color":1,"position":{"x":200,"y":120}},
-            {"type":"tectite","color":1,"position":{"x":152,"y":56}},
-            {"type":"tectite","color":1,"position":{"x":152,"y":120}},
-            {"type":"tectite","color":1,"position":{"x":88,"y":136}},
-            {"type":"tectite","color":1,"position":{"x":88,"y":40}},
+            {"type":"tectite","color":1,"pos":{"x":216,"y":88}},
+            {"type":"tectite","color":1,"pos":{"x":200,"y":120}},
+            {"type":"tectite","color":1,"pos":{"x":152,"y":56}},
+            {"type":"tectite","color":1,"pos":{"x":152,"y":120}},
+            {"type":"tectite","color":1,"pos":{"x":88,"y":136}},
+            {"type":"tectite","color":1,"pos":{"x":88,"y":40}},
         ],
         tiles: [
             [12,12,12,43,00,00,00,42,12,12,12],
@@ -2199,11 +2216,11 @@
         ]},
         { // screen 10,5
         enemies: [
-            {"type":"zola","color":0,"position":{"x":56,"y":136}},
-            {"type":"octoroc","color":0,"position":{"x":200,"y":56}},
-            {"type":"octoroc","color":0,"position":{"x":152,"y":104}},
-            {"type":"octoroc","color":0,"position":{"x":104,"y":72}},
-            {"type":"octoroc","color":0,"position":{"x":200,"y":120}},
+            {"type":"zola","color":0,"pos":{"x":56,"y":136}},
+            {"type":"octoroc","color":0,"pos":{"x":200,"y":56}},
+            {"type":"octoroc","color":0,"pos":{"x":152,"y":104}},
+            {"type":"octoroc","color":0,"pos":{"x":104,"y":72}},
+            {"type":"octoroc","color":0,"pos":{"x":200,"y":120}},
         ],
         tiles: [
             [13,13,13,13,00,00,56,57,57,57,57],
@@ -2225,11 +2242,11 @@
         ]},
         { // screen 10,6
         enemies: [
-            {"type":"zola","color":0,"position":{"x":72,"y":40}},
-            {"type":"octoroc","color":0,"position":{"x":200,"y":40}},
-            {"type":"octoroc","color":0,"position":{"x":120,"y":104}},
-            {"type":"octoroc","color":0,"position":{"x":168,"y":120}},
-            {"type":"octoroc","color":0,"position":{"x":152,"y":72}},
+            {"type":"zola","color":0,"pos":{"x":72,"y":40}},
+            {"type":"octoroc","color":0,"pos":{"x":200,"y":40}},
+            {"type":"octoroc","color":0,"pos":{"x":120,"y":104}},
+            {"type":"octoroc","color":0,"pos":{"x":168,"y":120}},
+            {"type":"octoroc","color":0,"pos":{"x":152,"y":72}},
         ],
         tiles: [
             [57,57,57,57,58,00,00,00,00,13,13],
@@ -2251,10 +2268,10 @@
         ]},
         { // screen 10,7
         enemies: [
-            {"type":"tectite","color":1,"position":{"x":184,"y":88}},
-            {"type":"tectite","color":1,"position":{"x":184,"y":40}},
-            {"type":"tectite","color":1,"position":{"x":56,"y":56}},
-            {"type":"tectite","color":1,"position":{"x":136,"y":136}},
+            {"type":"tectite","color":1,"pos":{"x":184,"y":88}},
+            {"type":"tectite","color":1,"pos":{"x":184,"y":40}},
+            {"type":"tectite","color":1,"pos":{"x":56,"y":56}},
+            {"type":"tectite","color":1,"pos":{"x":136,"y":136}},
         ],
         tiles: [
             [10,10,10,10,31,00,30,10,10,10,10],
@@ -2278,15 +2295,15 @@
     [ // column 11
         { // screen 11,0 (dungeon 5)
         enemies: [
-            {type:'leever',color:0,position:{x:120,y:104}},
-            {type:'armos',color:0,position:{x:56,y:72}},
-            {type:'armos',color:0,position:{x:88,y:72}},
-            {type:'armos',color:0,position:{x:152,y:72}},
-            {type:'armos',color:0,position:{x:184,y:72}},
-            {type:'armos',color:0,position:{x:56,y:104}},
-            {type:'armos',color:0,position:{x:88,y:104}},
-            {type:'armos',color:0,position:{x:152,y:104}},
-            {type:'armos',color:0,position:{x:184,y:104}},
+            {"type":'leever',"color":0,"pos":{x:120,y:104}},
+            {"type":'armos',"color":0,"pos":{x:56,y:72}},
+            {"type":'armos',"color":0,"pos":{x:88,y:72}},
+            {"type":'armos',"color":0,"pos":{x:152,y:72}},
+            {"type":'armos',"color":0,"pos":{x:184,y:72}},
+            {"type":'armos',"color":0,"pos":{x:56,y:104}},
+            {"type":'armos',"color":0,"pos":{x:88,y:104}},
+            {"type":'armos',"color":0,"pos":{x:152,y:104}},
+            {"type":'armos',"color":0,"pos":{x:184,y:104}},
          ],
          tiles: [
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -2327,13 +2344,13 @@
         ]},
         { // screen 11,2
         enemies: [
-            {"type":"peahat","color":0,"position":{"x":72,"y":56}},
-            {"type":"peahat","color":0,"position":{"x":88,"y":88}},
-            {"type":"peahat","color":0,"position":{"x":120,"y":72}},
-            {"type":"leever","color":1,"position":{"x":200,"y":120}},
-            {"type":"leever","color":1,"position":{"x":168,"y":88}},
-            {"type":"leever","color":0,"position":{"x":136,"y":136}},
-            {"type":"leever","color":0,"position":{"x":104,"y":136}},
+            {"type":"peahat","color":0,"pos":{"x":72,"y":56}},
+            {"type":"peahat","color":0,"pos":{"x":88,"y":88}},
+            {"type":"peahat","color":0,"pos":{"x":120,"y":72}},
+            {"type":"leever","color":1,"pos":{"x":200,"y":120}},
+            {"type":"leever","color":1,"pos":{"x":168,"y":88}},
+            {"type":"leever","color":0,"pos":{"x":136,"y":136}},
+            {"type":"leever","color":0,"pos":{"x":104,"y":136}},
         ],
         tiles: [
             [10,10,01,01,01,01,01,01,01,20,10],
@@ -2355,10 +2372,10 @@
         ]},
         { // screen 11,3
         enemies: [
-            {"type":"leever","color":1,"position":{"x":184,"y":88}},
-            {"type":"leever","color":1,"position":{"x":120,"y":120}},
-            {"type":"leever","color":1,"position":{"x":152,"y":88}},
-            {"type":"leever","color":1,"position":{"x":88,"y":72}},
+            {"type":"leever","color":1,"pos":{"x":184,"y":88}},
+            {"type":"leever","color":1,"pos":{"x":120,"y":120}},
+            {"type":"leever","color":1,"pos":{"x":152,"y":88}},
+            {"type":"leever","color":1,"pos":{"x":88,"y":72}},
         ],
         tiles: [
             [10,10,01,01,01,01,01,01,01,10,10],
@@ -2380,12 +2397,12 @@
         ]},
         { // screen 11,4
         enemies: [
-            {"type":"moblin","color":0,"position":{"x":200,"y":8}},
-            {"type":"moblin","color":0,"position":{"x":216,"y":8}},
-            {"type":"moblin","color":0,"position":{"x":8,"y":72}},
-            {"type":"moblin","color":0,"position":{"x":8,"y":88}},
-            {"type":"moblin","color":0,"position":{"x":8,"y":104}},
-            {"type":"moblin","color":0,"position":{"x":24,"y":168}},
+            {"type":"moblin","color":0,"pos":{"x":200,"y":8}},
+            {"type":"moblin","color":0,"pos":{"x":216,"y":8}},
+            {"type":"moblin","color":0,"pos":{"x":8,"y":72}},
+            {"type":"moblin","color":0,"pos":{"x":8,"y":88}},
+            {"type":"moblin","color":0,"pos":{"x":8,"y":104}},
+            {"type":"moblin","color":0,"pos":{"x":24,"y":168}},
         ],
         tiles: [
             [13,13,13,13,00,00,00,13,13,13,13],
@@ -2407,10 +2424,10 @@
         ]},
         { // screen 11,5
         enemies: [
-            {"type":"moblin","color":0,"position":{"x":72,"y":8}},
-            {"type":"moblin","color":0,"position":{"x":120,"y":8}},
-            {"type":"moblin","color":1,"position":{"x":88,"y":8}},
-            {"type":"moblin","color":1,"position":{"x":152,"y":8}},
+            {"type":"moblin","color":0,"pos":{"x":72,"y":8}},
+            {"type":"moblin","color":0,"pos":{"x":120,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":88,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":152,"y":8}},
         ],
         tiles: [
             [13,13,00,00,00,00,00,00,00,13,13],
@@ -2432,12 +2449,12 @@
         ]},
         { // screen 11,6
         enemies: [
-            {"type":"moblin","color":1,"position":{"x":8,"y":56}},
-            {"type":"moblin","color":0,"position":{"x":200,"y":8}},
-            {"type":"moblin","color":0,"position":{"x":152,"y":8}},
-            {"type":"moblin","color":0,"position":{"x":88,"y":8}},
-            {"type":"octoroc","color":1,"position":{"x":120,"y":8}},
-            {"type":"octoroc","color":1,"position":{"x":72,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":8,"y":56}},
+            {"type":"moblin","color":0,"pos":{"x":200,"y":8}},
+            {"type":"moblin","color":0,"pos":{"x":152,"y":8}},
+            {"type":"moblin","color":0,"pos":{"x":88,"y":8}},
+            {"type":"octoroc","color":1,"pos":{"x":120,"y":8}},
+            {"type":"octoroc","color":1,"pos":{"x":72,"y":8}},
         ],
         tiles: [
             [13,13,00,00,00,00,00,00,00,13,13],
@@ -2459,11 +2476,14 @@
         ]},
         { // screen 11,7
         enemies: [
-            {"type":"zola","color":0,"position":{"x":184,"y":136}},
-            {"type":"leever","color":0,"position":{"x":104,"y":88}},
-            {"type":"leever","color":0,"position":{"x":136,"y":88}},
-            {"type":"leever","color":0,"position":{"x":168,"y":72}},
-            {"type":"leever","color":0,"position":{"x":184,"y":72}},
+            {"type":"zola","color":0,"pos":{"x":184,"y":136}},
+            {"type":"leever","color":0,"pos":{"x":104,"y":88}},
+            {"type":"leever","color":0,"pos":{"x":136,"y":88}},
+            {"type":"leever","color":0,"pos":{"x":168,"y":72}},
+            {"type":"leever","color":0,"pos":{"x":184,"y":72}},
+        ],
+        items: [
+            {"type":"bigheart","pos":{x:136,y:40}}
         ],
         tiles: [
             [10,10,10,10,10,00,20,10,10,10,10],
@@ -2487,12 +2507,12 @@
     [ // column 12
         { // screen 12,0
         enemies: [
-            {"type":"tectite","color":0,"position":{"x":168,"y":40}},
-            {"type":"tectite","color":0,"position":{"x":200,"y":72}},
-            {"type":"tectite","color":0,"position":{"x":88,"y":104}},
-            {"type":"tectite","color":0,"position":{"x":136,"y":88}},
-            {"type":"tectite","color":0,"position":{"x":152,"y":104}},
-            {"type":"tectite","color":0,"position":{"x":184,"y":104}},
+            {"type":"tectite","color":0,"pos":{"x":168,"y":40}},
+            {"type":"tectite","color":0,"pos":{"x":200,"y":72}},
+            {"type":"tectite","color":0,"pos":{"x":88,"y":104}},
+            {"type":"tectite","color":0,"pos":{"x":136,"y":88}},
+            {"type":"tectite","color":0,"pos":{"x":152,"y":104}},
+            {"type":"tectite","color":0,"pos":{"x":184,"y":104}},
         ],
         tiles: [
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -2513,14 +2533,14 @@
             [10,10,00,00,00,00,00,00,00,20,10],
         ]},
         {enemies: [
-            {type:'armos',color:0,position:{x:120,y:72}},
-            {type:'armos',color:0,position:{x:152,y:72}},
-            {type:'armos',color:0,position:{x:184,y:72}},
-            {type:'armos',color:0,position:{x:208,y:72}},
-            {type:'armos',color:0,position:{x:120,y:104}},
-            {type:'armos',color:0,position:{x:152,y:104}},
-            {type:'armos',color:0,position:{x:184,y:104}},
-            {type:'armos',color:0,position:{x:208,y:104}},
+            {"type":'armos',"color":0,"pos":{x:120,y:72}},
+            {"type":'armos',"color":0,"pos":{x:152,y:72}},
+            {"type":'armos',"color":0,"pos":{x:184,y:72}},
+            {"type":'armos',"color":0,"pos":{x:208,y:72}},
+            {"type":'armos',"color":0,"pos":{x:120,y:104}},
+            {"type":'armos',"color":0,"pos":{x:152,y:104}},
+            {"type":'armos',"color":0,"pos":{x:184,y:104}},
+            {"type":'armos',"color":0,"pos":{x:208,y:104}},
          ],
          tiles: [ // screen 12,1
             [10,10,10,10,31,00,30,10,10,10,10],
@@ -2542,10 +2562,13 @@
         ]},
         { // screen 12,2
         enemies: [
-            {"type":"tectite","color":0,"position":{"x":184,"y":56}},
-            {"type":"tectite","color":0,"position":{"x":216,"y":104}},
-            {"type":"tectite","color":0,"position":{"x":120,"y":136}},
-            {"type":"tectite","color":0,"position":{"x":72,"y":88}},
+            {"type":"tectite","color":0,"pos":{"x":184,"y":56}},
+            {"type":"tectite","color":0,"pos":{"x":216,"y":104}},
+            {"type":"tectite","color":0,"pos":{"x":120,"y":136}},
+            {"type":"tectite","color":0,"pos":{"x":72,"y":88}},
+        ],
+        items: [
+            {"type":"bigheart","pos":{x:136,y:120}}
         ],
         tiles: [
             [10,10,00,00,00,00,00,00,00,20,10],
@@ -2567,15 +2590,15 @@
         ]},
         { // screen 12,3 (dungeon 2)
         enemies: [
-            {"type":"armos","color":1,"position":{"x":56,"y":72}},
-            {"type":"armos","color":1,"position":{"x":88,"y":72}},
-            {"type":"armos","color":1,"position":{"x":152,"y":72}},
-            {"type":"armos","color":1,"position":{"x":184,"y":72}},
-            {"type":"armos","color":1,"position":{"x":56,"y":104}},
-            {"type":"armos","color":1,"position":{"x":88,"y":104}},
-            {"type":"armos","color":1,"position":{"x":152,"y":104}},
-            {"type":"armos","color":1,"position":{"x":184,"y":104}},
-            {"type":"octoroc","color":1,"position":{"x":136,"y":88}},
+            {"type":"armos","color":1,"pos":{"x":56,"y":72}},
+            {"type":"armos","color":1,"pos":{"x":88,"y":72}},
+            {"type":"armos","color":1,"pos":{"x":152,"y":72}},
+            {"type":"armos","color":1,"pos":{"x":184,"y":72}},
+            {"type":"armos","color":1,"pos":{"x":56,"y":104}},
+            {"type":"armos","color":1,"pos":{"x":88,"y":104}},
+            {"type":"armos","color":1,"pos":{"x":152,"y":104}},
+            {"type":"armos","color":1,"pos":{"x":184,"y":104}},
+            {"type":"octoroc","color":1,"pos":{"x":136,"y":88}},
         ],
         tiles: [
             [12,12,12,12,12,12,12,12,12,12,12],
@@ -2597,11 +2620,11 @@
         ]},
         { // screen 12,4
         enemies: [
-            {"type":"octoroc","color":1,"position":{"x":104,"y":120}},
-            {"type":"octoroc","color":1,"position":{"x":56,"y":104}},
-            {"type":"octoroc","color":0,"position":{"x":72,"y":56}},
-            {"type":"octoroc","color":0,"position":{"x":120,"y":88}},
-            {"type":"octoroc","color":0,"position":{"x":136,"y":120}},
+            {"type":"octoroc","color":1,"pos":{"x":104,"y":120}},
+            {"type":"octoroc","color":1,"pos":{"x":56,"y":104}},
+            {"type":"octoroc","color":0,"pos":{"x":72,"y":56}},
+            {"type":"octoroc","color":0,"pos":{"x":120,"y":88}},
+            {"type":"octoroc","color":0,"pos":{"x":136,"y":120}},
         ],
         tiles: [
             [12,12,12,12,12,12,12,12,12,12,12],
@@ -2623,10 +2646,10 @@
         ]},
         { // screen 12,5
         enemies: [
-            {"type":"moblin","color":1,"position":{"x":248,"y":72}},
-            {"type":"moblin","color":1,"position":{"x":248,"y":104}},
-            {"type":"moblin","color":1,"position":{"x":200,"y":168}},
-            {"type":"moblin","color":1,"position":{"x":72,"y":168}},
+            {"type":"moblin","color":1,"pos":{"x":248,"y":72}},
+            {"type":"moblin","color":1,"pos":{"x":248,"y":104}},
+            {"type":"moblin","color":1,"pos":{"x":200,"y":168}},
+            {"type":"moblin","color":1,"pos":{"x":72,"y":168}},
         ],
         tiles: [
             [13,13,00,13,13,13,13,13,00,13,13],
@@ -2648,10 +2671,10 @@
         ]},
         { // screen 12,6
         enemies: [
-            {"type":"moblin","color":0,"position":{"x":200,"y":8}},
-            {"type":"moblin","color":0,"position":{"x":72,"y":8}},
-            {"type":"moblin","color":0,"position":{"x":8,"y":72}},
-            {"type":"moblin","color":0,"position":{"x":8,"y":104}},
+            {"type":"moblin","color":0,"pos":{"x":200,"y":8}},
+            {"type":"moblin","color":0,"pos":{"x":72,"y":8}},
+            {"type":"moblin","color":0,"pos":{"x":8,"y":72}},
+            {"type":"moblin","color":0,"pos":{"x":8,"y":104}},
         ],
         tiles: [
             [13,13,13,13,00,00,00,13,13,13,13],
@@ -2673,9 +2696,9 @@
         ]},
         { // screen 12,7
         enemies: [
-            {"type":"zola","color":0,"position":{"x":152,"y":152}},
-            {"type":"leever","color":0,"position":{"x":88,"y":56}},
-            {"type":"leever","color":0,"position":{"x":72,"y":56}},
+            {"type":"zola","color":0,"pos":{"x":152,"y":152}},
+            {"type":"leever","color":0,"pos":{"x":88,"y":56}},
+            {"type":"leever","color":0,"pos":{"x":72,"y":56}},
         ],
         tiles: [
             [10,10,00,00,00,00,56,57,57,57,57],
@@ -2699,12 +2722,12 @@
     [ // column 13
         { // screen 13,0
         enemies: [
-            {"type":"tectite","color":0,"position":{"x":136,"y":72}},
-            {"type":"tectite","color":0,"position":{"x":168,"y":72}},
-            {"type":"tectite","color":0,"position":{"x":200,"y":120}},
-            {"type":"tectite","color":0,"position":{"x":216,"y":88}},
-            {"type":"tectite","color":0,"position":{"x":136,"y":104}},
-            {"type":"tectite","color":0,"position":{"x":168,"y":104}},
+            {"type":"tectite","color":0,"pos":{"x":136,"y":72}},
+            {"type":"tectite","color":0,"pos":{"x":168,"y":72}},
+            {"type":"tectite","color":0,"pos":{"x":200,"y":120}},
+            {"type":"tectite","color":0,"pos":{"x":216,"y":88}},
+            {"type":"tectite","color":0,"pos":{"x":136,"y":104}},
+            {"type":"tectite","color":0,"pos":{"x":168,"y":104}},
         ],
         tiles: [
             [10,10,00,00,00,00,00,00,00,20,10],
@@ -2726,12 +2749,12 @@
         ]},
         { // screen 13,1
         enemies: [
-            {"type":"peahat","color":0,"position":{"x":56,"y":56}},
-            {"type":"peahat","color":0,"position":{"x":136,"y":88}},
-            {"type":"peahat","color":0,"position":{"x":136,"y":88}},
-            {"type":"peahat","color":0,"position":{"x":56,"y":56}},
-            {"type":"peahat","color":0,"position":{"x":56,"y":56}},
-            {"type":"peahat","color":0,"position":{"x":136,"y":88}},
+            {"type":"peahat","color":0,"pos":{"x":56,"y":56}},
+            {"type":"peahat","color":0,"pos":{"x":136,"y":88}},
+            {"type":"peahat","color":0,"pos":{"x":136,"y":88}},
+            {"type":"peahat","color":0,"pos":{"x":56,"y":56}},
+            {"type":"peahat","color":0,"pos":{"x":56,"y":56}},
+            {"type":"peahat","color":0,"pos":{"x":136,"y":88}},
         ],
         tiles: [
             [10,10,00,00,00,00,00,00,00,20,10],
@@ -2753,12 +2776,12 @@
         ]},
         { // screen 13,2
         enemies: [
-            {"type":"zola","color":0,"position":{"x":232,"y":40}},
-            {"type":"octoroc","color":0,"position":{"x":120,"y":56}},
-            {"type":"octoroc","color":0,"position":{"x":216,"y":120}},
-            {"type":"octoroc","color":0,"position":{"x":56,"y":104}},
-            {"type":"octoroc","color":1,"position":{"x":88,"y":120}},
-            {"type":"octoroc","color":1,"position":{"x":152,"y":104}},
+            {"type":"zola","color":0,"pos":{"x":232,"y":40}},
+            {"type":"octoroc","color":0,"pos":{"x":120,"y":56}},
+            {"type":"octoroc","color":0,"pos":{"x":216,"y":120}},
+            {"type":"octoroc","color":0,"pos":{"x":56,"y":104}},
+            {"type":"octoroc","color":1,"pos":{"x":88,"y":120}},
+            {"type":"octoroc","color":1,"pos":{"x":152,"y":104}},
         ],
         tiles: [
             [10,10,10,10,10,00,00,00,00,20,10],
@@ -2780,12 +2803,12 @@
         ]},
         { // screen 13,3
         enemies: [
-            {"type":"armos","color":1,"position":{"x":104,"y":72}},
-            {"type":"armos","color":1,"position":{"x":152,"y":72}},
-            {"type":"moblin","color":1,"position":{"x":136,"y":56}},
-            {"type":"moblin","color":1,"position":{"x":88,"y":88}},
-            {"type":"moblin","color":1,"position":{"x":136,"y":104}},
-            {"type":"moblin","color":1,"position":{"x":152,"y":120}},
+            {"type":"armos","color":1,"pos":{"x":104,"y":72}},
+            {"type":"armos","color":1,"pos":{"x":152,"y":72}},
+            {"type":"moblin","color":1,"pos":{"x":136,"y":56}},
+            {"type":"moblin","color":1,"pos":{"x":88,"y":88}},
+            {"type":"moblin","color":1,"pos":{"x":136,"y":104}},
+            {"type":"moblin","color":1,"pos":{"x":152,"y":120}},
         ],
         tiles: [
             [13,13,13,13,13,13,13,13,13,13,13],
@@ -2807,10 +2830,10 @@
         ]},
         { // screen 13,4
         enemies: [
-            {"type":"moblin","color":1,"position":{"x":56,"y":8}},
-            {"type":"moblin","color":1,"position":{"x":88,"y":8}},
-            {"type":"moblin","color":1,"position":{"x":136,"y":8}},
-            {"type":"moblin","color":1,"position":{"x":168,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":56,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":88,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":136,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":168,"y":8}},
         ],
         tiles: [
             [13,13,13,13,00,00,00,13,13,13,13],
@@ -2832,10 +2855,10 @@
         ]},
         { // screen 13,5
         enemies: [
-            {"type":"moblin","color":1,"position":{"x":200,"y":8}},
-            {"type":"moblin","color":1,"position":{"x":56,"y":8}},
-            {"type":"moblin","color":1,"position":{"x":56,"y":168}},
-            {"type":"moblin","color":1,"position":{"x":200,"y":168}},
+            {"type":"moblin","color":1,"pos":{"x":200,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":56,"y":8}},
+            {"type":"moblin","color":1,"pos":{"x":56,"y":168}},
+            {"type":"moblin","color":1,"pos":{"x":200,"y":168}},
         ],
         tiles: [
             [13,13,13,13,00,00,00,13,13,13,13],
@@ -2857,10 +2880,10 @@
         ]},
         { // screen 13,6
         enemies: [
-            {"type":"moblin","color":0,"position":{"x":248,"y":72}},
-            {"type":"moblin","color":0,"position":{"x":248,"y":88}},
-            {"type":"moblin","color":0,"position":{"x":248,"y":104}},
-            {"type":"moblin","color":0,"position":{"x":8,"y":136}},
+            {"type":"moblin","color":0,"pos":{"x":248,"y":72}},
+            {"type":"moblin","color":0,"pos":{"x":248,"y":88}},
+            {"type":"moblin","color":0,"pos":{"x":248,"y":104}},
+            {"type":"moblin","color":0,"pos":{"x":8,"y":136}},
         ],
         tiles: [
             [13,13,00,13,13,13,13,13,00,13,13],
@@ -2882,11 +2905,11 @@
         ]},
         { // screen 13,7
         enemies: [
-            {"type":"zola","color":0,"position":{"x":136,"y":136}},
-            {"type":"octoroc","color":1,"position":{"x":216,"y":56}},
-            {"type":"octoroc","color":1,"position":{"x":184,"y":88}},
-            {"type":"octoroc","color":1,"position":{"x":120,"y":56}},
-            {"type":"octoroc","color":1,"position":{"x":136,"y":72}},
+            {"type":"zola","color":0,"pos":{"x":136,"y":136}},
+            {"type":"octoroc","color":1,"pos":{"x":216,"y":56}},
+            {"type":"octoroc","color":1,"pos":{"x":184,"y":88}},
+            {"type":"octoroc","color":1,"pos":{"x":120,"y":56}},
+            {"type":"octoroc","color":1,"pos":{"x":136,"y":72}},
         ],
         tiles: [
             [10,10,00,00,00,00,56,57,57,57,57],
@@ -2908,7 +2931,11 @@
         ]}
     ],
     [ // column 14
-        {tiles: [ // screen 14,0
+        { // screen 14,0
+        items: [
+            {"type":"letter","pos":{x:88,y:88}}
+        ],
+        tiles: [ 
             [57,57,57,10,10,10,10,10,10,10,10],
             [57,57,57,10,10,10,10,10,10,10,10],
             [57,57,57,10,10,10,10,10,10,10,10],
@@ -2928,13 +2955,13 @@
         ]},
         { // screen 14,1
         enemies: [
-            {"type":"tectite","color":0,"position":{"x":232,"y":72}},
-            {"type":"tectite","color":0,"position":{"x":216,"y":136}},
-            {"type":"tectite","color":0,"position":{"x":152,"y":88}},
-            {"type":"tectite","color":0,"position":{"x":200,"y":40}},
-            {"type":"tectite","color":0,"position":{"x":136,"y":24}},
-            {"type":"tectite","color":0,"position":{"x":56,"y":72}},
-            {"type":"zola","color":0,"position":{"x":56,"y":136}},
+            {"type":"tectite","color":0,"pos":{"x":232,"y":72}},
+            {"type":"tectite","color":0,"pos":{"x":216,"y":136}},
+            {"type":"tectite","color":0,"pos":{"x":152,"y":88}},
+            {"type":"tectite","color":0,"pos":{"x":200,"y":40}},
+            {"type":"tectite","color":0,"pos":{"x":136,"y":24}},
+            {"type":"tectite","color":0,"pos":{"x":56,"y":72}},
+            {"type":"zola","color":0,"pos":{"x":56,"y":136}},
         ],
         tiles: [
             [10,10,10,10,00,00,56,57,57,57,57],
@@ -2956,9 +2983,9 @@
         ]},
         { // screen 14,2
         enemies: [
-            {"type":"zola","color":0,"position":{"x":216,"y":88}},
-            {"type":"octoroc","color":1,"position":{"x":104,"y":152}},
-            {"type":"octoroc","color":1,"position":{"x":72,"y":120}},
+            {"type":"zola","color":0,"pos":{"x":216,"y":88}},
+            {"type":"octoroc","color":1,"pos":{"x":104,"y":152}},
+            {"type":"octoroc","color":1,"pos":{"x":72,"y":120}},
         ],
         tiles: [
             [57,57,57,57,58,00,00,00,00,30,10],
@@ -2980,12 +3007,12 @@
         ]},
         { // screen 14,3
         enemies: [
-            {"type":"zola","color":0,"position":{"x":216,"y":40}},
-            {"type":"octoroc","color":0,"position":{"x":40,"y":88}},
-            {"type":"octoroc","color":0,"position":{"x":88,"y":104}},
-            {"type":"octoroc","color":0,"position":{"x":120,"y":104}},
-            {"type":"octoroc","color":1,"position":{"x":168,"y":136}},
-            {"type":"octoroc","color":1,"position":{"x":104,"y":56}},
+            {"type":"zola","color":0,"pos":{"x":216,"y":40}},
+            {"type":"octoroc","color":0,"pos":{"x":40,"y":88}},
+            {"type":"octoroc","color":0,"pos":{"x":88,"y":104}},
+            {"type":"octoroc","color":0,"pos":{"x":120,"y":104}},
+            {"type":"octoroc","color":1,"pos":{"x":168,"y":136}},
+            {"type":"octoroc","color":1,"pos":{"x":104,"y":56}},
         ],
         tiles: [
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -3007,11 +3034,11 @@
         ]},
         { // screen 14,4
         enemies: [
-            {"type":"armos","color":1,"position":{"x":88,"y":72}},
-            {"type":"armos","color":1,"position":{"x":168,"y":72}},
-            {"type":"moblin","color":1,"position":{"x":8,"y":72}},
-            {"type":"moblin","color":1,"position":{"x":8,"y":104}},
-            {"type":"moblin","color":1,"position":{"x":8,"y":88}},
+            {"type":"armos","color":1,"pos":{"x":88,"y":72}},
+            {"type":"armos","color":1,"pos":{"x":168,"y":72}},
+            {"type":"moblin","color":1,"pos":{"x":8,"y":72}},
+            {"type":"moblin","color":1,"pos":{"x":8,"y":104}},
+            {"type":"moblin","color":1,"pos":{"x":8,"y":88}},
         ],
         tiles: [
             [13,13,13,13,00,00,00,13,13,13,13],
@@ -3033,11 +3060,11 @@
         ]},
         { // screen 14,5
         enemies: [
-            {"type":"moblin","color":1,"position":{"x":184,"y":72}},
-            {"type":"moblin","color":1,"position":{"x":152,"y":104}},
-            {"type":"moblin","color":1,"position":{"x":120,"y":72}},
-            {"type":"moblin","color":1,"position":{"x":120,"y":120}},
-            {"type":"moblin","color":1,"position":{"x":88,"y":88}},
+            {"type":"moblin","color":1,"pos":{"x":184,"y":72}},
+            {"type":"moblin","color":1,"pos":{"x":152,"y":104}},
+            {"type":"moblin","color":1,"pos":{"x":120,"y":72}},
+            {"type":"moblin","color":1,"pos":{"x":120,"y":120}},
+            {"type":"moblin","color":1,"pos":{"x":88,"y":88}},
         ],
         tiles: [
             [12,12,12,33,00,00,00,32,12,12,12],
@@ -3059,12 +3086,12 @@
         ]},
         { // screen 14,6
         enemies: [
-            {"type":"moblin","color":1,"position":{"x":136,"y":72}},
-            {"type":"moblin","color":0,"position":{"x":216,"y":56}},
-            {"type":"moblin","color":0,"position":{"x":152,"y":120}},
-            {"type":"moblin","color":0,"position":{"x":72,"y":72}},
-            {"type":"octoroc","color":1,"position":{"x":200,"y":136}},
-            {"type":"octoroc","color":1,"position":{"x":88,"y":104}},
+            {"type":"moblin","color":1,"pos":{"x":136,"y":72}},
+            {"type":"moblin","color":0,"pos":{"x":216,"y":56}},
+            {"type":"moblin","color":0,"pos":{"x":152,"y":120}},
+            {"type":"moblin","color":0,"pos":{"x":72,"y":72}},
+            {"type":"octoroc","color":1,"pos":{"x":200,"y":136}},
+            {"type":"octoroc","color":1,"pos":{"x":88,"y":104}},
         ],
         tiles: [
             [13,13,13,13,00,00,00,13,13,13,13],
@@ -3086,10 +3113,10 @@
         ]},
         { // screen 14,7
         enemies: [
-            {"type":"octoroc","color":0,"position":{"x":120,"y":72}},
-            {"type":"octoroc","color":0,"position":{"x":184,"y":72}},
-            {"type":"octoroc","color":0,"position":{"x":216,"y":88}},
-            {"type":"zola","color":0,"position":{"x":152,"y":120}},
+            {"type":"octoroc","color":0,"pos":{"x":120,"y":72}},
+            {"type":"octoroc","color":0,"pos":{"x":184,"y":72}},
+            {"type":"octoroc","color":0,"pos":{"x":216,"y":88}},
+            {"type":"zola","color":0,"pos":{"x":152,"y":120}},
         ],
         tiles: [
             [10,10,00,00,00,00,56,57,57,57,57],
@@ -3130,12 +3157,12 @@
             [57,57,57,57,57,57,57,57,57,57,57]
         ]},
         {enemies: [
-            {type:'peahat',position:{x:88,y:40}},
-            {type:'peahat',position:{x:136,y:72}},
-            {type:'peahat',position:{x:200,y:56}},
-            {type:'peahat',position:{x:216,y:88}},
-            {type:'peahat',position:{x:168,y:104}},
-            {type:'peahat',position:{x:88,y:132}},
+            {"type":'peahat',"pos":{x:88,y:40}},
+            {"type":'peahat',"pos":{x:136,y:72}},
+            {"type":'peahat',"pos":{x:200,y:56}},
+            {"type":'peahat',"pos":{x:216,y:88}},
+            {"type":'peahat',"pos":{x:168,y:104}},
+            {"type":'peahat',"pos":{x:88,y:132}},
         ],
         tiles: [ // screen 15,1
             [10,10,00,00,00,00,00,00,00,20,10],
@@ -3155,7 +3182,11 @@
             [10,10,10,10,10,10,10,10,10,10,10],
             [57,57,57,57,57,57,57,57,57,57,57]
         ]},
-        {tiles: [ // screen 15,2
+        { // screen 15,2
+        items: [
+            {"type":"bigheart","pos":{x:104,y:88}}
+        ],
+        tiles: [
             [14,14,14,14,14,14,14,14,14,14,14],
             [14,14,02,02,02,02,02,02,02,24,14],
             [14,14,02,64,65,02,02,02,02,24,14],
@@ -3174,8 +3205,8 @@
             [14,14,14,14,14,14,14,14,14,14,14]
         ]},
         {enemies: [
-            {type:'zola',position:{x:216,y:72}},
-            {type:'octoroc',color:1,position:{x:136,y:88}},
+            {"type":'zola',"pos":{x:216,y:72}},
+            {"type":'octoroc',"color":1,"pos":{x:136,y:88}},
         ],
         tiles: [ // screen 15,3
             [57,57,57,57,58,00,00,00,00,20,10],
@@ -3196,11 +3227,11 @@
             [57,57,57,57,57,57,57,57,57,57,57]
         ]},
         {enemies: [
-            {type:'octoroc',color:0,position:{x:88,y:104}},
-            {type:'octoroc',color:0,position:{x:136,y:88}},
-            {type:'octoroc',color:1,position:{x:88,y:40}},
-            {type:'octoroc',color:1,position:{x:104,y:72}},
-            {type:'zola',position:{x:216,y:88}},
+            {"type":'octoroc',"color":0,"pos":{x:88,y:104}},
+            {"type":'octoroc',"color":0,"pos":{x:136,y:88}},
+            {"type":'octoroc',"color":1,"pos":{x:88,y:40}},
+            {"type":'octoroc',"color":1,"pos":{x:104,y:72}},
+            {"type":'zola',"pos":{x:216,y:88}},
         ],
         tiles: [ // screen 15,4
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -3222,14 +3253,14 @@
         ]},
         { // screen 15,5
         enemies: [
-            {type:'octoroc',color:1,position:{x:88,y:104}},
-            {type:'octoroc',color:1,position:{x:136,y:88}},
-            {type:'octoroc',color:0,position:{x:88,y:40}},
-            {type:'octoroc',color:0,position:{x:104,y:72}},
-            {type:'zola',position:{x:232,y:72}},
+            {"type":'octoroc',"color":1,"pos":{x:88,y:104}},
+            {"type":'octoroc',"color":1,"pos":{x:136,y:88}},
+            {"type":'octoroc',"color":0,"pos":{x:88,y:40}},
+            {"type":'octoroc',"color":0,"pos":{x:104,y:72}},
+            {"type":'zola',"pos":{x:232,y:72}},
         ],
         items: [
-            {type:"bigheart",position:{x:192,y:78}}
+            {"type":"bigheart","pos":{x:196,y:82}}
         ],
         tiles: [ 
             [10,10,10,10,10,10,10,10,10,10,10],
@@ -3250,12 +3281,12 @@
             [57,57,57,57,57,57,57,57,57,57,57]
         ]},
         {enemies: [
-            {type:'octoroc',color:0,position:{x:56,y:56}},
-            {type:'octoroc',color:0,position:{x:104,y:72}},
-            {type:'octoroc',color:0,position:{x:88,y:102}},
-            {type:'octoroc',color:0,position:{x:136,y:88}},
-            {type:'octoroc',color:1,position:{x:88,y:40}},
-            {type:'zola',position:{x:168,y:134}},
+            {"type":'octoroc',"color":0,"pos":{x:56,y:56}},
+            {"type":'octoroc',"color":0,"pos":{x:104,y:72}},
+            {"type":'octoroc',"color":0,"pos":{x:88,y:102}},
+            {"type":'octoroc',"color":0,"pos":{x:136,y:88}},
+            {"type":'octoroc',"color":1,"pos":{x:88,y:40}},
+            {"type":'zola',"pos":{x:168,y:134}},
         ],
         tiles: [ // screen 15,6
             [10,41,00,00,00,00,00,00,00,40,10],
@@ -3276,8 +3307,8 @@
             [57,57,57,57,57,57,57,57,57,57,57]
         ]},
         {enemies: [
-            {type:'octoroc',color:1,position:{x:88,y:40}},
-            {type:'zola',position:{x:184,y:72}},
+            {"type":'octoroc',"color":1,"pos":{x:88,y:40}},
+            {"type":'zola',"pos":{x:184,y:72}},
         ],
         tiles: [ // screen 15,7
             [10,10,10,31,00,00,56,57,57,57,57],

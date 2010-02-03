@@ -225,8 +225,8 @@ dojo.declare("loc.Game", null, {
             soundManager.pauseAll();
             this.stop();
         } else {
-			this.map_ctx.fillStyle = "black";
-			this.map_ctx.fillRect(104,4, 48*this.scale, 8*this.scale);
+            this.map_ctx.fillStyle = "black";
+            this.map_ctx.fillRect(104,4, 48*this.scale, 8*this.scale);
             this.start();
             soundManager.resumeAll();
         }
@@ -568,6 +568,12 @@ dojo.declare("loc.Game", null, {
             if (newState == this.constants.states.title) {
                 soundManager.stopAll();
                 soundManager.play('title');
+            } else if (newState == this.constants.states.dying) {
+                soundManager.stopAll();
+                soundManager.play('die');
+            } else if (newState == this.constants.states.gameover) {
+                soundManager.stopAll();
+                soundManager.play('gameover');
             } else if (this.currentState == this.constants.states.title) {
                 soundManager.stop('title');
             } else if (this.currentState == this.constants.states.menu) {
@@ -610,18 +616,20 @@ dojo.declare("loc.Game", null, {
         // get any items defined by this screen's definition
         var itemDefs = this.map.currentScreen().items;
         for (var i in itemDefs) {
-            var args = {pos: itemDefs[i].position, color: itemDefs[i].color};
+            var args = dojo.mixin({}, itemDefs[i]);
             var item = loc.Item.getNamedSubtype(itemDefs[i].type, args);
             if (item) {
                 item._index = i;
                 this.items[i] = item;
+            } else {
+                console.warn('failed to create item:',args);
             }
         }
 
         // spawn new monsters for this screen
         var enemyDefs = dojo.clone(this.map.currentScreen().enemies);
         for (var e in enemyDefs) {
-            var args = { pos:enemyDefs[e]['position'], scale: game.scale, size: {w:16,h:16}, color: enemyDefs[e]['color'], index: this.monsters.length };
+            var args = dojo.mixin({ scale: game.scale, size: {w:16,h:16}, index: this.monsters.length }, enemyDefs[e]);
             var enemy = loc.Monster.getNamedSubtype(enemyDefs[e]['type'], args);
             if (enemy) {
                 enemy._index = e;

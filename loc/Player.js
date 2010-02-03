@@ -305,7 +305,6 @@ dojo.declare("loc.Player", loc.Sprite, {
     },
     die: function die() {
         dojo.publish("player.onDie", []);
-        soundManager.play('die');
         this.inherited(arguments);
     },
     reset: function reset(){
@@ -446,6 +445,7 @@ dojo.declare("loc.Player", loc.Sprite, {
         if (this._state == 3 || this._state == 4) {
             // we were in "got item" state, resume the paused music now
             soundManager.resumeAll();
+            this._heldItem = null;  // no need to keep track of this anymore
         }
         this.inherited(arguments);
     },
@@ -514,11 +514,32 @@ dojo.declare("loc.Player", loc.Sprite, {
                 break;
 
             case 'loc.Candle':
-                dojo.connect(game, 'setupMapScreen', game.player.inventory[3].reset);
+                this.inventory[3] = item;
+                this.equipFirstAvail();
+                dojo.connect(game, 'setupMapScreen', this.resetItems);
+                break;
+
+            case 'loc.Letter':
+                this.inventory[6] = item;
+                this.equipFirstAvail();
+                break;
 
             default:
                 break;
         }
         this.changeState(newState);
+    },
+    resetItems: function() {
+        game.player.inventory[3].reset();
+    },
+    equipFirstAvail: function player_equipFirstAvail() {
+        if (!this.inventory[this._item]) {
+            for (var i=0;i<8;i++) {
+                if (this.inventory[i]) {
+                    this._item = i;
+                    break;
+                }
+            }
+        }
     }
 });
