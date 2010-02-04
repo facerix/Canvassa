@@ -541,11 +541,6 @@ dojo.declare("loc.Fairy", loc.Item, {
                     break;
             }
         }
-
-        // if completely stopped, force to start moving again
-        if (this.vector.x == this.vector.y == 0) {
-            this.vector.x = 1; this.vector.y = 1;
-        }
     }
 });
 
