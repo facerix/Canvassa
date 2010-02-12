@@ -50,6 +50,7 @@ dojo.declare("loc.Sprite", null, {
         //console.log("draw(): _state ==",this._state);
         if (this.isActive()) { this._move() } ;
         var cut = this._animTick();
+        if (cut.x === -1 || cut.y === -1) { return; } // -1 in an anim is code for "don't draw me"
         var img = window.imageCache.getImage(this.spriteSrc);
         ctx.drawImage(img, cut.x,cut.y,this.size.w,this.size.h, xscaled,yscaled, width, height);
 

@@ -11,7 +11,7 @@ dojo.declare("loc.Zola", loc.Monster, {
             [ {x:32,y:128,t:8},{x:48,y:128,t:5},{x:80,y:144,t:80} ]
         ]};
         this._stateDefs[4] = { name: 'underwater', faceted:false, nextState: 5, canMove: true, anim: [
-            [ {x:900,y:900,t:120} ]
+            [ {x:-1,y:-1,t:120} ]
         ]};
         this._stateDefs[5] = { name: 'surfacing', faceted:false, nextState: 0, canMove: false, anim: [
             [ {x:48,y:128,t:9},{x:32,y:128,t:9},
@@ -21,8 +21,8 @@ dojo.declare("loc.Zola", loc.Monster, {
         this._surfaceTimer = 0;
     },
     canGetHit: function monster_canGetHit() {
-		return (this._state == 0);
-	},
+        return (this._state == 0);
+    },
     think: function think() {
         this.inherited(arguments);
         if (this._state == 0) {

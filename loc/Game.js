@@ -12,44 +12,9 @@ dojo.require("loc.Font");
 dojo.require("loc.Map");
 dojo.require("loc.Sounds");
 
-/*
- * Konami-JS
- * http://snaptortoise.com/konami-js
- * Copyright (c) 2009 George Mandis (georgemandis.com)
- * Version: 1.0 (04/27/2009)
- * Licensed under the Artistic License/GPL
- * http://dev.perl.org/licenses/
- * Tested in: Safari 4, Firefox 3, IE7
- */
+var game;   // global, defined elsewhere as the instance of this class
 
 dojo.declare("loc.Game", null, {
-    _konami: {
-        input:"",
-        clear:setTimeout('game._konami.clear_input()',2000),
-        code: function(callbackProc) { callbackProc() },
-        clear_input: function() {
-            //if (console && console.log) { console.log("resetting Konami listener"); }
-            game._konami.input="";
-            clearTimeout(game._konami.clear);
-        },
-        check_input: function(keyCode) {
-            if (keyCode == 13) {keyCode = 221;} // ENTER key can be understood as an alternate START button
-            this.input += keyCode; //e ? e.keyCode : event.keyCode;
-            //if (console && console.log) { console.log("Konami input:", this.input); }
-            if (game._konami.input == "38384040373937399088221") {
-                game._konami.code()
-                clearTimeout(game._konami.clear)
-            }
-            clearTimeout(game._konami.clear)
-            game._konami.clear = setTimeout(game._konami.clear_input,2000)
-        },
-        code: function() {
-            var msg = dojo.byId("user_msg");
-            msg.innerText = "Cheaters never prosper!";
-            dojo.style("user_msg", "display", "inline");
-            game._cheat();
-        }
-    },
     map: null,
     map_ctx: null,
     ctx: null,
@@ -77,10 +42,10 @@ dojo.declare("loc.Game", null, {
        {'screenX':5,'screenY':0,'posX':128,'posY':88}
     ],
     constructor: function game_constructor(args){
-        this.map_ctx = args['map_context'];
+        this.map_ctx = args.map_context;
         this.map_ctx.fillStyle = "#FCD8A8";
-        this.ctx = args['sprite_context'];
-        this.scale = args['scale'];
+        this.ctx = args.sprite_context;
+        this.scale = args.scale;
         this.constants.direction = { left: 0, up: 1, right: 2, down: 3 };
         this.constants.states = { overworld: 'overworld',
                                   inventory: 'inventory',
@@ -93,7 +58,7 @@ dojo.declare("loc.Game", null, {
                                   loading: 'loading',
                                   cheat: 'cheat',
                                   unpausable: {'gameover':0,'title':1,'menu':2,'loading':3} };
-        this.constants.screenBound = args['screenBounds'];
+        this.constants.screenBound = args.screenBounds;
         this.player = new loc.Player({
             scale:this.scale, size:{w:16,h:16}
         });
@@ -209,6 +174,8 @@ dojo.declare("loc.Game", null, {
                     break;
 
                 case this.constants.states.dying:
+                    break;
+                    
                 default:
                     // do nothing
                     break;
@@ -217,7 +184,7 @@ dojo.declare("loc.Game", null, {
         } // end if
     },
     _togglePause: function game_togglePause() {
-        if (this.currentState in this.constants.states.unpausable) { return }
+        if (this.currentState in this.constants.states.unpausable) { return; }
 
         // todo: make the little pause sound
         if (this._timerid) {
@@ -254,32 +221,34 @@ dojo.declare("loc.Game", null, {
         };
     },
     main: function game_main() {
+        var i = 0; // loop counter
+        
         // draw everything
-        if (this.map) {
+        if (game.map) {
             try {
-                this.drawSprites();
+                game.drawSprites();
             } catch(e) {
                 console.error("error drawing sprites:",e,"[in game_main()]");
-                this.stop();
+                game.stop();
             }
 
             // update player, monster, and projectile positions if on the overworld/dungeon screens
-            if (this.currentState == this.constants.states.overworld || this.currentState == this.constants.states.dungeon) {
+            if (game.currentState == game.constants.states.overworld || game.currentState == game.constants.states.dungeon) {
                 // handle enemy AI
-                for (var i in this.monsters) {
-                    this.monsters[i].think();
+                for (i in game.monsters) {
+                    game.monsters[i].think();
                 }
 
                 // move all active projectiles
-                for (var j in this.projectiles) {
-                    if ("updatePosition" in this.projectiles[j]) { this.projectiles[j].updatePosition(); }
+                for (i in game.projectiles) {
+                    if ("updatePosition" in game.projectiles[i]) { game.projectiles[i].updatePosition(); }
                 }
 
                 // do sprite collision tests
-                this.doHitTests();
+                game.doHitTests();
 
                 // check if the player is walking onto an adjacent screen
-                this.checkBoundaries();
+                game.checkBoundaries();
             }
         } else {
             // no map defined yet; that means we're still on the title/menu/loading/etc screens
@@ -306,15 +275,18 @@ dojo.declare("loc.Game", null, {
         }
     },
     doHitTests: function game_doHitTests() {
+        var i = 0; var j = 0; // loop counters
+        var hits = null; var attacker = null; var item = null; var proj = null;
+        var dx = 0; var dy = 0; // projectile offsets
+        
         // we only care about collision detection if in overworld or dungeon modes
         if (this.currentState == this.constants.states.overworld || this.currentState == this.constants.states.dungeon) {
             // do sprite collision tests for Link
-            var hits = this.hitTest(this.player.pos.x-8, this.player.pos.y-8, 16,16);
+            hits = this.hitTest(this.player.pos.x-8, this.player.pos.y-8, 16,16);
 
             // check to see if any monsters are touching the player; if so, he's hurt to the tune of their relative strength
-            var i = 0; // loop counter
             for (i in hits[0]) {
-                var attacker = hits[0][i];
+                attacker = hits[0][i];
                 if (attacker.canAttack()) {
                     game.player.getHit(attacker.strength);
                     break;
@@ -324,38 +296,41 @@ dojo.declare("loc.Game", null, {
             }
 
             // see if there is anything to pick up
-            for each (var item in hits[1]) {
+            for (i in hits[1]) {
+                item = hits[1][i];
                 this.player.getItem(item);
                 this.map.currentScreen().removeItem(item.declaredClass);
                 delete game.items[item._index];
             }
 
             // if there are any projectiles in play, see if they hit anything, too
-            for each (var proj in this.projectiles) {
+            for (i in this.projectiles) {
+                proj = this.projectiles[i];
                 // player-owned projectiles can only damage enemies, and vice-versa, so check projectile type against hit target type
                 if (proj.owner == this.player) {
                     // player projectiles
                     hits = this.hitTest(proj.pos.x, proj.pos.y, proj.size.w, proj.size.h);
 
-                    for (var e in hits[0]) {
-                        proj.hit(hits[0][e]);
+                    for (j in hits[0]) {
+                        proj.hit(hits[0][j]);
                     }
 
                     if (proj.declaredClass == 'loc.BoomProj' || proj.declaredClass == 'loc.ArrowProj') {
                         //console.log("checking projectile's item hitlist:",proj, hits);
                         // boomerangs and arrows can also retrieve small items (hearts, rupees)
-                        for each (var item in hits[1]) {
-                            if (item.size == 0) {
+                        for (j in hits[1]) {
+                            item = hits[1][j];
+                            if (item.size === 0) {
                                 //console.log("getting item:",item);
-                                player.getItem(item);
+                                this.player.getItem(item);
                                 delete game.items[item._index];
                             }
                         }
                     }
                 } else {
                     // enemy projectiles
-                    var dx = Math.abs(proj.pos.x-this.player.pos.x);
-                    var dy = Math.abs(proj.pos.y-this.player.pos.y);
+                    dx = Math.abs(proj.pos.x-this.player.pos.x);
+                    dy = Math.abs(proj.pos.y-this.player.pos.y);
                     if (dx <= proj.size.w && dy <= proj.size.h) {
                         proj.hit(this.player);
                     }
@@ -371,11 +346,13 @@ dojo.declare("loc.Game", null, {
         //this.ctx.fillRect(x*game.scale,(y+64)*game.scale,w*game.scale,h*game.scale);
         //console.log("game.hitTest(%d,%d,%d,%d)", x, y, w, h, this.monsters, this.items);
 
-        var enemyHits = []; itemHits = [];
+        var enemyHits = []; var itemHits = [];
+        var dx = 0; var dy = 0; // projectile offsets
+
         for (var e in this.monsters) {
             var enemy = this.monsters[e];
-            var dx = Math.abs(x-enemy.pos.x);
-            var dy = Math.abs(y-enemy.pos.y);
+            dx = Math.abs(x-enemy.pos.x);
+            dy = Math.abs(y-enemy.pos.y);
             //console.log("test: [%o] -> [%d,%d] ? (dx: %d, dy: %d)",enemy.pos,x,y, dx,dy);
             if (dx <= w && dy <= h && enemy.canGetHit()) {
                 enemyHits.push(enemy);
@@ -385,8 +362,8 @@ dojo.declare("loc.Game", null, {
         for (var i in this.items) {
             var item = this.items[i];
             item.index = i;
-            var dx = Math.abs(x-item.pos.x);
-            var dy = Math.abs(y-item.pos.y);
+            dx = Math.abs(x-item.pos.x);
+            dy = Math.abs(y-item.pos.y);
             //console.log("test: [%o] -> [%d,%d] ? (dx: %d, dy: %d)",item.pos,x,y, dx,dy);
             if (dx <= w && dy <= h) {
                 itemHits.push(item);
@@ -396,16 +373,17 @@ dojo.declare("loc.Game", null, {
         return [enemyHits,itemHits];
     },
     drawBG: function game_drawBG() {
+        var img = null; // cached image holder
         switch (this.currentState) {
             case this.constants.states.title:
                 // draw title screen
-                var img = window.imageCache.getImage("title");
+                img = window.imageCache.getImage("title");
                 this.map_ctx.drawImage(img, 0,0,256,240, 0,0,256*this.scale,240*this.scale);
                 break;
 
             case this.constants.states.menu:
                 // draw menu screen
-                var img = window.imageCache.getImage("select");
+                img = window.imageCache.getImage("select");
                 this.map_ctx.drawImage(img, 0,0,256,240, 0,0,256*this.scale,240*this.scale);
 
                 // TODO: draw names/stats of available quests/savegames
@@ -435,15 +413,15 @@ dojo.declare("loc.Game", null, {
             case this.constants.states.inventory:
             case this.constants.states.map:
                 // draw HUD in full-screen
-                var img = window.imageCache.getImage("HUD");
+                img = window.imageCache.getImage("HUD");
                 this.map_ctx.drawImage(img, 0,0,256,240, 0,0,256*this.scale,240*this.scale);
                 break;
 
-            case this.constants.states.overworld:
-            case this.constants.states.dungeon:
+            //case this.constants.states.overworld:
+            //case this.constants.states.dungeon:
             default:
                 // draw HUD (status bar)
-                var img = window.imageCache.getImage("HUD");
+                img = window.imageCache.getImage("HUD");
                 this.map_ctx.drawImage(img, 0,175,256,64, 0,0,256*this.scale,64*this.scale);
 
                 this.map_ctx.save();
@@ -467,6 +445,9 @@ dojo.declare("loc.Game", null, {
         } // end switch
     },
     drawSprites: function game_drawSprites() {
+        var i = 0; // loop counter
+        var debug_pos = null;
+        
         // clear the sprite canvas
         this.ctx.clearRect(0,0,256*this.scale,240*this.scale);
         //console.log("game.drawSprites(currentState:",this.currentState,")");
@@ -522,8 +503,8 @@ dojo.declare("loc.Game", null, {
                 this.player.drawInventory(this.ctx, 1);
                 break;
 
-            case this.constants.states.overworld:
-            case this.constants.states.dungeon:
+            //case this.constants.states.overworld:
+            //case this.constants.states.dungeon:
             default:
                 // draw HUD elements: location dot, equipped item, sword, and hearts
                 if (this.player) {
@@ -535,25 +516,32 @@ dojo.declare("loc.Game", null, {
 
                 try {
                     // draw monsters
-                    for (var i in this.monsters) {
-                        this.monsters[i].draw(this.ctx);
+                    if (this.monsters) {
+                        for (i in this.monsters) {
+                            debug_pos = "monsters:"+i;
+                            this.monsters[i].draw(this.ctx);
+                        }
                     }
 
                     // draw items and projectiles
-                    for (var j in this.items) {
-                        this.items[j].draw(this.ctx);
+                    for (i in this.items) {
+                        debug_pos = "items:"+i;
+                        this.items[i].draw(this.ctx);
                     }
-                    for (var k in this.projectiles) {
-                        this.projectiles[k].draw(this.ctx);
+                    for (i in this.projectiles) {
+                        debug_pos = "projectiles:"+i;
+                        this.projectiles[i].draw(this.ctx);
                     }
 
                     // draw player
                     if (this.player) {
+                        debug_pos = "player";
                         this.player.draw(this.ctx);
                     }
 
-                } catch(e) {
-                    console.error("Error drawing game sprites:",e,"[in game_drawSprites(default)]");
+                } catch(ex) {
+                    console.error("Error drawing game sprites:",ex,"[in game_drawSprites(default): debug pos:",debug_pos,"]");
+                    console.debug("monsters[",i,"] is:",this.monsters[i]);
                     this.stop();
 
                 } finally {
@@ -596,18 +584,20 @@ dojo.declare("loc.Game", null, {
         this.constants.screenBound = new_sb;
     },
     resetScreen: function game_reset_screen() {
-        for (var e in this.monsters) {
-            delete this.monsters[e];
+        var i = 0; // loop counter
+        for (i in this.monsters) {
+            delete this.monsters[i];
         }
-        for (var i in this.projectiles) {
+        for (i in this.projectiles) {
             delete this.projectiles[i];
         }
-        for (var i in this.items) {
+        for (i in this.items) {
             delete this.items[i];
         }
         this.monsters = [];
         this.projectiles = [];
         this.items = [];
+        this.ctx.clearRect(0,0,256*this.scale,240*this.scale);
     },
     populateScreen: function game_populate() {
         // force garbage collection on last screen's enemies, projectiles, and items
@@ -629,8 +619,8 @@ dojo.declare("loc.Game", null, {
         // spawn new monsters for this screen
         var enemyDefs = dojo.clone(this.map.currentScreen().enemies);
         for (var e in enemyDefs) {
-            var args = dojo.mixin({ scale: game.scale, size: {w:16,h:16}, index: this.monsters.length }, enemyDefs[e]);
-            var enemy = loc.Monster.getNamedSubtype(enemyDefs[e]['type'], args);
+            var newArgs = dojo.mixin({ scale: game.scale, size: {w:16,h:16}, index: this.monsters.length }, enemyDefs[e]);
+            var enemy = loc.Monster.getNamedSubtype(enemyDefs[e].type, newArgs);
             if (enemy) {
                 enemy._index = e;
                 this.monsters[e] = enemy;
@@ -656,7 +646,7 @@ dojo.declare("loc.Game", null, {
 
         // start the main game loop
         if (!this._timerid) {
-            this._timerid = setInterval("game.main()", this.interval);
+            this._timerid = setInterval(game.main, this.interval);
         } else {
             console.log("Already started.");
         }
@@ -693,7 +683,7 @@ dojo.declare("loc.Game", null, {
             case this.constants.states.overworld:
             case this.constants.states.dungeon:
                 if (this.currDirKey == keyCode) { return; }
-                var dx = dy = 0;
+                var dx = 0; var dy = 0;
                 switch(keyCode){
                     case 39: // right
                         dx = 1;
@@ -725,7 +715,7 @@ dojo.declare("loc.Game", null, {
                         //console.log("key pressed:", keyCode);
                         break;
                 }
-                if (dx != 0 || dy != 0) {
+                if (dx !== 0 || dy !== 0) {
                     this.player.moveVector({x:dx,y:dy});
                     this.currDirKey = keyCode;
                 }
@@ -764,9 +754,9 @@ dojo.declare("loc.Game", null, {
         }
     },
     keyUp: function game_keyUp(keyCode) {
-        if (this.currentState in this.constants.states.unpausable) { return }
+        if (this.currentState in this.constants.states.unpausable) { return; }
 
-        this._konami.check_input(keyCode);
+        window.konami.check_input(keyCode);
         switch(keyCode){
             case 39: // right
             case 37: // left
@@ -822,8 +812,8 @@ dojo.declare("loc.Game", null, {
         this.map.setCurrentScreen(x,y); // ignore z (map z-index/layer) for now
 
         // move the player to the specified position, or the questData default if not specified
-        this.player.pos.x = (posX) ? posX : questData.startPosition.x;
-        this.player.pos.y = (posY) ? posY : questData.startPosition.y;
+        this.player.pos.x = (posX) ? posX : window.questData.startPosition.x;
+        this.player.pos.y = (posY) ? posY : window.questData.startPosition.y;
 
         game.setupMapScreen();
     }

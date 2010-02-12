@@ -50,7 +50,7 @@ dojo.declare("loc.Player", loc.Sprite, {
                     {x:0,y:0,t:2},{x:16,y:0,t:2},{x:32,y:0,t:2},{x:48,y:0,t:2},
                     {x:0,y:0,t:2},{x:16,y:0,t:2},{x:32,y:0,t:2},{x:48,y:0,t:2},
                     {x:0,y:0,t:2},{x:16,y:0,t:2},{x:32,y:0,t:2},{x:48,y:0,t:20},
-                    {x:160,y:16,t:6},{x:176,y:16,t:3},{x:192,y:16,t:35} ]
+                    {x:160,y:16,t:6},{x:176,y:16,t:3},{x:-1,y:-1,t:35} ]
                 ]},
                 { name: 'attack', faceted:true, nextState: 0, canMove: false, anim: [
                   [ {x:128,y:0,t:6} ],   /* facing==0 (left)  */

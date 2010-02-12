@@ -19,7 +19,7 @@ dojo.declare("loc.Monster", loc.Sprite, {
         var spawnTime = 10 + Math.random() * 30;
         this._stateDefs = [{}, /* default will be different for each derived class */
             { name: 'die', faceted:false, nextState: -1, canMove: false, anim: [
-              [ {x:64,y:16,t:6},{x:80,y:16,t:3},{x:200,y:16,t:20} ]
+              [ {x:64,y:16,t:6},{x:80,y:16,t:3},{x:-1,y:-1,t:20} ]
             ]},
             { name: 'spawn', faceted: false, nextState: 0, canMove: false, anim: [
               [ {x:64,y:0,t:spawnTime},{x:80,y:0,t:3} ]
@@ -58,15 +58,15 @@ dojo.declare("loc.Monster", loc.Sprite, {
         }
     },
     canGetHit: function monster_canGetHit() {
-		return (this._state == 0 || this._state > 2);
-	},
+        return (this._state == 0 || this._state > 2);
+    },
     changeState: function monster_changeState(state) {
         this._stunTimer = 0;
 
         // if we're dead (state -1), determine if there's an item left behind
         if (state == -1) {
-	        this.dropItem();
-		}
+            this.dropItem();
+        }
 
         this.inherited(arguments);
     },
@@ -121,7 +121,7 @@ dojo.declare("loc.Monster", loc.Sprite, {
         this._lastAction = -1;  // no previous action
     },
     stun: function monster_stun(duration){
-		soundManager.play('hit');
+        soundManager.play('hit');
         this.stop();
         this._stunTimer = duration;
     }

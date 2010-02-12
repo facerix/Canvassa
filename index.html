@@ -86,6 +86,41 @@
             var ev = isIE?event:e;
             game.keyUp(ev.keyCode);
         }
+
+        /*
+         * Konami-JS
+         * http://snaptortoise.com/konami-js
+         * Copyright (c) 2009 George Mandis (georgemandis.com)
+         * Version: 1.0 (04/27/2009)
+         * Licensed under the Artistic License/GPL
+         * http://dev.perl.org/licenses/
+         * Tested in: Safari 4, Firefox 3, IE7
+         */
+        var konami = {
+            input:"",
+            clear: setTimeout('konami.clear_input()',2000),
+            clear_input: function() {
+                konami.input="";
+                clearTimeout(konami.clear);
+            },
+            check_input: function(keyCode) {
+                if (keyCode == 13) {keyCode = 221;} // ENTER key can be understood as an alternate START button
+                this.input += keyCode; //e ? e.keyCode : event.keyCode;
+                //if (console && console.log) { console.log("Konami input:", this.input); }
+                if (konami.input == "38384040373937399088221") {
+                    konami.code();
+                    clearTimeout(konami.clear);
+                }
+                clearTimeout(konami.clear);
+                konami.clear = setTimeout('konami.clear_input()',2000);
+            },
+            code: function() {
+                var msg = dojo.byId("user_msg");
+                msg.innerText = "Cheaters never prosper!";
+                dojo.style("user_msg", "display", "inline");
+                game.cheat();
+            }
+        }
     </script>
   </head>
   <body class="origSize">
