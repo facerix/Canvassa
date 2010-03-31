@@ -14,19 +14,14 @@ Overview
 * license: Free to use & modify, but please keep this credits message
 
 
-Commit History
+Version Notes
 --------------
-## 6/10/2009 ##
 
-This is a preliminary sandboxed checkin, primarily repackaged for sharing on Github.
-It is not at all complete, but as of the first checkin, the basic preloading and sprite engines are in place.
-There are currently two entry points:
-* index.html -- the main game will be invoked from here; right now it's just the player on an empty screen.
-* bestiary.html -- test harness that allows you to spawn the various enemy types into a canvas to observe their AIs.
+- 2010/03/31 -
 
-Note also that sprite collision isn't yet enabled in the initial checkin. However, it has been added in subsequent checkins; see Git checkin logs for details.
+Lots of small, incremental changes in the past few months. Game is more or less playable in its current state.
 
-## 12/25/2009 ##
+- 2009/12/25 -
 
 Some of the (many) updates in this checkin:
 * added text to the page describing the game controls
@@ -35,6 +30,16 @@ Some of the (many) updates in this checkin:
 * added the sword projectile "flash" effect
 * fixed bug: Reset button is broken
 * fixed bug: erase "PAUSED" from notification area when unpausing
+
+- 2009/06/10 -
+
+This is a preliminary sandboxed checkin, primarily repackaged for sharing on Github.
+It is not at all complete, but as of the first checkin, the basic preloading and sprite engines are in place.
+There are currently two entry points:
+* index.html -- the main game will be invoked from here; right now it's just the player on an empty screen.
+* bestiary.html -- test harness that allows you to spawn the various enemy types into a canvas to observe their AIs.
+
+Note also that sprite collision isn't yet enabled in the initial checkin. However, it has been added in subsequent checkins; see Git checkin logs for details.
 
 ------------
 
