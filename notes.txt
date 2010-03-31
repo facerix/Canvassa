@@ -1,3 +1,9 @@
+On how "clubs" should work (3/31/2010)
+- custom projectile returned by inventory item
+  -- e.g. loc.Sword and loc.Wand won't return SwordProj/MagicProj, but instead return SwordSlash/WandSlash (0-vector projectiles with a custom "projectile-spawning" state right before their final anim frame)
+
+
+-------------------------------------------------
 Notes on enemy AIs:
 
 Enemy:          Movement:           Damage:     HP
