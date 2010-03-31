@@ -17,11 +17,11 @@ Overview
 Version Notes
 --------------
 
-- 2010/03/31 -
+2010/03/31:
 
 Lots of small, incremental changes in the past few months. Game is more or less playable in its current state.
 
-- 2009/12/25 -
+2009/12/25:
 
 Some of the (many) updates in this checkin:
 * added text to the page describing the game controls
@@ -31,7 +31,7 @@ Some of the (many) updates in this checkin:
 * fixed bug: Reset button is broken
 * fixed bug: erase "PAUSED" from notification area when unpausing
 
-- 2009/06/10 -
+2009/06/10:
 
 This is a preliminary sandboxed checkin, primarily repackaged for sharing on Github.
 It is not at all complete, but as of the first checkin, the basic preloading and sprite engines are in place.
