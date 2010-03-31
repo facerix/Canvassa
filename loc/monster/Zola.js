@@ -1,6 +1,8 @@
 dojo.provide("loc.monster.Zola");
 dojo.declare("loc.Zola", loc.Monster, {
     constructor: function sprite_constructor(args){
+        dojo.mixin(this, args);
+    	this.HP = 12;
         this._stateDefs[0] = { name: 'default', faceted:true, nextState: 0, canMove: false, anim: [
             [ {x:0,y:128,t:50} ],
             [ {x:16,y:128,t:50} ],

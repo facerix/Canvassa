@@ -1,6 +1,9 @@
 dojo.provide("loc.monster.Tectite");
 dojo.declare("loc.Tectite", loc.Monster, {
+	jumpVel: 3,
     constructor: function sprite_constructor(args){
+        dojo.mixin(this, args);
+    	this.jumpVel = 3 - this.color;
         this._stateDefs[0] = { name: 'default', faceted:false, nextState: 0, canMove: true, anim: [
             [ {x:16,y:112,t:15},{x:0,y:112,t:10} ]
         ]};
@@ -22,10 +25,13 @@ dojo.declare("loc.Tectite", loc.Monster, {
     _animateCurrent: function _animateCurrent() {
         return true;
     },
+    _getJumpVector: function tectite_getJumpVector() {
+    	return (Math.random() * this.jumpVel * 2) - this.jumpVel;
+    },
     changeState: function changeState(index) {
         if (index == 3) {
             // initiate jump... give myself a starting velocity
-            this.vector = {x: (Math.random() * 4)-2, y: (Math.random() * 4)-2};
+            this.vector = {x: this._getJumpVector(), y: this._getJumpVector()};
         } else if (index == 4) {
             // ending jump... reset velocity to null
             this.vector = {x:0,y:0};

@@ -1,6 +1,9 @@
 dojo.provide("loc.monster.Octoroc");
 dojo.declare("loc.Octoroc", [loc.Monster, loc.Shooter], {
+    HP: 1,
     constructor: function sprite_constructor(args){
+        dojo.mixin(this, args);
+    	this.HP = this.color + 1;
         this.attackState = 3;
         this._stateDefs[0] = { name: 'default', faceted:true, nextState: 0, canMove: true, anim: [
             [ {x:0,y:48,t:5},{x:0,y:64,t:5} ],   /* facing==0 (left) */

@@ -1,6 +1,8 @@
 dojo.provide("loc.monster.Moblin");
 dojo.declare("loc.Moblin", [loc.Monster, loc.Shooter], {
     constructor: function sprite_constructor(args){
+        dojo.mixin(this, args);
+    	this.HP = this.color + 2;
         this.attackState = 3;
         this._stateDefs[0] = { name: 'default', faceted:true, nextState: 0, canMove: true, anim: [
             [ {x:0,y:176,t:5},{x:0,y:192,t:5} ],

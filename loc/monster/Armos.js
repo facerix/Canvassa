@@ -2,6 +2,9 @@ dojo.provide("loc.monster.Armos");
 dojo.declare("loc.Armos", loc.Monster, {
     constructor: function sprite_constructor(args){
         this._defaultState = 3;
+        dojo.mixin(this, args);
+    	this.strength = 2;
+    	this.HP = 3;
         this._state = 3;
 
         this._stateDefs[0] = { name: 'default', faceted:true, nextState: 0, canMove: true, anim: [

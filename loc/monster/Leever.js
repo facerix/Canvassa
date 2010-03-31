@@ -1,6 +1,9 @@
 dojo.provide("loc.monster.Leever");
 dojo.declare("loc.Leever", loc.Monster, {
     constructor: function sprite_constructor(args){
+        dojo.mixin(this, args);
+    	this.strength = this.color + 1;
+    	this.HP = (this.color + 1) * 2;
         this._stateDefs[0] = { name: 'default', faceted:false, nextState: 0, canMove: true, anim: [
             [ {x:0,y:144,t:5},{x:16,y:144,t:5} ]
         ]};

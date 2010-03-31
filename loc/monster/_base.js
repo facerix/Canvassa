@@ -102,6 +102,8 @@ dojo.declare("loc.Monster", loc.Sprite, {
             //this._hurtTimer = 10;
             if (this.HP <= 0) {
                 this.die();
+            } else {
+            	soundManager.play("hit");
             }
         }
     },

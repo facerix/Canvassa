@@ -25,5 +25,9 @@ dojo.declare("loc.Gel", loc.Monster, {
                 }
             }
         }
+    },
+    stun: function monster_stun(duration){
+    	// boomerang kills these
+        this.die();
     }
 });

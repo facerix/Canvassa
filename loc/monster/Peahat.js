@@ -1,6 +1,8 @@
 dojo.provide("loc.monster.Peahat");
 dojo.declare("loc.Peahat", loc.Monster, {
     constructor: function sprite_constructor(args){
+        dojo.mixin(this, args);
+    	this.HP = 2;
         this._stateDefs[0] = { name: 'default', faceted:false, nextState: 0, canMove: true, anim: [
             [ {x:32,y:32,t:2},{x:48,y:32,t:2} ]
         ]};
@@ -39,6 +41,9 @@ dojo.declare("loc.Peahat", loc.Monster, {
     },
     isActive: function isActive() {
         return this.inherited(arguments) && (this._state != 4);
+    },
+    canAttack: function() {
+        return this.isMobile();
     },
     canGetHit: function monster_canGetHit() {
 		return (this._state == 4);
@@ -89,13 +94,13 @@ dojo.declare("loc.Peahat", loc.Monster, {
                     break;
 
                 case 3: // slowing down
-                    this.vector.x /= 1.01;
-                    this.vector.y /= 1.01;
+                    //this.vector.x /= 1.01;
+                    //this.vector.y /= 1.01;
                     break;
 
                 case 5: // speeding up
-                    this.vector.x *= 1.01;
-                    this.vector.y *= 1.01;
+                    //this.vector.x *= 1.01;
+                    //this.vector.y *= 1.01;
                     break;
 
                 default:

@@ -112,6 +112,26 @@ dojo.declare("loc.Bestiary", null, {
             this.stop();
         }
     },
+    insertItem: function game_insertItem(itm) {
+        if (itm) {
+            if (!("_index" in itm) || !(itm._index)) {
+                itm._index = this.items.length;
+            }
+            this.items.push(itm);
+        }
+    },
+    insertMonster: function game_insertMonster(mnstr) {
+        if (mnstr) {
+            mnstr.index = this.monsters.length;
+            this.monsters.push(mnstr);
+        }
+    },
+    insertProjectile: function game_insertProjectile(proj) {
+        if (proj) {
+            proj.index = this.projectiles.length;
+            this.projectiles.push(proj);
+        }
+    },
     setScreenBounds: function setScreenBounds(new_sb) {
         this.constants.screenBound = new_sb;
     },

@@ -24,5 +24,9 @@ dojo.declare("loc.Keese", loc.Monster, {
                 this.vector.y = (Math.random()+0.75) * (Math.random() < 0.5 ? -0.75 : 0.75);
             }
         }
+    },
+    stun: function monster_stun(duration){
+    	// boomerang kills these
+        this.die();
     }
 });
