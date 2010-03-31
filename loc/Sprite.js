@@ -33,10 +33,12 @@ dojo.declare("loc.Sprite", null, {
         }
         dojo.mixin(this,args);
 
-        this._startPosition = this.pos;
-        //this.pos = dojo.clone(this._startPosition);
+        this._startPosition = dojo.clone(this.pos);
         this._halfw = this.size.w / 2;
         this._halfh = this.size.h / 2;
+    },
+    toString: function sprite_str(){
+        return this.declaredClass + " [Position: " + this.pos.x + "," + this.pos.y + "; State: " + this._state + "]";
     },
     draw: function(ctx){
         var width = this.scale * this.size.w

@@ -24,7 +24,7 @@ dojo.declare("loc.Item", loc.Sprite, {
         this._stateDefs = [ { name: 'default', faceted:false, nextState: 0, canMove: false, anim: [ [{x:0,y:0,t:5}] ] }];
     },
     toString: function item_str(){
-        return this.declaredClass + " [Color: " + this.color + "; Position: " + this.pos.x + "," + this.pos.y + "]";
+        return this.declaredClass + " [Color: " + this.color + "; Position: " + this.pos.x + "," + this.pos.y + "; State: " + this._state + "]";
     }
 });
 
@@ -137,6 +137,7 @@ dojo.declare("loc.Sword", [loc.Item, loc.InventoryItem], {
     },
     getProjectile: function(args) {
         return new loc.SwordProj(args);
+        //return new loc.SwordSlash(args);
     }
 });
 
@@ -462,6 +463,7 @@ dojo.declare("loc.Wand", [loc.Item, loc.InventoryItem], {
         });
         soundManager.play('wand');
         return new loc.MagicProj(args);
+        //return new loc.WandSlash(args);
     }
 });
 
@@ -658,21 +660,53 @@ dojo.declare("loc.SwordProj", loc.Projectile, {
     }
 });
 
+dojo.declare("loc.SwordSlash", loc.Projectile, {
+    constructor: function(args){
+        dojo.mixin(this, args);
+        /* (size is determined for me by my thrower, because it depends on the direction
+            he's facing; it's provided as part of the args mixin) */
+
+        this.vel = {x:0, y:0};
+        this.vector = {x:0, y:0};
+
+        this._stateDefs = [ { name: 'default', faceted:true, nextState:-1, canMove:false, anim: [
+            [{x:80,y:0,t:10}],
+            [{x:0,y:8,t:10}],
+            [{x:32,y:0,t:10}],
+            [{x:24,y:8,t:10}],
+        ] }];
+    },
+    _animateCurrent: function explod_animateCurrent() {
+        return true;
+    },
+    _animTick: function _animTick() {
+        var base = this.inherited(arguments);
+        // recolor if need be
+        base.x += this.color * 8;
+        return base;
+    },
+    terminate: function swordProj_terminate() {
+        game.insertProjectile(new loc.SwordProj({'pos':this.getPos(),'owner':this.owner}));
+
+        this.inherited(arguments);
+    }
+});
+
 dojo.declare("loc.Explod", loc.Projectile, {
     timeout: -1,
     constructor: function(args){
         dojo.mixin(this, args);
     },
-    hit: function explor_hit() {
+    hit: function explod_hit() {
         // do nothing
     },
-    updatePosition: function() {
+    updatePosition: function explod_updatePosition() {
         if (this.timeout-- == 0) {
             this.terminate();
         }
         this.inherited(arguments);
     },
-    _animateCurrent: function heart_animateCurrent() {
+    _animateCurrent: function explod_animateCurrent() {
         return true;
     }
 });

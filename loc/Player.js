@@ -319,28 +319,36 @@ dojo.declare("loc.Player", loc.Sprite, {
         this._resetTriforceShards();
     },
     attack: function player_attack() {
-        if (this._sword >= 0 && !this._proj) {
+        if (this._sword >= 0 && !(this._proj)) {
             this.changeState(2);
             soundManager.play('sword');
             
-            if (this.HP == this.maxHP) {
-                var args = {
-                    vector: this._getAttackVector(),
-                    pos: this.getPos(),
-                    scale: this.scale,
-                    spriteSrc: "items",
-                    index: game.projectiles.length,
-                    owner: this
-                }
-                args.width = (args.vector.x != 0) ? 16 : 7;
-                args.height = (args.vector.y != 0) ? 16 : 7;
-                args.size = {w: args.width, h: args.height};
-
-                this._proj = new loc.SwordProj(args);
-                game.projectiles.push(this._proj);
-                soundManager.play('swordshoot');
+            //if (this.HP == this.maxHP) {
+            // TODO: mush getattackvector and getattackpos into
+            //    _getAttackArgs(), which returns an {} w/ a copy of both.
+            //    Then update this object with the additional properties below.
+            var args = {
+                vector: this._getAttackVector(),
+                pos: this._getAttackPos(),
+                scale: this.scale,
+                spriteSrc: "items",
+                index: game.projectiles.length,
+                spawn_child: (this.HP == this.maxHP),
+                owner: this
             }
+            args.width = (args.vector.x != 0) ? 16 : 7;
+            args.height = (args.vector.y != 0) ? 16 : 7;
+            args.size = {w: args.width, h: args.height};
+
+            //this._proj = new loc.SwordSlash(args);
+            this._proj = new loc.SwordProj(args);
+            game.projectiles.push(this._proj);
+            soundManager.play('swordshoot');
+            //}
         }
+    },
+    _getAttackPos: function player_getAttackPos() {
+        return dojo.clone(this.pos);
     },
     _getAttackVector: function player_attackVector() {
         var v = this.vector;

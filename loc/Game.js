@@ -11,6 +11,7 @@ dojo.require("loc.Monster");
 dojo.require("loc.Font");
 dojo.require("loc.Map");
 dojo.require("loc.Sounds");
+//dojo.require("loc.SoundStub");
 
 var game;   // global, defined elsewhere as the instance of this class
 
@@ -635,6 +636,12 @@ dojo.declare("loc.Game", null, {
             this.items.push(itm);
         }
     },
+    insertMonster: function game_insertMonster(mnstr) {
+        if (mnstr) {
+            mnstr.index = this.monsters.length;
+            this.monsters.push(mnstr);
+        }
+    },
     insertProjectile: function game_insertProjectile(proj) {
         if (proj) {
             proj.index = this.projectiles.length;
@@ -792,11 +799,9 @@ dojo.declare("loc.Game", null, {
         this.drawBG();
     },
     reset: function game_reset() {
-        this.player.killProjectile();
-        this.monsters = [];
-        this.items = [];
-        this.projectiles = [];
+        this.resetScreen();
         this.player.reset();
+        if (!this._timerid) { this.start(); }  // unpause if paused
         this.changeState(this.constants.states.title);
     },
     paused: function game_paused() {
