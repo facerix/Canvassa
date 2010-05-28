@@ -310,22 +310,56 @@ dojo.declare("loc.Map", null, {
 
         for (var i=0; i<16; i++) {
             for (var j=0; j<8; j++) {
-                ctx.strokeRect(i*64,j*44,64,44);
-                this.screens[i][j].drawThumb(ctx, this.tileImg, i*64, j*44);
+                //ctx.strokeRect(i*64,j*44,64,44);
+                //this.screens[i][j].drawThumb(ctx, this.tileImg, i*64, j*44);
+                //this.drawScreen(ctx, i,j);
+                this.drawScreenThumb(ctx, i,j, false);
             }
         }
+    },
+
+    drawScreen: function(ctx, x, y) {
+    	this.screens[x][y].drawThumb(ctx, this.tileImg, x*64, y*44);
     },
     
     drawScreenThumb: function(ctx, x, y, selected) {
         // given x,y coordinates and a canvas context, draws the specified map screen
         //console.log("drawScreenThumb(",x,',',y,"):",this.screens[x][y]);
-        ctx.strokeRect(x*64,y*44,64,44);
-        this.screens[x][y].drawThumb(ctx, this.tileImg, x*64, y*44);
+        x0 = x*64; x1 = x0+64;
+        y0 = y*44; y1 = y0+44;
+        ctx.strokeRect(x0,y0,64,44);
+        if (this.screens) {
+	        this.screens[x][y].drawThumb(ctx, this.tileImg, x0, y0);
 
-        if (selected) {
-            ctx.fillStyle = "rgba(20,20,20,0.3)";
-            ctx.fillRect(x*64,y*44,64,44);
-        }
+	        if (selected) {
+	            ctx.fillStyle = "rgba(20,20,20,0.3)";
+	            ctx.fillRect(x0,y0,64,44);
+	            
+	            /*
+	            ctx.strokeStyle = "rgb(255,0,0)";
+	            ctx.strokeWidth = '8px';
+				ctx.beginPath();
+				ctx.moveTo(x0, y0+16);
+				ctx.lineTo(x0, y0);
+				ctx.lineTo(x0+16, y0);
+
+				ctx.moveTo(x1-16, y0);
+				ctx.lineTo(x1, y0);
+				ctx.lineTo(x1, y0+16);
+
+				ctx.moveTo(x1, y1-16);
+				ctx.lineTo(x1, y1);
+				ctx.lineTo(x1-16, y1);
+
+				ctx.moveTo(x0+16, y1);
+				ctx.lineTo(x0, y1);
+				ctx.lineTo(x0, y1-16);
+
+				ctx.closePath();
+				ctx.stroke();
+				*/
+	        }
+	    }
     },
     
     serialize: function() {

@@ -38,9 +38,9 @@ function getRelativePosition(e,el) {
 function mapClick(e) {
     var position = getRelativePosition(e,'mapCanvas');
 
-    cellX = Math.floor((position.x-6)/64);
-    cellY = Math.floor((position.y-6)/44);
-    mapper.setCurrentScreen(cellX,cellY);
+	cellX = Math.floor((position.x-6)/64);
+	cellY = Math.floor((position.y-6)/44);
+	mapper.setCurrentScreen(cellX,cellY);
 }
 attachListener('mapCanvas', 'click', mapClick);
 
@@ -208,21 +208,24 @@ dojo.declare("loc.Mapper", null, {
         } else {
             this.noCanvas();
         }
-
+    },
+    
+    loadQuest: function mapper_loadQuest(data) {
         // init map & tools
-        this.map = new loc.Map({data: loc.gameData, ctx: this.mapContext, tileImg: this.mapImg, scale: this.scale});
-        //this.setCurrentScreen(0,0);
+        this.map = new loc.Map({data: data, ctx: this.mapContext, tileImg: this.mapImg, scale: this.scale});
+        this.setCurrentScreen(0,0);
         this.setCurrentTile(0,0);
         this.setCurrentSprite(0,0);
         this.drawMap();
     },
-
+    
     drawMap: function mapper_drawMap() {
         if (this.mapContext) {
             this.mapContext.clearRect(0,0,1024,352);
 
             // draw all map screen thumbnails
             //this.map.drawAll(this.mapContext);
+            this.map.drawScreen(this.mapContext, 0, 0);
         }
     },
 
@@ -240,6 +243,7 @@ dojo.declare("loc.Mapper", null, {
     },
 
     setCurrentScreen: function mapper_setCurrentScreen(x,y) {
+    	if (!this.map) { return; }
         console.log("setCurrentScreen(",x,",",y,")");
         if (this.mapContext) {
             // un-highlight the old screen thumbnail...
@@ -275,10 +279,11 @@ dojo.declare("loc.Mapper", null, {
 
         var toDraw = this.map.currentScreen().enemies;
         for (var i in toDraw) {
+        	//console.log("drawing sprite:",i,toDraw,toDraw[i]);
             var tileX = toDraw[i].color * 16;
             var tileY = 0;
-            var posX = toDraw[i].position.x - 8;
-            var posY = toDraw[i].position.y - 8;
+            var posX = toDraw[i].pos.x - 8;
+            var posY = toDraw[i].pos.y - 8;
             switch (toDraw[i].type) {
                 case 'armos':
                     break;
